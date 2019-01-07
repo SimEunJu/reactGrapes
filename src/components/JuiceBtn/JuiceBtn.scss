@@ -1,0 +1,10 @@
+.juiceBtnWrap{
+    position: fixed;
+    left: calc(100vw - 130px);
+    top: 8px;
+    cursor: pointer;
+    
+    .juiceBtn{
+        box-shadow: 0 0 10px gold;
+    }
+}

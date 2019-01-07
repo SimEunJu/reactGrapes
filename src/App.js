@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Provider} from 'react-redux';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import reduxStore from './store/confgure';
 
-import GrapeWrapperContainer from './containers/GrapeWrapperContainer';
-import UserInput from './components/UserInput';
-import Header from './components/Header';
+import {MainPage, EntryPage, ShowcasePage} from './pages';
 
 const store = reduxStore;
 
@@ -13,11 +12,15 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          <Header />
-          
-          <GrapeWrapperContainer />
-        </div>
+        <BrowserRouter>
+          <div className="App">
+            <Switch>
+              <Route exact path='/' component={EntryPage}></Route>
+              <Route path='/grape' component={MainPage}></Route>
+              <Route path='/setting' component={ShowcasePage}></Route>
+            </Switch>
+          </div>
+        </BrowserRouter>
       </Provider>
     );
   }
