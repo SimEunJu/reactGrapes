@@ -13,8 +13,8 @@ const CapAni = keyframes`
     100% {transform: translateY(15px); }
 `;
 const SaveAni = keyframes`
-    0% { transform: scale(1); }
-    100% { transform: scale(0); }
+    0% { transform: translateY(-50vh) scale(1); }
+    100% { transform: translateY(-50vh) scale(0); }
 `;
 const BottleEnter = styled.div`
     border-radius: 3px;
@@ -62,7 +62,6 @@ const BottleWrap = styled.div`
     margin: auto;
     width: 200px;
     height: 150px;
-    transform-origin: top center;
     animation: ${JuiceAni} 1.5s ease-in-out 1 forwards, ${SaveAni} 1s ease-in-out 3s 1 forwards;
 `;
 const Cap = styled.div`

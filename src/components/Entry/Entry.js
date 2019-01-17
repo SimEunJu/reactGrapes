@@ -9,10 +9,8 @@ import HeightInfo from '../HeightInfo';
 import UserInput from '../UserInput';
 
 const EntryContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     height: 100vh;
 `;
 const BtnWrap = styled.div`
@@ -21,8 +19,8 @@ const BtnWrap = styled.div`
     border: 4px solid purple;
     border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 `;
 const Btn = styled.button`
     margin-top: 0;
@@ -37,6 +35,14 @@ const Btn = styled.button`
     font-weight: bold;
     outline: none;
     ${props => props.ready}
+`;
+const BtnArea = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s ease-out 0.3s;
+    visibility: ${p => p.ready? '' : 'hidden'};
+    transform: ${p => p.ready? 'translateX(0)' : 'translateX(-10vw)'};
 `;
 
 class Entry extends Component{
@@ -78,8 +84,9 @@ class Entry extends Component{
         const {ready, depth} = this.state;
         return(
         <EntryContent>
-            <HeightInfo depth={ready && depth} />
             <UserInput handleClick={handleChildClick}/>
+            <HeightInfo depth={ready && depth} />
+            <BtnArea ready={ready}>
                 <BtnWrap>
                     <Link to={ready? '/grape' : ''}>
                         <Btn 
@@ -90,6 +97,7 @@ class Entry extends Component{
                         </Btn>
                     </Link>
                 </BtnWrap>
+            </BtnArea>
         </EntryContent>
         );
     }

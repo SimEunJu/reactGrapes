@@ -1,4 +1,8 @@
 .userInputWrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     label{
         color: green;
         font-weight: bold;
@@ -18,7 +22,7 @@
         height: 25px;
         outline: none;
         &:hover{
-            background-color:: green;
+            background-color: green;
             color: white;
         }
     }

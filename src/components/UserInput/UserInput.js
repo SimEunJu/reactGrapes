@@ -13,7 +13,7 @@ class UserInput extends Component{
         const {handleClick} = this.props;
         return(
             <div className='userInputWrap'>
-                <label>포도 송이 높이 :</label>
+                <label>포도 송이 높이</label>
                 <input 
                     className='userInput'
                     value={this.state.value} 

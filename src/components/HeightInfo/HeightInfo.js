@@ -12,14 +12,20 @@ const GrapeWrap = styled.div`
     justify-content: center;
 `;
 const Grapes = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s ease-out;
+    visibility: ${p => p.ready? '' : 'hidden'};
+    transform: ${p => p.ready? 'translateX(0)' : 'translateX(-10vw)'};
 `;
 const Msg = styled.div`
     padding: 10px;
     text-align: center;
-    border: 2px solid brown;
     heigth: 200px;
     width: 200px;
-    color: brown;
+    color: purple;
+    font-size: 20px;
 `;
 
 class HeightInfo extends Component{
@@ -43,7 +49,7 @@ class HeightInfo extends Component{
         if(!d) d=0;
         const cnt = (d*(d+1))/2;
         return(
-            <Grapes>
+            <Grapes ready={depth > 0}>
                 <Msg>
                     {this.renderGrapes()}
                     {cnt}일 동안<br />진행할 수 있습니다!
