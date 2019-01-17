@@ -6,9 +6,10 @@ class UserInput extends Component{
         value: ''
     }
     handleChange = (e) => {
-        this.setState({value: e.target.value});
+        const val = e.target.value;
+        this.setState({value: val});
+        if(val === '') this.props.handleChange();
     }
-    
     render(){
         const {handleClick} = this.props;
         return(
@@ -20,9 +21,7 @@ class UserInput extends Component{
                     onChange={this.handleChange}
                     placeholder='원하는 깊이를 입력해 주세요'>
                 </input>
-                <button
-                    onClick={() => handleClick(this.state.value)}
-                    onKeyPress={() => handleClick(this.state.value)}>
+                <button onClick={() => handleClick(this.state.value)} >
                     입력
                 </button>
         </div> 

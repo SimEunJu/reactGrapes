@@ -15,7 +15,7 @@ const Grapes = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 1s ease-out;
+    transition: ${p => p.ready? 'all 1s ease-out' : ''};
     visibility: ${p => p.ready? '' : 'hidden'};
     transform: ${p => p.ready? 'translateX(0)' : 'translateX(-10vw)'};
 `;
@@ -31,7 +31,6 @@ const Msg = styled.div`
 class HeightInfo extends Component{
     renderGrapes = () => {
         const {depth} = this.props;
-        console.log(depth);
         const keeping = [];
         for (let i = 0; i < depth; i++) {
             keeping[i] = []

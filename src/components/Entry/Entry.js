@@ -40,7 +40,7 @@ const BtnArea = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 1s ease-out 0.3s;
+    transition: ${p => p.ready? 'all 1s ease-out 0.3s' : ''};
     visibility: ${p => p.ready? '' : 'hidden'};
     transform: ${p => p.ready? 'translateX(0)' : 'translateX(-10vw)'};
 `;
@@ -52,16 +52,20 @@ class Entry extends Component{
     }
 
     BTN_STYLE = 'background-color: purple; color: white;';
-    REGEX = /\d+/g;
+    REGEX = /\d+/;
 
     handleChildClick = (depth) => {
-        if(!this.REGEX.test(depth)){
+        console.log(depth);
+        if(!this.REGEX.test(depth.trim())){
+            console.log(this.REGEX.test(depth.trim()));
             alert('올바른 정수를 입력해주세요.');
             return;
         } 
         this.setState({ready: true, depth});
     }
-    
+    handleChildChange = () => {
+        this.setState({...this.state, ready: false});
+    }
     handleDepthAction = () =>{
         const {UserInputAction}= this.props;
         UserInputAction.changeDepth(this.state.depth);
@@ -72,27 +76,19 @@ class Entry extends Component{
         this.handleDepthAction();
     }
     
-    handleKeyPress = (e) => {
-        if(!this.state.ready) return false;
-        if(e.key === 'Enter'){
-           this.handleDepthAction();
-        }
-    }
-    
     render(){
-        const {handleClick, handleKeyPress, handleChildClick} = this;
+        const {handleClick, handleChildClick, handleChildChange} = this;
         const {ready, depth} = this.state;
         return(
         <EntryContent>
-            <UserInput handleClick={handleChildClick}/>
+            <UserInput handleClick={handleChildClick} handleChange={handleChildChange}/>
             <HeightInfo depth={ready && depth} />
             <BtnArea ready={ready}>
                 <BtnWrap>
                     <Link to={ready? '/grape' : ''}>
                         <Btn 
                             ready={ready? this.BTN_STYLE : ''}
-                            onClick={handleClick} 
-                            onKeyPress={handleKeyPress}>
+                            onClick={handleClick} >
                             시작하기
                         </Btn>
                     </Link>
