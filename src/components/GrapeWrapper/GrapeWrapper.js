@@ -5,8 +5,9 @@ import Grape from '../Grape';
 import Sun from '../Sun';
 
 class GrapeWrapper extends Component {
+
     makegrape = () => {
-        const {depth, color, handleClick, isJuice} = this.props;
+        const {depth, color, handleClick, isJuice, handleModalOpen} = this.props;
         const grapes = [];
         let offset = 0;
         for (let i = 0; i < depth; i++) {
@@ -17,7 +18,8 @@ class GrapeWrapper extends Component {
                     color={color[offset]}
                     handleClick={handleClick}
                     offset={offset++}
-                    isJuice={isJuice}/>;
+                    isJuice={isJuice}
+                    handleModalOpen={handleModalOpen}/>;
                 }
             let seed = <div className='grapeWrap'>{grapes[i]}</div>;
             grapes[i] = seed;

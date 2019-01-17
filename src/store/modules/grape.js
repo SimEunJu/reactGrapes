@@ -9,6 +9,8 @@ const MAKING_JUICE = 'grape/MAKING_JUICE';
 const SAVE_JUICE = 'grape/SAVE_JUICE';
 const SET_TITLE = 'grape/SET_TITLE';
 const SET_RGBA = 'grape/SET_RGB';
+const SHOW_MODAL = 'grape/SHOW_MODAL';
+const HIDE_MODAL = 'grape/HIDE_MODAL';
 
 export const changeDepth = createAction(CHANGE_DEPTH);
 export const changeColor = createAction(CHANGE_COLOR);
@@ -18,6 +20,8 @@ export const makingJuice = createAction(MAKING_JUICE);
 export const saveJuice = createAction(SAVE_JUICE);
 export const setTitle = createAction(SET_TITLE);
 export const setRgba = createAction(SET_RGBA);
+export const showModal = createAction(SHOW_MODAL);
+export const hideModal = createAction(HIDE_MODAL);
 
 const initialState = Map({
     color: [...Array(15).keys()].map((m)=>'green'),
@@ -27,7 +31,8 @@ const initialState = Map({
     juiceRatio: {green: 0, purple: 0},
     isJuice: false,
     savedJuice: false,
-    title: ''
+    title: '',
+    modal: false
 });
 
 const checkGrapeColor = (grapes) =>{
@@ -81,5 +86,11 @@ export default handleActions({
     [SET_RGBA]: (state, action) => {
         const {rgba} = action.payload;
         return state.set('rgba', rgba);
-    }
+    },
+    [SHOW_MODAL]: (state, action) => {
+        return state.set('modal', action.payload.modal);
+    },
+    [HIDE_MODAL]: (state, action) => {
+        return state.set('modal', action.payload.modal);
+    },
 }, initialState);

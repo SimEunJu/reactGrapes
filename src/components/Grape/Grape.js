@@ -2,13 +2,22 @@ import React, {Component} from 'react';
 import styled, {keyframes} from "styled-components";
 import './Grape.scss';
 
+const Btn = styled.div`
+    width: 40px;
+    border: 0.5px solid white;
+    margin: 2px;
+    border-radius: 2px;
+    text-align: center;
+    color: white;
+`;
+
 class Grape extends Component{
     reference;
     state = {
         height: '',
         width: ''
     }
-
+    isModal = false;
     getRandRatio = () => {
         let num;
         while(true){
@@ -34,8 +43,9 @@ class Grape extends Component{
             width: this.getDropWidth()
         });
     }
+
     render(){
-        const {handleClick, offset, depth, color='green', isJuice} = this.props;
+        const {handleClick, offset, depth, color, isJuice} = this.props;
         const size = Math.floor(window.innerHeight/depth);
         let DropAni;
         if(isJuice){
@@ -56,13 +66,18 @@ class Grape extends Component{
             background-color: ${color};
             border-radius: 100%;
             cursor: pointer;
+            margin: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         `;
 
        return (
            <Drop
-                ref={ref => this.reference=ref}
-                onClick={()=> handleClick(offset)}
-                className='grape'>
+                ref={ref => this.reference=ref}>
+                <Btn onClick={this.props.handleModalOpen}>작성</Btn>
+                <Btn onClick={()=> handleClick(offset)}>완료</Btn>
            </Drop>
        );
     }
