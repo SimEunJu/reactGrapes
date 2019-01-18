@@ -3,19 +3,33 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 const Btn = styled.div`
-    width: 80px;
-    height: 50px;
-    border: 5px solid lightblue;
-    border-radius: 7px;
+    width: 50px;
+    height: 55px;
+    background-color: lightblue;
+    border-radius: 50%;
     position: fixed;
-    left: calc(100vw - 120px);
+    left: calc(100vw - 100px);
     top: 108px;
-    pointer: cursor;
+    &:before, &:after{
+        content: '';
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: lightblue;
+        position: absolute;
+        top: 5px;
+    }
+    &:before{
+        left: -25px;
+    }
+    &:after{
+        left: 35px;
+    }
 `;
 
 const ShowcaseBtn = ({handleClick}) => (
     <Link to='/setting'>
-        <Btn onClick={handleClick}>진열장으로 이동</Btn>
+        <Btn onClick={handleClick}><span style={{position: 'fixed', zIndex: '7', lineHeight: '50px'}}>진열장으로</span></Btn>
     </Link>
 );
 
