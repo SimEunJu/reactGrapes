@@ -19,7 +19,7 @@ const XBtn = styled.div`
     font-size: 20px;
     cursor: pointer;
     position: fixed;
-    left: 70vw;
+    left: calc(50vw + 120px);
     top: 30vh;
 `;
 const TextBox = styled.div`

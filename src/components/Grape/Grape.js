@@ -15,9 +15,9 @@ class Grape extends Component{
     reference;
     state = {
         height: '',
-        width: ''
+        width: '',
+        visibility: 'hidden'
     }
-    isModal = false;
     getRandRatio = () => {
         let num;
         while(true){
@@ -42,8 +42,14 @@ class Grape extends Component{
             height: this.getDropHeight(),
             width: this.getDropWidth()
         });
+        
     }
-
+    handleMouseOver = () => {
+        this.setState({...this.state, visibility: ''});
+    }
+    handleMouseOut = () => {
+        this.setState({...this.state, visibility: 'hidden'});
+    }
     render(){
         const {handleClick, offset, depth, color, isJuice} = this.props;
         const size = Math.floor(window.innerHeight/depth);
@@ -74,10 +80,13 @@ class Grape extends Component{
         `;
 
        return (
-           <Drop
+           <Drop onMouseEnter={this.handleMouseOver}
+                onMouseLeave={this.handleMouseOut}
                 ref={ref => this.reference=ref}>
-                <Btn onClick={this.props.handleModalOpen}>작성</Btn>
-                <Btn onClick={()=> handleClick(offset)}>완료</Btn>
+                <div style={{visibility: this.state.visibility}}>
+                    <Btn onClick={this.props.handleModalOpen}>작성</Btn>
+                    <Btn onClick={()=> handleClick(offset)}>완료</Btn>
+                </div>
            </Drop>
        );
     }

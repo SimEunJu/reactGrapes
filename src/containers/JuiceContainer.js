@@ -17,7 +17,7 @@ class JuiceContainer extends Component{
     saveJuice = (e) =>{
         const {GrapeActions} = this.props;
         GrapeActions.saveJuice();
-        GrapeActions.setRgba(this.getJuiceColor());
+        GrapeActions.setRgba({'rgba': this.getJuiceColor()});
         alert('주스가 저장되었습니다. 보관함에서 확인가능합니다.');
     }
     render(){

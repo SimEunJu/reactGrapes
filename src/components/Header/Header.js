@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Header.scss';
 
 import JuiceBtn from '../JuiceBtn';
+import ShowcaseBtn from '../ShowcaseBtn';
 
 class Header extends Component {
     state = {
@@ -49,6 +50,7 @@ class Header extends Component {
         return (
             <div className='header'>
                 <JuiceBtn />
+                <ShowcaseBtn />
                 <input 
                     value={this.state.value} 
                     onChange={this.handleChange} 
