@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styled, {keyframes} from "styled-components";
 import './Grape.scss';
+import checkedImg from '../../img/checked.png';
+import pencilImg from '../../img/pencil.png';
 
 const Btn = styled.div`
     width: 40px;
@@ -84,8 +86,8 @@ class Grape extends Component{
                 onMouseLeave={this.handleMouseOut}
                 ref={ref => this.reference=ref}>
                 <div style={{visibility: this.state.visibility}}>
-                    <Btn onClick={this.props.handleModalOpen}>작성</Btn>
-                    <Btn onClick={()=> handleClick(offset)}>완료</Btn>
+                    <img src={pencilImg} onClick={this.props.handleModalOpen}></img>
+                    <img src={checkedImg} onClick={()=> handleClick(offset)}></img>
                 </div>
            </Drop>
        );

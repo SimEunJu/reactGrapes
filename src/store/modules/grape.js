@@ -5,6 +5,7 @@ const CHANGE_DEPTH = 'grape/DEPTH';
 const CHANGE_COLOR = 'grape/COLOR';
 const INITIALLIZE = 'grape/INITIALIZE';
 const HARVEST = 'grape/HARVEST';
+const SET_JUICE = 'grape/SET_JUICE';
 const MAKING_JUICE = 'grape/MAKING_JUICE';
 const SAVE_JUICE = 'grape/SAVE_JUICE';
 const SET_TITLE = 'grape/SET_TITLE';
@@ -16,6 +17,7 @@ export const changeDepth = createAction(CHANGE_DEPTH);
 export const changeColor = createAction(CHANGE_COLOR);
 export const initialize = createAction(INITIALLIZE);
 export const harvest = createAction(HARVEST);
+export const setJuice = createAction(SET_JUICE);
 export const makingJuice = createAction(MAKING_JUICE);
 export const saveJuice = createAction(SAVE_JUICE);
 export const setTitle = createAction(SET_TITLE);
@@ -46,6 +48,9 @@ const checkGrapeColor = (grapes) =>{
 }
 
 export default handleActions({
+    [INITIALLIZE]: (state, action) => {
+        return state.set(initialState);
+    },
     [CHANGE_DEPTH]: (state, action) => {
         let {payload: depth} = action;
         depth = parseInt(depth);
@@ -71,6 +76,10 @@ export default handleActions({
         const {isHarvest} = action.payload;
         return state.set('isHarvest', isHarvest);
     },
+    [SET_JUICE]: (state, action) => {
+        const {isJuice} = action.payload;
+        return state.set('isJuice', isJuice);
+    },  
     [MAKING_JUICE]: (state, action) => {
         const {green, purple} = checkGrapeColor(state.get('color'));
         return state.set('juiceRatio',{green, purple})

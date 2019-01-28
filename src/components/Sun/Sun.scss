@@ -3,10 +3,17 @@
     top: 10px;
     left: 10px;
 }
-.shine{
-    animation: spin 2s linear 1;
+.shineRotate{
+    animation: shineRotate 2s linear 1;
 }
-@keyframes spin{
+.shineColor{
+    animation: shineColor 2s linear 1;
+}
+@keyframes shineRotate{
     0% {transform: rotate(0deg);}
     100% {transform: rotate(360deg);}
+}
+@keyframes shineColor{
+    0% {fill: orange;}
+    100% {fill: orangered;}
 }

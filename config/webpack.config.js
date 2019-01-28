@@ -337,6 +337,12 @@ module.exports = function(webpackEnv) {
                 
                 plugins: [
                   [
+                    "babel-plugin-styled-components",
+                    {
+                      "displayName": true
+                    }
+                  ],
+                  [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
                       loaderMap: {
@@ -469,6 +475,7 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
+      
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

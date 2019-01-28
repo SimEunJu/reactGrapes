@@ -3,8 +3,5 @@
     left: calc(100vw - 130px);
     top: 8px;
     cursor: pointer;
-    
-    .juiceBtn{
-        box-shadow: 0 0 10px gold;
-    }
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
 }

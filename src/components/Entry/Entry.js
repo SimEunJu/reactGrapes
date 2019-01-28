@@ -53,7 +53,7 @@ class Entry extends Component{
 
     BTN_STYLE = 'background-color: purple; color: white;';
     REGEX = /\d+/;
-
+    
     handleChildClick = (depth) => {
         console.log(depth);
         if(!this.REGEX.test(depth.trim())){
@@ -67,8 +67,8 @@ class Entry extends Component{
         this.setState({...this.state, ready: false});
     }
     handleDepthAction = () =>{
-        const {UserInputAction}= this.props;
-        UserInputAction.changeDepth(this.state.depth);
+        const {GrapeActions}= this.props;
+        GrapeActions.changeDepth(this.state.depth);
     }
 
     handleClick = () => {
@@ -77,6 +77,7 @@ class Entry extends Component{
     }
     
     render(){
+        this.props.GrapeActions.setJuice({isJuice: false});
         const {handleClick, handleChildClick, handleChildChange} = this;
         const {ready, depth} = this.state;
         return(
@@ -102,6 +103,6 @@ class Entry extends Component{
 export default connect(
     null,
     (dispatch) => ({
-        UserInputAction: bindActionCreators(grapeAcions, dispatch)
+        GrapeActions: bindActionCreators(grapeAcions, dispatch)
     })
 )(Entry);
