@@ -5,6 +5,7 @@ import ShowcaseRow from './ShowcaseRow';
 const ShowcaseFrame = styled.div`
     margin: 10%;
     border: 7px solid olivedrab;
+    background-color: white;
 `;
 
 class Showcase extends Component{

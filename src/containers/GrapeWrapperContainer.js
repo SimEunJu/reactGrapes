@@ -29,7 +29,7 @@ class GrapeWrapperContainer extends Component {
         this.props.GrapeActions.showModal({'modal': false});
     }
     render(){
-        const {depth, color, isJuice, modal} = this.props;
+        const {depth, color, isJuice, modal, savedJuice} = this.props;
         return(
             <Fragment>
                 {modal && <Modal handleModalClose={this.handleModalClose}/>}
@@ -39,6 +39,7 @@ class GrapeWrapperContainer extends Component {
                     color={color} 
                     handleClick={this.handleClick}
                     isJuice={isJuice}
+                    savedJuice={savedJuice}
                     isSunRotate={this.state.isSunRotate}
                     />
             </Fragment>
@@ -51,6 +52,7 @@ export default connect(
         depth: state.grape.get('depth'),
         color: state.grape.get('color'),
         isJuice: state.grape.get('isJuice'),
+        savedJuice: state.grape.get('savedJuice'),
         modal: state.grape.get('modal')
     }),
     (dispatch) => ({

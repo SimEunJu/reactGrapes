@@ -28,6 +28,7 @@ class GrapeWrapper extends Component {
     }
 
     render(){
+        
         const grape = this.makegrape();
         return(
         <div className='grapeContainer'>  

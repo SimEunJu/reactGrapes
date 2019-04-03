@@ -10,12 +10,14 @@ class HeaderContainer extends Component{
     }
     render(){
         return(
-            <Header setTitle={this.setTitle}/>
+            <Header setTitle={this.setTitle} savedJuice={this.props.savedJuice}/>
         );
     }
 }
 export default connect(
-    null,
+    (state) => ({
+        savedJuice: state.grape.get('savedJuice')
+    }),
     (dispatch) => ({
         GrapeAction: bindActionCreators(grapeActions, dispatch)
     })

@@ -14,18 +14,22 @@ class Header extends Component {
 
         },
         btnText: '입력',
+        isWriteMode: false,
     }
     
     handleFocus = (e) => {
+       this.animateLeafToWrite();
+    }
+    animateLeafToWrite = () => {
         this.setState({
             branchStyle: { width: '80%'},
-            leafStyle: { transform: 'translateX(100%) rotate(0)'}
+            leafStyle: { transform: 'translateX(100%) rotate(0)'},
+            isWriteMode : true
         });
     }
-
     handlekeyPress = (e) => {
         if(e.key === 'Enter'){
-           this.changeStyle();
+           this.animateLeafToClose();
            this.props.setTitle(this.state.value);
         }
     }
@@ -34,23 +38,26 @@ class Header extends Component {
     }
 
     handleClick = () => {
-        this.changeStyle();
+        if(this.state.isWriteMode) this.animateLeafToClose();
+        else this.animateLeafToWrite();
         this.props.setTitle(this.state.value);
     }
 
-    changeStyle = () => {
+    animateLeafToClose = () => {
         this.setState({
             branchStyle : { width: '40%'},
             leafStyle: { transform: 'translateX(0) rotate(10deg)'},
+            isWriteMode: false
         });
         if(this.state.value) this.setState({btnText: '수정'});
         else this.setState({btnText: '입력'});
     }
     render(){
+
         return (
             <div className='header'>
                 <JuiceBtn />
-                <ShowcaseBtn />
+                <ShowcaseBtn savedJuice={this.props.savedJuice}/>
                 <input 
                     value={this.state.value} 
                     onChange={this.handleChange} 

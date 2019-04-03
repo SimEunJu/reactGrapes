@@ -1,0 +1,26 @@
+[ db에 저장 ]
+
+- tbl_grapes
+regdate
+update
+grapeCnt
+title
+delete_flag
+grba
+finish_flag
+idx(p)
+
+- tbl_day
+grapes_idx(f)
+idx(p)
+day
+check
+content
+
+api
+entry post /grape/{user}/new 
+grape post /grape/{gno}/title
+    post /grape/{gno}/{idx} check, content
+    post /grape/{gno} rgba
+container get /grape/{user}/container
+    get /grape/{gno}

@@ -9,12 +9,16 @@ const JuiceAni = keyframes`
     100% { transform: translateY(-50vh);}
 `;
 const CapAni = keyframes`
-    0% {transform: translateY(0); }
-    100% {transform: translateY(15px); }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(15px); }
 `;
 const SaveAni = keyframes`
     0% { transform: translateY(-50vh) scale(1); }
-    100% { transform: translateY(-50vh) scale(0); }
+    100% { transform: translateY(-50vh) scale(0.3); }
+`;
+const MoveToShowcaseBtn = keyframes`
+    0% { transform: translateY(-50vh) scale(0.3); }
+    100% { transform: translate(calc(50vw - 100px), calc(-100vh - 105px)) scale(0); }
 `;
 const BottleEnter = styled.div`
     border-radius: 3px;
@@ -24,7 +28,6 @@ const BottleEnter = styled.div`
     width: 48px;
     height: 17px;
     background-color: white;
-}
 `;
 const BottleNeck = styled.div`
     border: 2px solid black;
@@ -62,7 +65,7 @@ const BottleWrap = styled.div`
     margin: auto;
     width: 200px;
     height: 150px;
-    animation: ${JuiceAni} 1.5s ease-in-out 1 forwards, ${SaveAni} 1s ease-in-out 3s 1 forwards;
+    animation: ${JuiceAni} 1.5s ease-in-out 1s 1 forwards, ${SaveAni} 1s ease-in-out 4s 1 forwards, ${MoveToShowcaseBtn} 1s ease-in-out 5.5s 1 forwards;
 `;
 const Cap = styled.div`
     position: absolute;
@@ -73,13 +76,13 @@ const Cap = styled.div`
     border-radius: 7px;
     width: 30px;
     height: 30px;
-    animation: ${CapAni} 0.5s ease-in 2s 1 forwards;
+    animation: ${CapAni} 0.5s ease-in 3s 1 forwards;
 `;
 class Juice extends Component {
     aniCnt = 0;
     handleAniEnd = () => {
         const {saveJuice} = this.props;
-        if(++this.aniCnt === 2){
+        if(++this.aniCnt === 3){
             saveJuice();
             this.aniCnt = 0;
         }

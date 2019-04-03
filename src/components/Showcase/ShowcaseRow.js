@@ -17,7 +17,7 @@ const RowWrap = styled.div`
     }
 
     &:hover:before{
-        width: 10%;
+        width: 50px;
     }
 `;
 const Bar = styled.div`

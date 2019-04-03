@@ -25,9 +25,13 @@ export const setRgba = createAction(SET_RGBA);
 export const showModal = createAction(SHOW_MODAL);
 export const hideModal = createAction(HIDE_MODAL);
 
+const INIT_GREEN = 'rgba(0, 128, 0, 0.5)';
+const GREEN = 'rgba(0, 128, 0, 1)';
+const PURPLE = '';
+
 const initialState = Map({
-    color: [...Array(15).keys()].map((m)=>'green'),
-    rgba: 'rgba(0, 128, 0, 1)',
+    color: [...Array(15).keys()].map((m)=> INIT_GREEN),
+    rgba: INIT_GREEN,
     depth: 5,
     isHarvest: false,
     juiceRatio: {green: 0, purple: 0},
@@ -41,7 +45,7 @@ const checkGrapeColor = (grapes) =>{
     let green = 0;
     let purple = 0;
     grapes.forEach(g => {
-        if(g === 'green') green++;
+        if(g === GREEN) green++;
         else purple++;
     });
     return {green, purple};
