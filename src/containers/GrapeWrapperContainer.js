@@ -5,6 +5,7 @@ import * as grapeActions from '../store/modules/grape';
 
 import GrapeWrapper from '../components/GrapeWrapper';
 import Modal from '../components/Modal';
+import {GREEN, PURPLE} from '../common/Color';
 
 class GrapeWrapperContainer extends Component {
     state = {
@@ -12,12 +13,12 @@ class GrapeWrapperContainer extends Component {
     };
     handleClick = (offset) => {
         const {GrapeActions, color} = this.props;
-        if(color[offset] === 'green'){
-            GrapeActions.changeColor({'offset': offset, 'color':'purple'});
+        if(color[offset] === GREEN){
+            GrapeActions.changeColor({'offset': offset, 'color':PURPLE});
             this.setState({isSunRotate: true})
         }
         else{
-            GrapeActions.changeColor({'offset': offset, 'color':'green'});
+            GrapeActions.changeColor({'offset': offset, 'color':PURPLE});
             this.setState({isSunRotate: false})
         } 
        

@@ -2,23 +2,19 @@ import React, {Component} from 'react';
 import styled, {keyframes} from 'styled-components';
 
 const JuiceAni = keyframes`
-    0% { transform: rotate(0); }
-    18.75% { transform: rotate(30deg); }
-    37.5% { transform: rotate(-30deg); }
-    75% { transform: rotate(0); }
-    100% { transform: translateY(-50vh);}
+    0% { transform: translateY(-70vh) rotate(0); }
+    18.75% { transform: translateY(-75vh) rotate(30deg); }
+    37.5% { transform: translateY(-70vh) rotate(0); }
+    75% { transform: translateY(-75vh) rotate(-30deg); }
+    100% { transform: translateY(-70vh) rotate(0); }
 `;
 const CapAni = keyframes`
     0% { transform: translateY(0); }
     100% { transform: translateY(15px); }
 `;
 const SaveAni = keyframes`
-    0% { transform: translateY(-50vh) scale(1); }
-    100% { transform: translateY(-50vh) scale(0.3); }
-`;
-const MoveToShowcaseBtn = keyframes`
-    0% { transform: translateY(-50vh) scale(0.3); }
-    100% { transform: translate(calc(50vw - 100px), calc(-100vh - 105px)) scale(0); }
+    0% { transform: translateY(-70vh) scale(1); }
+    100% { transform: translateY(-70vh) scale(0); }
 `;
 const BottleEnter = styled.div`
     border-radius: 3px;
@@ -65,7 +61,7 @@ const BottleWrap = styled.div`
     margin: auto;
     width: 200px;
     height: 150px;
-    animation: ${JuiceAni} 1.5s ease-in-out 1s 1 forwards, ${SaveAni} 1s ease-in-out 4s 1 forwards, ${MoveToShowcaseBtn} 1s ease-in-out 5.5s 1 forwards;
+    animation: ${JuiceAni} 1.5s ease-in-out 1s 1 forwards, ${SaveAni} 1s ease-in-out 4s 1 forwards;
 `;
 const Cap = styled.div`
     position: absolute;
@@ -82,7 +78,7 @@ class Juice extends Component {
     aniCnt = 0;
     handleAniEnd = () => {
         const {saveJuice} = this.props;
-        if(++this.aniCnt === 3){
+        if(++this.aniCnt === 2){
             saveJuice();
             this.aniCnt = 0;
         }

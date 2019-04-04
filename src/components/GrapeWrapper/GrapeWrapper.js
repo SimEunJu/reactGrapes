@@ -5,9 +5,12 @@ import Grape from '../Grape';
 import Sun from '../Sun';
 
 class GrapeWrapper extends Component {
-
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.savedJuice !== this.props.savedJuice) return false;
+        return true;
+    }
     makegrape = () => {
-        const {depth, color, handleClick, isJuice, handleModalOpen} = this.props;
+        const {depth, color, handleClick, isJuice, savedJuice, handleModalOpen} = this.props;
         const grapes = [];
         let offset = 0;
         for (let i = 0; i < depth; i++) {
@@ -19,6 +22,7 @@ class GrapeWrapper extends Component {
                     handleClick={handleClick}
                     offset={offset++}
                     isJuice={isJuice}
+                    savedJuice={savedJuice}
                     handleModalOpen={handleModalOpen}/>;
                 }
             let seed = <div className='grapeWrap'>{grapes[i]}</div>;
@@ -28,7 +32,6 @@ class GrapeWrapper extends Component {
     }
 
     render(){
-        
         const grape = this.makegrape();
         return(
         <div className='grapeContainer'>  

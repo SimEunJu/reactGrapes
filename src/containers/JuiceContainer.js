@@ -8,9 +8,8 @@ class JuiceContainer extends Component{
     getJuiceColor = () =>{
         const {green, purple} = this.props.juiceRatio;
         const totalCnt = green + purple;
-        const gRatio = green/totalCnt;
-        const pRatio = purple/totalCnt;
-        const rgba = `rgba(${128*pRatio},${128*gRatio},0,1)`;
+        const pRatio = purple/totalCnt*0.6+0.4;
+        const rgba = `rgba(179,32,82,${1*pRatio})`;
         return rgba;
     }
     
@@ -18,8 +17,8 @@ class JuiceContainer extends Component{
         const {GrapeActions} = this.props;
         GrapeActions.saveJuice();
         GrapeActions.setRgba({'rgba': this.getJuiceColor()});
-        alert('주스가 저장되었습니다. 보관함에서 확인가능합니다.');
     }
+    
     render(){
         return(
             <Juice

@@ -1,5 +1,6 @@
 import {createAction, handleActions} from 'redux-actions';
 import {Map} from 'immutable';
+import {GREEN, PURPLE} from '../../common/Color';
 
 const CHANGE_DEPTH = 'grape/DEPTH';
 const CHANGE_COLOR = 'grape/COLOR';
@@ -25,13 +26,9 @@ export const setRgba = createAction(SET_RGBA);
 export const showModal = createAction(SHOW_MODAL);
 export const hideModal = createAction(HIDE_MODAL);
 
-const INIT_GREEN = 'rgba(0, 128, 0, 0.5)';
-const GREEN = 'rgba(0, 128, 0, 1)';
-const PURPLE = '';
-
 const initialState = Map({
-    color: [...Array(15).keys()].map((m)=> INIT_GREEN),
-    rgba: INIT_GREEN,
+    color: [...Array(15).keys()].map((m)=> GREEN),
+    rgba: GREEN,
     depth: 5,
     isHarvest: false,
     juiceRatio: {green: 0, purple: 0},

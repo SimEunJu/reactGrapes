@@ -33,7 +33,7 @@ const Door = styled.div`
     border: 3px solid lightblue;
     border-left: none;
     position: fixed;
-    z-index: 10;
+    z-index: 1;
     left: calc(100vw - 108px);
     top: 108px;
     text-align: center;
@@ -41,7 +41,6 @@ const Door = styled.div`
     transform-origin: left;
     transform: skewY(8deg);
     animation: ${p => p.isOpen === true? OpenAni : ''} 1s ease-in-out forwards;
-    animation: ${p => p.isOpen === false? CloseAni : ''} 1s ease-in-out forward;
 `;
 
 class ShowcaseBtn extends Component{
@@ -60,12 +59,12 @@ class ShowcaseBtn extends Component{
     }
 
     render(){
-
-        //if(this.props.savedJuice ===  true && this.state.isOpen === false) this.handleMouseEnter();
+        
+        if(this.props.savedJuice && !this.state.isOpen) this.handleMouseEnter();
         return(
             <div>
             <Door onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} isOpen={this.state.isOpen}/>
-            <Btn onClick={this.handleClick}>진열장</Btn>
+            <Btn onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} onClick={this.handleClick}>진열장</Btn>
             </div>
         );
     }

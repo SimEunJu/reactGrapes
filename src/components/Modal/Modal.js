@@ -7,6 +7,7 @@ const ModalWrapper = styled.div`
     width: 100vw;
     height: calc(100vh + ${p=>p.top}px);
     top: 0;
+    z-index: 2;
 `;
 const GrapeModal = styled.div`
     display: flex;
@@ -26,8 +27,6 @@ const TextBox = styled.div`
     width: 200px;
     height: 200px;
     position: fixed;
-    background-color: white;
-    padding: 1%;
 `;
 
 class Modal extends Component{
@@ -49,8 +48,8 @@ class Modal extends Component{
                     <GrapeModal>
                         <XBtn onClick={this.props.handleModalClose}>X</XBtn>
                         <TextBox>
-                            <input type="text" placeholder="제목을 입력해 주세요"></input>
-                            <textarea cols="10"></textarea>
+                            <input type="text" placeholder="제목을 입력해 주세요" style={{width: '100%', height: '15%'}}></input>
+                            <textarea cols="10" style={{width: '100%', height: '85%'}}></textarea>
                         </TextBox>
                     </GrapeModal>
                 </ModalWrapper>

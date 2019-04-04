@@ -53,7 +53,10 @@ class Grape extends Component{
         this.setState({...this.state, visibility: 'hidden'});
     }
     render(){
-        const {handleClick, offset, depth, color, isJuice} = this.props;
+        const {handleClick, offset, depth, color, isJuice, savedJuice} = this.props;
+        
+        if(savedJuice) return <div></div>;
+
         const size = Math.floor(window.innerHeight/depth);
         let DropAni;
         if(isJuice){
