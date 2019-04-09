@@ -3,6 +3,7 @@ import './GrapeWrapper.scss';
 
 import Grape from '../Grape';
 import Sun from '../Sun';
+import {GREEN, PURPLE} from '../../common/Color';
 
 class GrapeWrapper extends Component {
     shouldComponentUpdate(nextProps, nextState){
@@ -10,7 +11,7 @@ class GrapeWrapper extends Component {
         return true;
     }
     makegrape = () => {
-        const {depth, color, handleClick, isJuice, savedJuice, handleModalOpen} = this.props;
+        const {depth, grape, handleClick, isJuice, savedJuice, handleModalOpen} = this.props;
         const grapes = [];
         let offset = 0;
         for (let i = 0; i < depth; i++) {
@@ -18,7 +19,7 @@ class GrapeWrapper extends Component {
             for (let j = 0; j < depth-i; j++) {
                 grapes[i][j] = <Grape
                     depth={depth} 
-                    color={color[offset]}
+                    color={grape[offset].isChecked ? PURPLE : GREEN}
                     handleClick={handleClick}
                     offset={offset++}
                     isJuice={isJuice}

@@ -74,6 +74,7 @@ class Entry extends Component{
     handleClick = () => {
         if(!this.state.ready) return false;
         this.handleDepthAction();
+        window.location.href = "/grapes/"+this.props.gno;
     }
     
     render(){
@@ -86,13 +87,11 @@ class Entry extends Component{
             <HeightInfo depth={ready && depth} />
             <BtnArea ready={ready}>
                 <BtnWrap>
-                    <Link to={ready? '/grape' : ''}>
-                        <Btn 
-                            ready={ready? this.BTN_STYLE : ''}
-                            onClick={handleClick} >
-                            시작하기
-                        </Btn>
-                    </Link>
+                    <Btn 
+                        ready={ready? this.BTN_STYLE : ''}
+                        onClick={handleClick} >
+                        시작하기
+                    </Btn>
                 </BtnWrap>
             </BtnArea>
         </EntryContent>
@@ -101,7 +100,9 @@ class Entry extends Component{
 }
 
 export default connect(
-    null,
+    (state) => ({
+        gno: state.grape.get('gno')
+    }),
     (dispatch) => ({
         GrapeActions: bindActionCreators(grapeAcions, dispatch)
     })

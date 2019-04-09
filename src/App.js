@@ -16,7 +16,7 @@ class App extends Component {
           <div className="App">
             <Switch>
               <Route exact path='/' component={EntryPage}></Route>
-              <Route path='/grape' component={MainPage}></Route>
+              <Route path='/grapes/:gno' component={MainPage}></Route>
               <Route path='/setting' component={ShowcasePage}></Route>
             </Switch>
           </div>
