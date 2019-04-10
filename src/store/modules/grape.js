@@ -7,21 +7,20 @@ import * as api from '../../lib/api';
 const CHANGE_DEPTH = 'grape/DEPTH';
 const CHANGE_COLOR = 'grape/COLOR';
 const INITIALLIZE = 'grape/INITIALIZE';
-const HARVEST = 'grape/HARVEST';
 const SET_JUICE = 'grape/SET_JUICE';
 const MAKING_JUICE = 'grape/MAKING_JUICE';
 const SAVE_JUICE = 'grape/SAVE_JUICE';
 const SET_TITLE = 'grape/SET_TITLE';
-const SET_RGBA = 'grape/SET_RGB';
+const SET_RGBA = 'grape/SET_RGBA';
 const SHOW_MODAL = 'grape/SHOW_MODAL';
 const HIDE_MODAL = 'grape/HIDE_MODAL';
-const CHANGE_GRAPE_CONTET = 'grape/CHANGE_GRAPE_CONTET';
+const CHANGE_GRAPE_CONTENT = 'grape/CHANGE_GRAPE_CONTET';
 const GET_GRAPES = 'grape/GET_GRAPES';
 
 export const changeDepth = createAction(CHANGE_DEPTH, api.createNew);
 export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
 export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
-export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTET, api.updateOneGrape);
+export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTENT, api.updateOneGrape);
 export const initialize = createAction(INITIALLIZE);
 export const setJuice = createAction(SET_JUICE);
 export const makingJuice = createAction(MAKING_JUICE);
@@ -47,7 +46,7 @@ const checkGrapeColor = (grapes) =>{
     let green = 0;
     let purple = 0;
     grapes.forEach(g => {
-        if(g === GREEN) green++;
+        if(!g.isChecked) green++;
         else purple++;
     });
     return {green, purple};
@@ -93,12 +92,11 @@ export default handleActions({
             const grapes = action.payload.data;
             const grape = [];
             grapes.grape.map(g => grape[g.idx] = g);
-            console.log(grape);
             return state.set('grape', grape);
         }
     }),
     ...pender({
-        type: CHANGE_GRAPE_CONTET,
+        type: CHANGE_GRAPE_CONTENT,
         onPending: (state, action) => {
             return state;
         },
@@ -114,19 +112,13 @@ export default handleActions({
         return state.set('isJuiceMaking', isJuice);
     },  
     [MAKING_JUICE]: (state, action) => {
-        const {green, purple} = checkGrapeColor(state.get('color'));
+        const {green, purple} = checkGrapeColor(state.get('grape'));
         return state.set('juiceRatio',{green, purple})
             .set('isJuiceMaking', true);
     },
-    ...pender({
-        type: SAVE_JUICE,
-        onPending: (state, action) => {
-            return state.set('isJuiceSaved', true);
-        },
-        onSuccess: (state, action) => {
-            return state;
-        }
-    }),
+    [SAVE_JUICE]: (state, action) => {
+        return state.set('isJuiceSaved', true);
+    },
     ...pender({
         type: SET_TITLE,
         onPending: (state, action) => {
@@ -143,8 +135,7 @@ export default handleActions({
             return state;
         },  
         onSuccess: (state, action) => {
-            const {rgba} = action.payload.data;
-            return state.set('rgba', rgba);
+            return state.set('rgba', action.payload.data.rgba);
         }
     }),
     [SHOW_MODAL]: (state, action) => {

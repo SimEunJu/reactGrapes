@@ -24,7 +24,7 @@ class JuiceBtn extends Component{
 
 export default connect(
     (state) => ({
-        isJuice: state.grape.get('isJuice')
+        isJuice: state.grape.get('isJuiceMaking')
     }),
     (dispatch) => ({
         GrapeActions: bindActionCreators(grapeActions, dispatch)

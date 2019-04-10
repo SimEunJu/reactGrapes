@@ -8,7 +8,7 @@ export const readGrapes = (gno) => axios.get(`${PREFIX}/${gno}`);
 export const updateTitle = ({gno, title}) => axios.post(`${PREFIX}/${gno}/title`,{title});
 export const updateOneGrape = ({gno, idx, title, content}) => axios.post(`${PREFIX}/${gno}/${idx}`, {title,content});
 export const updateOneGrapeColor = ({gno, idx, isChecked}) => axios.post(`${PREFIX}/${gno}/${idx}/color`, {isChecked});
-export const updateRgba = ({gno, rgba}) => axios.post(`${PREFIX}/${gno}`,{rgba});
+export const updateRgba = ({gno, rgba}) => axios.post(`${PREFIX}/${gno}/rgba`,{rgba});
 export const updateJuiceFinishState = ({gno, isFinish}) => axios.post(`${PREFIX}/${gno}/finish`,{isFinish});
 
 export const readShowcase = () => axios.get(`${PREFIX}/local/showcase`);

@@ -14,9 +14,9 @@ class JuiceContainer extends Component{
     }
     
     saveJuice = (e) =>{
-        const {GrapeActions} = this.props;
+        const {GrapeActions, gno} = this.props;
         GrapeActions.saveJuice();
-        GrapeActions.setRgba({'rgba': this.getJuiceColor()});
+        GrapeActions.setRgba({'rgba': this.getJuiceColor(), gno});
     }
     
     render(){
@@ -31,9 +31,10 @@ class JuiceContainer extends Component{
 
 export default connect(
     (state) => ({
+        gno: state.grape.get('gno'),
         juiceRatio: state.grape.get('juiceRatio'),
-        isJuice: state.grape.get('isJuice'),
-        savedJuice: state.grape.get('savedJuice'),
+        isJuice: state.grape.get('isJuiceMaking'),
+        savedJuice: state.grape.get('isJuiceSaved'),
     }),
     (dispatch) => ({
         GrapeActions: bindActionCreators(grapeActions, dispatch)

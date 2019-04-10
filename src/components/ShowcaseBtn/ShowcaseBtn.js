@@ -59,7 +59,6 @@ class ShowcaseBtn extends Component{
     }
 
     render(){
-        
         if(this.props.savedJuice && !this.state.isOpen) this.handleMouseEnter();
         return(
             <div>

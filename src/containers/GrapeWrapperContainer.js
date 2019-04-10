@@ -37,17 +37,17 @@ class GrapeWrapperContainer extends Component {
         this.props.GrapeActions.showModal({'modal': false});
     }
     handleGrapeContent = ({title, content}) => {
-        this.props.GrapeActions.changeGrapeContent({gno: this.props.gno, idx: this.state('offset'), title, content});
+        this.props.GrapeActions.changeGrapeContent({gno: this.props.gno, idx: this.state.offset, title, content});
     }
     render(){
-        const {depth, grape, isJuice, modal, savedJuice, loading} = this.props;
+        const {depth, grape, isJuice, modal, savedJuice, loading, setContentSuc} = this.props;
+        const {offset} = this.state;
         if(loading) return;
         return(
             <Fragment>
-                {modal && <Modal handleModalClose={this.handleModalClose}/>}
+                {modal && <Modal grapeContent={grape[offset]} setContentSuc={setContentSuc} handleGrapeContent={this.handleGrapeContent} handleModalClose={this.handleModalClose}/>}
                 <GrapeWrapper 
                     handleModalOpen={this.handleModalOpen}
-                    handleGrapeContent={this.handleGrapeContent}
                     depth={depth} 
                     grape={grape} 
                     handleClick={this.handleClick}
@@ -64,6 +64,7 @@ export default connect(
     (state) => ({
         gno: state.grape.get('gno'),
         loading: state.pender.pending['grape/GET_GRAPES_STATUS'],
+        setContentSuc: state.pender.success['grape/CHANGE_GRAPE_CONTET'],
         depth: state.grape.get('depth'),
         grape: state.grape.get('grape'),
         isJuice: state.grape.get('isJuiceMaking'),

@@ -56,11 +56,11 @@ class Modal extends Component{
     constructor(props){
         super(props);
         this.reference = React.createRef();
-    }
-    state={
-        top: 0,
-        title: '',
-        content: ''
+        this.state = {
+            top: 0,
+            title: this.props.grapeContent.title,
+            content: this.props.grapeContent.content
+        }
     }
     componentDidMount() {
         this.setState({...this.state, top: this.getOffsetTop()});
@@ -75,8 +75,11 @@ class Modal extends Component{
         this.setState({...this.state, content:e.target.value});
     }
     render(){
-        const {offset} = this.props;
+        const {offset, setContentSuc} = this.props;
         const {title, content} = this.state;
+       
+        if(setContentSuc) this.props.handleModalClose(); 
+        
         return(
             <div ref={this.reference}>
                 <ModalWrapper top={this.state.top}>
