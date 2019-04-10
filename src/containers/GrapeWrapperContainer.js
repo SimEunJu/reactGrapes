@@ -5,26 +5,26 @@ import * as grapeActions from '../store/modules/grape';
 
 import GrapeWrapper from '../components/GrapeWrapper';
 import Modal from '../components/Modal';
-import {GREEN, PURPLE} from '../common/Color';
 
 class GrapeWrapperContainer extends Component {
-    constructor(props){
-        super(props);
-        const gno = window.location.href.match(/.*\/grapes\/(\w+)$/);
-        props.GrapeActions.getGrapesStatus(gno);
+    constructor(prop){
+        super(prop);
+        const gno = window.location.href.match(/.*\/grapes\/(\w+)$/)[1];
+        this.props.GrapeActions.getGrapesStatus(gno);
     }
     state = {
         isSunRotate: false, 
         offset: null,
     };
+
     handleClick = (offset) => {
-        const {GrapeActions, color} = this.props;
-        if(color[offset] === GREEN){
-            GrapeActions.changeColor({'offset': offset, 'color':PURPLE});
+        const {GrapeActions, grape, gno} = this.props;
+        if(grape[offset].isChecked ===  false){
+            GrapeActions.changeColor({gno, 'idx': offset, 'isChecked': true});
             this.setState({isSunRotate: true})
         }
         else{
-            GrapeActions.changeColor({'offset': offset, 'color':GREEN});
+            GrapeActions.changeColor({gno, 'idx': offset, 'isChecked': false});
             this.setState({isSunRotate: false})
         } 
        
@@ -37,10 +37,11 @@ class GrapeWrapperContainer extends Component {
         this.props.GrapeActions.showModal({'modal': false});
     }
     handleGrapeContent = ({title, content}) => {
-        this.props.GrapeActions.changeGrapeContent({offset: this.state('offset'), title, content});
+        this.props.GrapeActions.changeGrapeContent({gno: this.props.gno, idx: this.state('offset'), title, content});
     }
     render(){
-        const {depth, grape, isJuice, modal, savedJuice} = this.props;
+        const {depth, grape, isJuice, modal, savedJuice, loading} = this.props;
+        if(loading) return;
         return(
             <Fragment>
                 {modal && <Modal handleModalClose={this.handleModalClose}/>}
@@ -61,10 +62,12 @@ class GrapeWrapperContainer extends Component {
 
 export default connect(
     (state) => ({
+        gno: state.grape.get('gno'),
+        loading: state.pender.pending['grape/GET_GRAPES_STATUS'],
         depth: state.grape.get('depth'),
         grape: state.grape.get('grape'),
-        isJuice: state.grape.get('isJuice'),
-        savedJuice: state.grape.get('savedJuice'),
+        isJuice: state.grape.get('isJuiceMaking'),
+        savedJuice: state.grape.get('isJuiceSaved'),
         modal: state.grape.get('modal')
     }),
     (dispatch) => ({

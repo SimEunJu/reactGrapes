@@ -74,11 +74,12 @@ class Entry extends Component{
     handleClick = () => {
         if(!this.state.ready) return false;
         this.handleDepthAction();
-        window.location.href = "/grapes/"+this.props.gno;
+        
     }
     
     render(){
         this.props.GrapeActions.setJuice({isJuice: false});
+        if(this.props.gno !== null) window.location.href = "/grapes/"+this.props.gno;
         const {handleClick, handleChildClick, handleChildChange} = this;
         const {ready, depth} = this.state;
         return(

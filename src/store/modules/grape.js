@@ -1,4 +1,5 @@
 import {createAction, handleActions} from 'redux-actions';
+import { pender } from 'redux-pender';
 import {Map} from 'immutable';
 import {GREEN, PURPLE} from '../../common/Color';
 import * as api from '../../lib/api';
@@ -17,25 +18,24 @@ const HIDE_MODAL = 'grape/HIDE_MODAL';
 const CHANGE_GRAPE_CONTET = 'grape/CHANGE_GRAPE_CONTET';
 const GET_GRAPES = 'grape/GET_GRAPES';
 
-export const changeDepth = createAction(CHANGE_DEPTH);
-export const getGrapesStatus = createAction(GET_GRAPES);
-export const changeColor = createAction(CHANGE_COLOR);
-export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTET);
+export const changeDepth = createAction(CHANGE_DEPTH, api.createNew);
+export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
+export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
+export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTET, api.updateOneGrape);
 export const initialize = createAction(INITIALLIZE);
-export const harvest = createAction(HARVEST);
 export const setJuice = createAction(SET_JUICE);
 export const makingJuice = createAction(MAKING_JUICE);
 export const saveJuice = createAction(SAVE_JUICE);
-export const setTitle = createAction(SET_TITLE);
-export const setRgba = createAction(SET_RGBA);
+export const setTitle = createAction(SET_TITLE, api.updateTitle);
+export const setRgba = createAction(SET_RGBA, api.updateRgba);
 export const showModal = createAction(SHOW_MODAL);
 export const hideModal = createAction(HIDE_MODAL);
 
 const initialState = Map({
-    grape: {},
+    grape: [],
     rgba: GREEN,
     gno: null,
-    depth: 5,
+    depth: 0,
     juiceRatio: {green: 0, purple: 0},
     isJuiceMaking: false,
     isJuiceSaved: false,
@@ -57,48 +57,58 @@ export default handleActions({
     [INITIALLIZE]: (state, action) => {
         return state.set(initialState);
     },
-    [CHANGE_DEPTH]: (state, action) => {
-        let depth = action.payload;
-        depth = parseInt(depth);
-
-        const gno = api.createNew(depth).gno;
-
-        return state.set('gno', gno)
-            .set('depth', depth);
-    },
-    [GET_GRAPES]: (state, action) => {
-        const gno = state.get('gno');
-        if(gno == null){
-            gno = action.payload.gno;
+    ...pender({
+        type: CHANGE_DEPTH,
+        onPending: (state, action) => {
+            return state; 
+        },
+        onSuccess: (state, action) => {
+            const {gno, depth} = action.payload.data;
+            return state.set('gno', gno)
+                .set('depth', parseInt(depth));
         }
-        const grapes = api.readGrapes(gno);
-        
-        const grape = [];
-        grapes.grape.map(g => grape[g.idx] = g);
-        return state.set('grapeCnt', grapes.grapeCnt)
-            .set('depth', grapes.depth)
-            .set('title', grapes.title)
-            .set('grape', grape);     
-    },
-    [CHANGE_COLOR]: (state, action) => {
-        const {color, offset} = action.payload;
-        const isChecked = color === PURPLE;
-
-        api.updateOneGrapeColor({gno: state.get('gno'), idx: offset, isChecked});
-        
-        const updatedList = [...state.get('grape')];
-        updatedList[offset].isChecked = isChecked;
-        return state.set('color', updatedList);
-    },
-    [CHANGE_GRAPE_CONTET]: (state, action) => {
-        const {title, content, offset} = action;
-
-        const updatedList = [...state.get('grape')];
-        updatedList[offset].title = title;
-        updatedList[offset].content = content;
-        
-        api.updateOneGrape({gno: state.get('gno'), idx: offset, title, content});
-    },
+    }),
+    ...pender({
+        type: GET_GRAPES,
+        onPending: (state, action) => {
+            return state; 
+        },
+        onSuccess: (state, action) => {
+            const grapes = action.payload.data;
+            const grape = [];
+            grapes.grape.map(g => grape[g.idx] = g);
+            return state.set('grapeCnt', grapes.grapeCnt)
+                .set('depth', grapes.depth)
+                .set('title', grapes.title)
+                .set('grape', grape)
+                .set('gno', grapes._id);   
+        }
+    }),
+    ...pender({
+        type: CHANGE_COLOR,
+        onPending: (state, action) => {
+            return state;
+        },
+        onSuccess: (state, action) => {
+            const grapes = action.payload.data;
+            const grape = [];
+            grapes.grape.map(g => grape[g.idx] = g);
+            console.log(grape);
+            return state.set('grape', grape);
+        }
+    }),
+    ...pender({
+        type: CHANGE_GRAPE_CONTET,
+        onPending: (state, action) => {
+            return state;
+        },
+        onSuccess: (state, action) => {
+            const grapes = action.payload.data;
+            const grape = [];
+            grapes.grape.map(g => grape[g.idx] = g);
+            return state.set('grape', grape);
+        }
+    }),
     [SET_JUICE]: (state, action) => {
         const {isJuice} = action.payload;
         return state.set('isJuiceMaking', isJuice);
@@ -108,19 +118,35 @@ export default handleActions({
         return state.set('juiceRatio',{green, purple})
             .set('isJuiceMaking', true);
     },
-    [SAVE_JUICE]: (state, action) => {
-        return state.set('isJuiceSaved', true);
-    },
-    [SET_TITLE]: (state, action) => {
-        const {title} = action.payload;
-        api.updateTitle({gno: state.get('gno'), title});
-        return state.set('title',title);
-    },
-    [SET_RGBA]: (state, action) => {
-        const {rgba} = action.payload;
-        api.updateRgba({gno: state.get('gno'), rgba});
-        return state.set('rgba', rgba);
-    },
+    ...pender({
+        type: SAVE_JUICE,
+        onPending: (state, action) => {
+            return state.set('isJuiceSaved', true);
+        },
+        onSuccess: (state, action) => {
+            return state;
+        }
+    }),
+    ...pender({
+        type: SET_TITLE,
+        onPending: (state, action) => {
+            return state;
+        },
+        onSuccess: (state, action) => {
+            const {title} = action.payload.data;
+            return state.set('title', title);
+        }
+    }),
+    ...pender({
+        type: SET_RGBA,
+        onPending: (state, action) => {
+            return state;
+        },  
+        onSuccess: (state, action) => {
+            const {rgba} = action.payload.data;
+            return state.set('rgba', rgba);
+        }
+    }),
     [SHOW_MODAL]: (state, action) => {
         return state.set('modal', action.payload.modal);
     },

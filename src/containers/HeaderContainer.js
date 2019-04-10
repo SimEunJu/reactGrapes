@@ -16,7 +16,7 @@ class HeaderContainer extends Component{
 }
 export default connect(
     (state) => ({
-        savedJuice: state.grape.get('savedJuice')
+        savedJuice: state.grape.get('isJuiceSaved')
     }),
     (dispatch) => ({
         GrapeAction: bindActionCreators(grapeActions, dispatch)

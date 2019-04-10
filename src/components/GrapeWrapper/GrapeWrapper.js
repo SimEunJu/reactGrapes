@@ -14,12 +14,13 @@ class GrapeWrapper extends Component {
         const {depth, grape, handleClick, isJuice, savedJuice, handleModalOpen} = this.props;
         const grapes = [];
         let offset = 0;
+       
         for (let i = 0; i < depth; i++) {
             grapes[i] = [];
             for (let j = 0; j < depth-i; j++) {
                 grapes[i][j] = <Grape
                     depth={depth} 
-                    color={grape[offset].isChecked ? PURPLE : GREEN}
+                    color={grape.length !== 0? (grape[offset].isChecked ? PURPLE : GREEN) : GREEN}
                     handleClick={handleClick}
                     offset={offset++}
                     isJuice={isJuice}

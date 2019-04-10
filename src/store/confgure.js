@@ -3,10 +3,10 @@ import penderMiddleware from 'redux-pender';
 import * as modules from './modules';
 
 const reducers = combineReducers(modules);
-
+const middlewares = [penderMiddleware()];
 //const isDev = process.env.NODE_ENV === 'development';
 //const devtools = isDev && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(applyMiddleware(penderMiddleware())));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+const store = createStore(reducers, composeEnhancers(applyMiddleware(...middlewares)));
 
 export default store;
