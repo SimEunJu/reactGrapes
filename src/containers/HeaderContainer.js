@@ -6,16 +6,20 @@ import Header from '../components/Header';
 
 class HeaderContainer extends Component{
     setTitle = (title) => {
-        this.props.GrapeAction.setTitle(title);
+        const {gno} = this.props;
+        this.props.GrapeAction.setTitle({gno, title});
     }
     render(){
+        const {savedJuice, title} = this.props;
         return(
-            <Header setTitle={this.setTitle} savedJuice={this.props.savedJuice}/>
+            <Header title={title} setTitle={this.setTitle} savedJuice={savedJuice}/>
         );
     }
 }
 export default connect(
     (state) => ({
+        gno: state.grape.get('gno'),
+        title: state.grape.get('title'),
         savedJuice: state.grape.get('isJuiceSaved')
     }),
     (dispatch) => ({

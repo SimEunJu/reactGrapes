@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Link} from 'react-router-dom';
 import * as grapeAcions from '../../store/modules/grape';
 import styled from 'styled-components';
 import HeightInfo from '../HeightInfo';

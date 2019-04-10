@@ -6,12 +6,6 @@ const OpenAni = keyframes`
     0% { transform: skewY(8deg);}
     100% { transform: rotateY(150deg) skewY(8deg);}
 `;
-
-const CloseAni = keyframes`
-    0% {transform: skewY(8deg);}
-    100% { transform: rotateY(-150deg) skewY(8deg); }
-`;
-
 const Btn = styled.div`
     width: 60px;
     height: 65px;

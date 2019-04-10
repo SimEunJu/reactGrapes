@@ -16,6 +16,7 @@ const SHOW_MODAL = 'grape/SHOW_MODAL';
 const HIDE_MODAL = 'grape/HIDE_MODAL';
 const CHANGE_GRAPE_CONTENT = 'grape/CHANGE_GRAPE_CONTET';
 const GET_GRAPES = 'grape/GET_GRAPES';
+const GET_SHOWCASE = 'grape/GET_SHOWCASE';
 
 export const changeDepth = createAction(CHANGE_DEPTH, api.createNew);
 export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
@@ -29,6 +30,7 @@ export const setTitle = createAction(SET_TITLE, api.updateTitle);
 export const setRgba = createAction(SET_RGBA, api.updateRgba);
 export const showModal = createAction(SHOW_MODAL);
 export const hideModal = createAction(HIDE_MODAL);
+export const getShowcase = createAction(GET_SHOWCASE, api.readShowcase);
 
 const initialState = Map({
     grape: [],
@@ -39,7 +41,8 @@ const initialState = Map({
     isJuiceMaking: false,
     isJuiceSaved: false,
     title: '',
-    modal: false
+    modal: false,
+    showcase: []
 });
 
 const checkGrapeColor = (grapes) =>{
@@ -138,10 +141,21 @@ export default handleActions({
             return state.set('rgba', action.payload.data.rgba);
         }
     }),
+    ...pender({
+        type: GET_SHOWCASE,
+        onPending: (state, action) => {
+            return state;
+        },  
+        onSuccess: (state, action) => {
+            const showcase = action.payload.data;
+            return state.set('showcase', showcase);
+        }
+    }),
     [SHOW_MODAL]: (state, action) => {
         return state.set('modal', action.payload.modal);
     },
     [HIDE_MODAL]: (state, action) => {
         return state.set('modal', action.payload.modal);
     },
+    
 }, initialState);

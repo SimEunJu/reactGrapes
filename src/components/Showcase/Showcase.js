@@ -10,11 +10,11 @@ const ShowcaseFrame = styled.div`
 
 class Showcase extends Component{
     render(){
-        const {rgba, title} = this.props;
+        const {showcase} = this.props;
+        const bunchOfGrapes = showcase.map(s => <ShowcaseRow grapes={s}/>);
         return(
             <ShowcaseFrame>
-                <ShowcaseRow title={title} rgba={rgba}/>
-                <ShowcaseRow title={title} rgba={rgba}/>
+               {bunchOfGrapes}
             </ShowcaseFrame>
         );
     }

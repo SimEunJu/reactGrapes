@@ -62,7 +62,6 @@ const Cap = styled.div`
     border-radius: 7px;
     width: 30px;
     height: 30px;
-    z-index: -1;
 `;
 
 class MiniJuice extends Component{
@@ -73,7 +72,7 @@ class MiniJuice extends Component{
                 <BottleEnter />
                 <BottleNeck />
                 <BottleBody>
-                    <Liquid rgba={this.props.rgba}/>
+                    <Liquid rgba={this.props.rgba} onClick={this.props.handleClick}/>
                 </BottleBody>
             </BottleWrap>
         );

@@ -16,7 +16,6 @@ class Header extends Component {
         btnText: '입력',
         isWriteMode: false,
     }
-    
     handleFocus = (e) => {
        this.animateLeafToWrite();
     }
@@ -52,8 +51,10 @@ class Header extends Component {
         if(this.state.value) this.setState({btnText: '수정'});
         else this.setState({btnText: '입력'});
     }
+    UNSAFE_componentWillReceiveProps(nextProps){
+        if(this.props.title !== nextProps.title) this.setState({...this.state, value: nextProps.title});
+    }
     render(){
-
         return (
             <div className='header'>
                 <JuiceBtn />

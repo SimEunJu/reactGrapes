@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import MiniJuice from './MiniJuice';
 
 const RowWrap = styled.div`
-    opacity: 0.7;
     display: flex;
     position: relative;
     
@@ -27,8 +26,10 @@ const Bar = styled.div`
 `;
 
 const Comment = styled.div`
-    width: calc(100% - 250px);
+    padding-left: 5%;
     height: inherit;
+    display: flex;
+    align-items: center;
 `;
 const RowContainer = styled.div`
     position: relative;
@@ -39,15 +40,18 @@ const Padding = styled.div`
 `;
 
 class ShowcaseRow extends Component{
+    handleClick = (id) => {
+        window.location.href = "/grapes/"+id;
+    }
   
     render(){
-        const {rgba, title} = this.props;
+        const {rgba, title, _id:id, regdate} = this.props.grapes;
         return(
             <Fragment>
                 <RowContainer>
                     <RowWrap>
                         <Padding />
-                        <MiniJuice rgba={rgba}/> 
+                        <MiniJuice rgba={rgba} handleClick={() => this.handleClick(id)}/> 
                         <Comment>{title}</Comment>
                     </RowWrap>
                     <Bar />
