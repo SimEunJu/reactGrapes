@@ -70,10 +70,16 @@ class Entry extends Component{
         GrapeActions.changeDepth(this.state.depth);
     }
 
+    handlekeyPress = (e) => {
+        if(e.key === 'Enter'){
+            if(!this.state.ready) return false;
+            this.handleDepthAction();
+        }
+    }
+
     handleClick = () => {
         if(!this.state.ready) return false;
         this.handleDepthAction();
-        
     }
     
     render(){
@@ -81,11 +87,11 @@ class Entry extends Component{
         
         if(this.props.gno !== null) window.location.href = "/grapes/"+this.props.gno;
         
-        const {handleClick, handleChildClick, handleChildChange} = this;
+        const {handlekeyPress, handleClick, handleChildClick, handleChildChange} = this;
         const {ready, depth} = this.state;
         return(
         <EntryContent>
-            <UserInput handleClick={handleChildClick} handleChange={handleChildChange}/>
+            <UserInput handlekeyPress={handlekeyPress} handleClick={handleChildClick} handleChange={handleChildChange}/>
             <HeightInfo depth={ready && depth} />
             <BtnArea ready={ready}>
                 <BtnWrap>

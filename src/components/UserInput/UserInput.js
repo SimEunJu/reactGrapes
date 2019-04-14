@@ -11,7 +11,7 @@ class UserInput extends Component{
         if(val === '') this.props.handleChange();
     }
     render(){
-        const {handleClick} = this.props;
+        const {handleClick, handlekeyPress} = this.props;
         return(
             <div className='userInputWrap'>
                 <label>포도 송이 높이</label>
@@ -19,6 +19,7 @@ class UserInput extends Component{
                     className='userInput'
                     value={this.state.value} 
                     onChange={this.handleChange}
+                    onKeyPress={handlekeyPress}
                     placeholder='원하는 깊이를 입력해 주세요'>
                 </input>
                 <button onClick={() => handleClick(this.state.value)} >
