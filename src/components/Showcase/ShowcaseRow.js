@@ -29,6 +29,7 @@ const Comment = styled.div`
     padding-left: 5%;
     height: inherit;
     display: flex;
+    width: 100%;
     align-items: center;
 `;
 const RowContainer = styled.div`

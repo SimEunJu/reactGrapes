@@ -12,11 +12,9 @@ class Grape extends Component{
         visibility: 'hidden'
     }
     getRandRatio = () => {
-        let num;
-        while(true){
-            num = Math.random();
-            if(num > 0.5) return num;
-        }
+        let num = Math.random() + 0.5;
+        if(num >= 1) num -= 0.5;
+        return num;
     } 
     getDropHeight = () => {
         const y = this.reference.offsetTop;
@@ -74,7 +72,6 @@ class Grape extends Component{
             align-items: center;
             flex-direction: column;
         `;
-
        return (
            <Drop onMouseEnter={this.handleMouseOver}
                 onMouseLeave={this.handleMouseOut}
