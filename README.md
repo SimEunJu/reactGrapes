@@ -1,68 +1,30 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 추억의 포도송이
 
-## Available Scripts
+어렸을 때 짜장면을 시켜먹으면 같이 주는 포도송이 쿠폰판을 Todo List로 바꿔보았습니다.
 
-In the project directory, you can run:
+## 1. 시작하기
+원하는 줄 수의 포도를 생성할 수 있습니다. 
 
-### `npm start`
+5줄로 이루어진 포도를 생성하면 총 15일 동안 진행할 수 있는 Todo List가 만들어집니다.
+![alt text](https://github.com/SimEunJu/reactGrapes/blob/master/mainpage.png "시작하기")
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 2. 포도송이
+포도알마다 제목, 내용을 입력할 수 있으며 체크 아이콘을 클릭하면 좌측 상단의 해가 돌면서 포도알이 자주색으로 변합니다.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+해당 Todo List를 종료하고 싶다면 주스 만들기 버튼을 누릅니다.
 
-### `npm test`
+포도알이 떨어지면서 주스병에 포도주스가 담긴 애니메이션이 실행됩니다.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+우측 상단에 진열장 버튼이 열리면서 사용자가 생성한 포도주스들을 확인할 수 있습니다.
+![alt text](https://github.com/SimEunJu/reactGrapes/blob/master/grapes.png "포도송이")
 
-### `npm run build`
+## 3. 진열장
+사용자가 생성한 포도주스를 진열합니다.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+각 진열창에 마우스를 가져가면 유리창이 열리고 해당 포도송이의 제목을 확인할 수 있습니다.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+포도주스를 클릭하면 해당 포도송이로 이동합니다.
+![alt text](https://github.com/SimEunJu/reactGrapes/blob/master/showcase.png "진열장")
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## 영상
+[![추억의 포도송이](http://img.youtube.com/vi/Qf9QldrTek4/0.jpg)](https://www.youtube.com/watch?v=Qf9QldrTek4)
