@@ -65,6 +65,7 @@ export default handleActions({
             return state; 
         },
         onSuccess: (state, action) => {
+            console.log(action);
             const {gno, depth} = action.payload.data;
             return state.set('gno', gno)
                 .set('depth', parseInt(depth));
