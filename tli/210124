@@ -1,0 +1,1 @@
+@types package contains inside it several .d.ts files which provide the actual type information for libraries installed from NPM.

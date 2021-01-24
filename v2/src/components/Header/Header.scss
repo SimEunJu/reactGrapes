@@ -1,0 +1,45 @@
+.header{
+    width: 100%;
+    margin-top: 10vh;
+
+    input{
+        text-align: center;
+        display: block;
+        margin: auto;
+        padding: 10px;
+        border: none;
+        outline-style: none;
+        font-size: 20px;
+    }
+    .verticalBranch{
+        background-color: #433b2e;
+        height: 50px;
+        width: 20px;
+        margin: auto;
+    }
+    .horizontalBranch{
+        background-color: #433b2e;
+        width: 40%;
+        height: 20px;
+        margin: auto;
+        transition: width 1s cubic-bezier(0.18, 0.01, 0, 1);
+        border-radius: 8px;
+    }
+    .leaf{
+        background-color: #537126;
+        border-radius: 48% / 72% 0;
+        width: 100px;
+        height: 80px;
+        position: absolute;
+        left: 65%;
+        top: 3%;
+        transform: rotate(10deg);
+        transition: transform 1s cubic-bezier(0.18, 0.01, 0, 1);
+        z-index: 1;
+        line-height: 80px;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+    }
+}
+
