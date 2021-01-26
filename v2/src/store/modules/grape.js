@@ -5,6 +5,7 @@ import {GREEN, PURPLE} from '../../common/Color';
 import * as api from '../../lib/api';
 
 const CHANGE_DEPTH = 'grape/DEPTH';
+const IS_DEPTH_SET = 'grape/IS_DEPTH_SET';
 const CHANGE_COLOR = 'grape/COLOR';
 const INITIALLIZE = 'grape/INITIALIZE';
 const SET_JUICE = 'grape/SET_JUICE';
@@ -19,6 +20,7 @@ const GET_GRAPES = 'grape/GET_GRAPES';
 const GET_SHOWCASE = 'grape/GET_SHOWCASE';
 
 export const changeDepth = createAction(CHANGE_DEPTH, api.createNew);
+export const setDepth = createAction(IS_DEPTH_SET);
 export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
 export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
 export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTENT, api.updateOneGrape);
@@ -37,6 +39,7 @@ const initialState = Map({
     rgba: GREEN,
     gno: null,
     depth: 0,
+    isDepthSet: false,
     juiceRatio: {green: 0, purple: 0},
     isJuiceMaking: false,
     isJuiceSaved: false,
@@ -158,5 +161,8 @@ export default handleActions({
     [HIDE_MODAL]: (state, action) => {
         return state.set('modal', action.payload.modal);
     },
-    
+    [IS_DEPTH_SET]: (state, action) => {
+        console.log(action);
+        return state.set('isDepthSet', action.payload);
+    },
 }, initialState);

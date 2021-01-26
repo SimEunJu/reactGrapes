@@ -1,79 +1,42 @@
-import React, { useState } from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as grapeAcions from '../../store/modules/grape';
-import { EntryContent, Btn, BtnWrap, BtnArea  } from "./styled";
-import HeightInfo from '../HeightInfo';
-import UserInput from '../UserInput';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-const btnReadyStyle = { 
-    backgroundColor: 'purple',
-    color: 'white'
-};
+import { changeDepth, isDepthSet } from '../../store/modules/grape';
+import Depth from '../Depth';
+import DepthInput from '../DepthInput';
+import StartBtn from '../StartBtn';
 
-const Entry = (props) => {
-    const [isDepthSet, setIsDepthSet] = useState(false);
-    const [depth, setDepth] = useState(0);
-    
-    const handleChildClick = (depth) => {
+const EntryBlock = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100vh;
+`;
 
-        const parsedDepth = Number.parseInt(depth.trim(), 10);
-        if(Number.isNaN(parsedDepth)){
-            alert('올바른 정수를 입력해주세요.');
-            return;
-        } 
+const Entry = () => {
 
-        setIsDepthSet(true);
-        setDepth(depth);
-    }
+    const dispatch = useDispatch();
 
-    const handleChildChange = () => {
-        setIsDepthSet(false);
-    }
-
-    const handleDepthAction = () =>{
-        const {GrapeActions}= props;
-        GrapeActions.changeDepth(depth);
-    }
-
-    const handlekeyPress = (e) => {
-        if(e.key === 'Enter'){
-            if(!isDepthSet) return false;
-            handleDepthAction();
+    useEffect(()=>{
+        // TODO: 화면 벗어났다가 다시 돌아오면 처음부터 다시 시작되도록
+        return () => {
+            // 상태 초기화?
+            //GrapeActions.setJuice({isJuice: false});
         }
-    }
-
-    const handleClick = () => {
-        if(!isDepthSet) return false;
-        handleDepthAction();
-    }
+    }, []);
     
-    props.GrapeActions.setJuice({isJuice: false});
-        
-    if(props.gno !== null) window.location.href = "/grapes/"+props.gno;
-    
-    return (
-        <EntryContent>
-            <UserInput handlekeyPress={handlekeyPress} handleClick={handleChildClick} handleChange={handleChildChange}/>
-            <HeightInfo depth={isDepthSet && depth} />
-            <BtnArea ready={isDepthSet}>
-                <BtnWrap>
-                    <Btn 
-                        style={isDepthSet ? btnReadyStyle : {}}
-                        onClick={handleClick} >
-                        시작하기
-                    </Btn>
-                </BtnWrap>
-            </BtnArea>
-        </EntryContent>
+    /*
+     TODO: 
+        1. depth가 세팅되면 3개의 section으로 나누어진 animation을 trigger 시켜야 함
+        : state.isDepthSet === true ? 움직여야 하는 width 계산해서 return
+        3. EntryBlock 컴포넌트는 style 컴포넌트로 레이아웃 관리
+    */
+     return (
+        <EntryBlock>
+            <DepthInput />
+            <Depth />
+            <StartBtn />
+        </EntryBlock>
     );
 }
 
-export default connect(
-    (state) => ({
-        gno: state.grape.get('gno')
-    }),
-    (dispatch) => ({
-        GrapeActions: bindActionCreators(grapeAcions, dispatch)
-    })
-)(Entry);
+export default Entry;
