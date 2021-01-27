@@ -45,8 +45,8 @@ const BtnBlock = styled.div`
 
 const StartBtn = ({ history }) => {
     const {isDepthSet, gno} = useSelector(({grape}) => ({
-        isDepthSet: grape.isDepthSet,
-        gno: grape.gno
+        isDepthSet: grape.get('isDepthSet'),
+        gno: grape.get('gno')
     }));
     
     const handleClick = () => {

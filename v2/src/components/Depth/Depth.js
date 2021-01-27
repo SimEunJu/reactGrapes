@@ -32,8 +32,8 @@ const Msg = styled.div`
 
 const Depth = () => {
     const {depth, isDepthSet} = useSelector(({grape}) => ({
-        depth: grape.depth,
-        isDepthSet: grape.isDepthSet
+        depth: grape.get('depth'),
+        isDepthSet: grape.get('isDepthSet')
     }));
 
     const makeGrapeComponent = useMemo(() => {

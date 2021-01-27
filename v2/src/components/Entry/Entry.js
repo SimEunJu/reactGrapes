@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import { changeDepth, isDepthSet } from '../../store/modules/grape';
 import Depth from '../Depth';

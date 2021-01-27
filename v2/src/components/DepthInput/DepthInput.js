@@ -42,13 +42,12 @@ const DepthInput = () => {
 
     const [depthInputVal, setDepthInputVal] = useState('');
     const {isDepthSet} = useSelector(({grape}) => {
-        console.log(grape.depth);
-        return {isDepthSet: grape.isDepthSet}
+        return {isDepthSet: grape.get('isDepthSet')}
     });
     const dispatch = useDispatch();
 
     const handleChange = ({target: {value}}) => {
-        if(isDepthSet) dispatch(isDepthSet(false));
+        if(isDepthSet) dispatch(setDepth(false));
         setDepthInputVal(value);
     }
     
