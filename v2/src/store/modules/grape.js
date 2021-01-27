@@ -68,7 +68,6 @@ export default handleActions({
             return state; 
         },
         onSuccess: (state, action) => {
-            console.log(action);
             const {gno, depth} = action.payload.data;
             return state.set('gno', gno)
                 .set('depth', parseInt(depth));
@@ -162,7 +161,6 @@ export default handleActions({
         return state.set('modal', action.payload.modal);
     },
     [IS_DEPTH_SET]: (state, action) => {
-        console.log(action);
         return state.set('isDepthSet', action.payload);
     },
 }, initialState);

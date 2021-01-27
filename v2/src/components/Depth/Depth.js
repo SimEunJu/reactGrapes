@@ -34,6 +34,7 @@ const Depth = () => {
     const {depth, isDepthSet} = useSelector(({grape}) => ({
         depth: grape.get('depth'),
         isDepthSet: grape.get('isDepthSet')
+        
     }));
 
     const makeGrapeComponent = useMemo(() => {

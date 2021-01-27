@@ -58,7 +58,7 @@ const DepthInput = () => {
             alert('올바른 정수를 입력해주세요.');
             return;
         } 
-    
+        // TODO: 해당 dispatch는 api call을 요구하므로 시작 버튼을 누른 후에 진행
         dispatch(changeDepth(parsedDepth));
         dispatch(setDepth(true));
 
@@ -79,7 +79,8 @@ const DepthInput = () => {
                 value={depthInputVal} 
                 onChange={handleChange}
                 onKeyPress={handlekeyPress}
-                placeholder='원하는 높이를 입력해 주세요'>
+                placeholder='원하는 높이를 입력해 주세요'
+                autoFocus={true}>
             </input>
             <button onClick={handleInputVal} >
                 입력
