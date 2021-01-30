@@ -74,8 +74,6 @@ const StartBtn = ({ history }) => {
            
             if(isDepthSet) animations[el].self = ref.current.animate(keyframes, options);
             else if (self) self.cancel();
-
-            console.log(self);
         }
         
     }, [isDepthSet])
@@ -84,8 +82,9 @@ const StartBtn = ({ history }) => {
         if(!isDepthSet) return false;
         
         dispatch(getGraepNo(depth));
-        // TODO: gno를 가져오지 못했을 때 에러 핸들링
-        //history.push(`/grapes/${gno}`);
+        
+        if(gno) history.push(`/grapes/${gno}`);
+        else alert('잠시 후 다시 시도해주세요.');
     }
         
     return (

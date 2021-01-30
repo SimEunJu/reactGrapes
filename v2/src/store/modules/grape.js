@@ -76,8 +76,7 @@ export default handleActions({
             return state.set('gno', gno);
         },
         onFailure: (state, action) => {
-            const {gno, depth} = action.payload.data;
-            return state.set('gno', gno);
+            return state.set('gno', null);
         }
     }),
     ...pender({
