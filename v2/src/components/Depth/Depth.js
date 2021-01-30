@@ -24,8 +24,6 @@ const GrapeBlock = styled.div`
 const Msg = styled.div`
     padding: 10px;
     text-align: center;
-    height: 200px;
-    width: 200px;
     color: purple;
     font-size: 20px;
 `;
@@ -34,7 +32,6 @@ const Depth = () => {
     const {depth, isDepthSet} = useSelector(({grape}) => ({
         depth: grape.get('depth'),
         isDepthSet: grape.get('isDepthSet')
-        
     }));
 
     const makeGrapeComponent = useMemo(() => {
@@ -50,10 +47,13 @@ const Depth = () => {
     }, [depth]);
 
     const totalGrapeCnt = ( depth*(depth+1) )/2;
+
     return(
         <GrapeBlock ready={isDepthSet}>
             <Msg>
-                {makeGrapeComponent}
+                <div>
+                    {makeGrapeComponent}
+                </div>
                 {totalGrapeCnt}일 동안<br />진행할 수 있습니다!
             </Msg>
         </GrapeBlock>

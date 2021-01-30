@@ -6,6 +6,8 @@ import * as api from '../../lib/api';
 
 const CHANGE_DEPTH = 'grape/DEPTH';
 const IS_DEPTH_SET = 'grape/IS_DEPTH_SET';
+const GET_GRAPE_NO = 'grape/GET_GRAPE_NO'
+
 const CHANGE_COLOR = 'grape/COLOR';
 const INITIALLIZE = 'grape/INITIALIZE';
 const SET_JUICE = 'grape/SET_JUICE';
@@ -19,8 +21,10 @@ const CHANGE_GRAPE_CONTENT = 'grape/CHANGE_GRAPE_CONTET';
 const GET_GRAPES = 'grape/GET_GRAPES';
 const GET_SHOWCASE = 'grape/GET_SHOWCASE';
 
-export const changeDepth = createAction(CHANGE_DEPTH, api.createNew);
+export const changeDepth = createAction(CHANGE_DEPTH);
 export const setDepth = createAction(IS_DEPTH_SET);
+export const getGraepNo = createAction(GET_GRAPE_NO, api.createNew);
+
 export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
 export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
 export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTENT, api.updateOneGrape);
@@ -63,14 +67,17 @@ export default handleActions({
         return state.set(initialState);
     },
     ...pender({
-        type: CHANGE_DEPTH,
+        type: GET_GRAPE_NO,
         onPending: (state, action) => {
             return state; 
         },
         onSuccess: (state, action) => {
             const {gno, depth} = action.payload.data;
-            return state.set('gno', gno)
-                .set('depth', parseInt(depth));
+            return state.set('gno', gno);
+        },
+        onFailure: (state, action) => {
+            const {gno, depth} = action.payload.data;
+            return state.set('gno', gno);
         }
     }),
     ...pender({
@@ -162,5 +169,8 @@ export default handleActions({
     },
     [IS_DEPTH_SET]: (state, action) => {
         return state.set('isDepthSet', action.payload);
+    },
+    [CHANGE_DEPTH]: (state, action) => {
+        return state.set('depth', action.payload);
     },
 }, initialState);

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { changeDepth, setDepth } from '../../store/modules/grape';
@@ -37,42 +37,59 @@ const InputBlock = styled.div`
     }
 `;
 
-// TODO: useCallback을 어떻게 활용해야 하나...
+/* TODO: useCallback 활용
+    1. 이벤트핸들러 함수에는 useCallback을 사용하지 않음 -> 컴포넌트에서 사용중인 1개의 state에만 의존하기 때문
+    2. 대신 handleInputVal 함수는 내부적으로 사용하는 state 변수를 외부에서 주입할 수 있기 때문에 파라미터로 받고 useCallback으로 wrap
+*/
 const DepthInput = () => {
 
+    const inputEl = useRef(null);
     const [depthInputVal, setDepthInputVal] = useState('');
-    const {isDepthSet} = useSelector(({grape}) => {
-        return {isDepthSet: grape.get('isDepthSet')}
-    });
+    const {isDepthSet, depth} = useSelector(({grape}) => ({
+        isDepthSet: grape.get('isDepthSet'),
+        depth: grape.get('depth')
+    }));
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(isDepthSet) setDepthInputVal(depth);
+    }, []);
 
     const handleChange = ({target: {value}}) => {
         if(isDepthSet) dispatch(setDepth(false));
         setDepthInputVal(value);
     }
     
-    const handleInputVal = useCallback(() => {
+    const shouldUpdate = (depthInputVal) => {
+        if(depth !== depthInputVal) return true;
+        return false;
+    }
 
-        const parsedDepth = Number.parseInt(depthInputVal.trim(), 10);
+    const handleInputVal = useCallback((inputVal) => {
+
+        const parsedDepth = Number.parseInt(inputVal.trim(), 10);
         if(Number.isNaN(parsedDepth)){
             alert('올바른 정수를 입력해주세요.');
+            inputEl.current.focus();
             return;
-        } 
-        // TODO: 해당 dispatch는 api call을 요구하므로 시작 버튼을 누른 후에 진행
+        }
+        
+        if(!shouldUpdate(parsedDepth)) return;
+        
         dispatch(changeDepth(parsedDepth));
         dispatch(setDepth(true));
 
-    }, [depthInputVal, dispatch]);
+    }, [dispatch]);
 
     const handlekeyPress = ({key}) => {
         if(key === 'Enter'){
-            handleInputVal();
+            handleInputVal(depthInputVal);
         }
     }
 
     return(
         <InputBlock>
-            <label>포도 송이 높이</label>
+            <label>포도송이 높이</label>
             <input 
                 name="depth"
                 type="text"
@@ -80,9 +97,10 @@ const DepthInput = () => {
                 onChange={handleChange}
                 onKeyPress={handlekeyPress}
                 placeholder='원하는 높이를 입력해 주세요'
-                autoFocus={true}>
+                autoFocus={true}
+                ref={inputEl}>
             </input>
-            <button onClick={handleInputVal} >
+            <button type="button" onClick={() => handleInputVal(depthInputVal)} >
                 입력
             </button>
         </InputBlock> 

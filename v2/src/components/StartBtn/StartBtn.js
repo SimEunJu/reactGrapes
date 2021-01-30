@@ -1,23 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import styled, { css } from 'styled-components';
-
-const BtnOutLine = styled.div`
-    width: 120px;
-    height: 120px;
-    border: 4px solid purple;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { getGraepNo } from '../../store/modules/grape';
 
 const Btn = styled.button`
     margin-top: 0;
-    border: 2px solid purple;
     border-radius: 50%;
-    background-color: white;
+    border: none;
     height: 100px;
     width: 100px;
     text-align: center;
@@ -25,45 +15,88 @@ const Btn = styled.button`
     color: purple;
     font-weight: bold;
     outline: none;
-    ${props => props.ready &&
-        css`
-            background-color: 'purple';
-            color: 'white';
-        `    
-    }    
+    background-color: purple;
+    color: white;  
 `;
 
 const BtnBlock = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: ${props => props.ready? 'all 1s ease-out 0.3s' : ''};
-    visibility: ${props => props.ready? '' : 'hidden'};
-    transform: ${props => props.ready? 'translateX(0)' : 'translateX(-10vw)'};   
+    visibility: hidden;
+    transform: translateX(-10vw);
 `;
 
+const animations = {
+    btnEl: {
+        ref: null,
+        self: null,
+        keyframes: [
+            {transform: 'scale(1)'},
+            {transform: 'scale(1.15)'}
+        ],
+        options: {
+            duration: 2000,
+            iterations: Infinity,
+            easing: 'ease-out'
+        }
+    },
+    btnBlockEl: {
+        ref: null,
+        self: null,
+        keyframes: [
+            {transform: 'translateX(0)', visibility: 'inherit'}
+        ],
+        options: {
+            duration: 1000,
+            delay: 300,
+            fill: 'forwards',
+            easing: 'ease-out'
+        }
+    }
+};
 
 const StartBtn = ({ history }) => {
-    const {isDepthSet, gno} = useSelector(({grape}) => ({
+
+    const btnBlockRef = animations.btnBlockEl.ref = useRef();
+    const btnRef = animations.btnEl.ref = useRef();
+
+    const {isDepthSet, gno, depth} = useSelector(({grape}) => ({
         isDepthSet: grape.get('isDepthSet'),
+        depth: grape.get('depth'),
         gno: grape.get('gno')
     }));
-    
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        for (const el in animations){
+            const {ref, self, keyframes, options} = animations[el];
+           
+            if(isDepthSet) animations[el].self = ref.current.animate(keyframes, options);
+            else if (self) self.cancel();
+
+            console.log(self);
+        }
+        
+    }, [isDepthSet])
+
     const handleClick = () => {
         if(!isDepthSet) return false;
-        history.push(`/grapes/${gno}`);
+        
+        dispatch(getGraepNo(depth));
+        // TODO: gno를 가져오지 못했을 때 에러 핸들링
+        //history.push(`/grapes/${gno}`);
     }
-    
+        
     return (
-        <BtnBlock ready={isDepthSet}>
-            <BtnOutLine>
-                <Btn 
-                    ready={isDepthSet}
-                    onClick={handleClick} >
-                    시작하기
+        <BtnBlock ref={btnBlockRef}>
+            <Btn 
+                ref={btnRef}
+                onClick={handleClick} >
+                시작하기
                 </Btn>
-            </BtnOutLine>
-        </BtnBlock>)
+        </BtnBlock>
+    );
 }
 
 export default withRouter(StartBtn);
