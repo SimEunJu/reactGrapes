@@ -23,7 +23,7 @@ const GET_SHOWCASE = 'grape/GET_SHOWCASE';
 
 export const changeDepth = createAction(CHANGE_DEPTH);
 export const setDepth = createAction(IS_DEPTH_SET);
-export const getGraepNo = createAction(GET_GRAPE_NO, api.createNew);
+export const getGrapeNo = createAction(GET_GRAPE_NO, api.createNew);
 
 export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
 export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
@@ -73,6 +73,7 @@ export default handleActions({
         },
         onSuccess: (state, action) => {
             const {gno, depth} = action.payload.data;
+            console.log(action.payload);
             return state.set('gno', gno);
         },
         onFailure: (state, action) => {

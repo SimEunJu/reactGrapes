@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const PREFIX = '/api/grapes';
 
-export const createNew = (depth) => axios.get(`${PREFIX}/local/new?depth=${depth}`);
+export const createNew = async (depth) => await axios.get(`${PREFIX}/local/new?depth=${depth}`);
 
 export const readGrapes = (gno) => axios.get(`${PREFIX}/${gno}`);
 export const updateTitle = ({gno, title}) => axios.post(`${PREFIX}/${gno}/title`,{title});

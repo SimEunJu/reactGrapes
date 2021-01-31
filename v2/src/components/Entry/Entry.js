@@ -25,11 +25,6 @@ const Entry = () => {
         }
     }, []);
     
-    /*
-     TODO: 
-        1. depth가 세팅되면 3개의 section으로 나누어진 animation을 trigger 시켜야 함
-        : state.isDepthSet === true ? 움직여야 하는 width 계산해서 return
-    */
      return (
         <EntryBlock>
             <DepthInput />

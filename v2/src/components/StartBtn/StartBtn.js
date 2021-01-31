@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getGraepNo } from '../../store/modules/grape';
+import { getGrapeNo } from '../../store/modules/grape';
+import useAnimation from '../../hooks/animation/useAnimation';
 
 const Btn = styled.button`
     margin-top: 0;
@@ -26,24 +27,20 @@ const BtnBlock = styled.div`
     visibility: hidden;
     transform: translateX(-10vw);
 `;
-
-const animations = {
+const animationOtps = {
     btnEl: {
-        ref: null,
-        self: null,
         keyframes: [
             {transform: 'scale(1)'},
-            {transform: 'scale(1.15)'}
+            {transform: 'scale(1.1)'}
         ],
         options: {
-            duration: 2000,
+            duration: 1000,
             iterations: Infinity,
+            direction: 'alternate',
             easing: 'ease-out'
         }
     },
     btnBlockEl: {
-        ref: null,
-        self: null,
         keyframes: [
             {transform: 'translateX(0)', visibility: 'inherit'}
         ],
@@ -58,8 +55,8 @@ const animations = {
 
 const StartBtn = ({ history }) => {
 
-    const btnBlockRef = animations.btnBlockEl.ref = useRef();
-    const btnRef = animations.btnEl.ref = useRef();
+    const [btnBlockRef, btnBlockAni] = useAnimation(animationOtps['btnBlockEl']);
+    const [btnRef, btnAni] = useAnimation(animationOtps['btnEl']);
 
     const {isDepthSet, gno, depth} = useSelector(({grape}) => ({
         isDepthSet: grape.get('isDepthSet'),
@@ -69,22 +66,23 @@ const StartBtn = ({ history }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const animations = [btnBlockAni, btnAni];
         for (const el in animations){
-            const {ref, self, keyframes, options} = animations[el];
-           
-            if(isDepthSet) animations[el].self = ref.current.animate(keyframes, options);
-            else if (self) self.cancel();
+            const {ref, animation, keyframes, options} = animations[el];
+        
+            if(isDepthSet) animations[el].animation = ref.current.animate(keyframes, options);
+            else if (animation) animation.cancel();
         }
         
-    }, [isDepthSet])
+    }, [isDepthSet]);
 
     const handleClick = () => {
         if(!isDepthSet) return false;
         
-        dispatch(getGraepNo(depth));
-        
+        dispatch(getGrapeNo(depth));
+  
         if(gno) history.push(`/grapes/${gno}`);
-        else alert('잠시 후 다시 시도해주세요.');
+        else if(gno === null) alert('잠시 후 다시 시도해주세요.');
     }
         
     return (

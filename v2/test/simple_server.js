@@ -8,7 +8,7 @@ const server = http.createServer(function (req, res) {
     const reqUrl = url.parse(req.url,true).pathname;
     if (reqUrl === (PREFIX + '/local/new')){ //check the URL of the current request
         const queryObject = url.parse(req.url,true).query;
-        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(JSON.stringify({ gno: 1, depth: queryObject.depth}));  
         res.end();  
     }

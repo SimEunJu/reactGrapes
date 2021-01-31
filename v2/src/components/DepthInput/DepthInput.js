@@ -44,11 +44,11 @@ const InputBlock = styled.div`
 const DepthInput = () => {
 
     const inputEl = useRef(null);
-    const [depthInputVal, setDepthInputVal] = useState('');
     const {isDepthSet, depth} = useSelector(({grape}) => ({
         isDepthSet: grape.get('isDepthSet'),
         depth: grape.get('depth')
     }));
+    const [depthInputVal, setDepthInputVal] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -60,21 +60,21 @@ const DepthInput = () => {
         setDepthInputVal(value);
     }
     
-    const shouldUpdate = (depthInputVal) => {
+    const shouldDispatch = (depthInputVal) => {
         if(depth !== depthInputVal) return true;
         return false;
     }
 
     const handleInputVal = useCallback((inputVal) => {
 
-        const parsedDepth = Number.parseInt(inputVal.trim(), 10);
+        const parsedDepth = Number.parseInt(inputVal, 10);
         if(Number.isNaN(parsedDepth)){
             alert('올바른 정수를 입력해주세요.');
             inputEl.current.focus();
             return;
         }
         
-        if(!shouldUpdate(parsedDepth)) return;
+        if(!shouldDispatch(parsedDepth)) return;
         
         dispatch(changeDepth(parsedDepth));
         dispatch(setDepth(true));
