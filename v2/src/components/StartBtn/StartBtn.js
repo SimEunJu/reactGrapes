@@ -67,12 +67,12 @@ const StartBtn = ({ history }) => {
 
     useEffect(() => {
         const animations = [btnBlockAni, btnAni];
-        for (const el in animations){
-            const {ref, animation, keyframes, options} = animations[el];
+        animations.forEach(ani => {
+            const {ref, animation, keyframes, options} = ani;
         
-            if(isDepthSet) animations[el].animation = ref.current.animate(keyframes, options);
+            if(isDepthSet) ani.animation = ref.current.animate(keyframes, options);
             else if (animation) animation.cancel();
-        }
+        });
         
     }, [isDepthSet]);
 

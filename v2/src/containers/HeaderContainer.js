@@ -1,28 +1,24 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as grapeActions from '../store/modules/grape';
+import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {setTitle} from '../store/modules/grape';
 import Header from '../components/Header';
 
-class HeaderContainer extends Component{
-    setTitle = (title) => {
-        const {gno} = this.props;
-        this.props.GrapeAction.setTitle({gno, title});
+const HeaderContainer = () => {
+
+    const {gno, title, isJuiceSaved} = useSelector(({grape}) => ({
+        gno: grape.get('gno'),
+        title: grape.get('title'),
+        isJuiceSaved: grape.get('isJuiceSaved')
+    }));
+    const dispatch = useDispatch();
+
+    const changeTitle = (title) => {
+        dispatch(setTitle({gno, title}));
     }
-    render(){
-        const {savedJuice, title} = this.props;
-        return(
-            <Header title={title} setTitle={this.setTitle} savedJuice={savedJuice}/>
-        );
-    }
+
+    return(
+        <Header title={title} changeTitle={changeTitle} isJuiceSaved={isJuiceSaved}/>
+    );
 }
-export default connect(
-    (state) => ({
-        gno: state.grape.get('gno'),
-        title: state.grape.get('title'),
-        savedJuice: state.grape.get('isJuiceSaved')
-    }),
-    (dispatch) => ({
-        GrapeAction: bindActionCreators(grapeActions, dispatch)
-    })
-)(HeaderContainer);
+
+export default HeaderContainer;

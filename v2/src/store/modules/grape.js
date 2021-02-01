@@ -73,7 +73,6 @@ export default handleActions({
         },
         onSuccess: (state, action) => {
             const {gno, depth} = action.payload.data;
-            console.log(action.payload);
             return state.set('gno', gno);
         },
         onFailure: (state, action) => {
