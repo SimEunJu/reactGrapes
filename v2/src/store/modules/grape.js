@@ -42,8 +42,8 @@ const initialState = Map({
     grape: [],
     rgba: GREEN,
     gno: null,
-    depth: 0,
-    isDepthSet: false,
+    depth: 4, //null
+    isDepthSet: true, // false
     juiceRatio: {green: 0, purple: 0},
     isJuiceMaking: false,
     isJuiceSaved: false,
@@ -86,12 +86,12 @@ export default handleActions({
         },
         onSuccess: (state, action) => {
             const grapes = action.payload.data;
-            const grape = [];
-            grapes.grape.map(g => grape[g.idx] = g);
+            //const grape = grapes.grape.map(g => grape[g.idx] = g);
+       
             return state.set('grapeCnt', grapes.grapeCnt)
                 .set('depth', grapes.depth)
                 .set('title', grapes.title)
-                .set('grape', grape)
+                .set('grape', grapes.grape)
                 .set('gno', grapes._id);   
         }
     }),

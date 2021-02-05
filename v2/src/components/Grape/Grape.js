@@ -1,87 +1,103 @@
-import React, {Component} from 'react';
-import styled, {keyframes} from "styled-components";
+import React, {useState, useEffect, useCallback} from 'react';
+import styled  from "styled-components";
 import './Grape.scss';
 import checkedImg from '../../assets/img/checked.png';
 import pencilImg from '../../assets/img/pencil.png';
+import useAnimation from '../../hooks/animation/useAnimation';
 
-class Grape extends Component{
-    reference;
-    state = {
-        height: '',
-        width: '',
-        visibility: 'hidden'
-    }
-    getRandRatio = () => {
-        let num = Math.random() + 0.5;
-        if(num >= 1) num -= 0.5;
-        return num;
-    } 
-    getDropHeight = () => {
-        const y = this.reference.offsetTop;
-        const dist = document.body.clientHeight - y;
-        return dist;
-    }
-    getDropWidth = () => {
-        const {depth} = this.props;
-        const size = Math.floor(window.innerHeight/depth);
-        const x = this.reference.offsetLeft;
-        const dist = document.body.clientWidth/2 - x - size/2;
-        return dist;
-    }
-    componentDidMount(){
-        this.setState({
-            height: this.getDropHeight(),
-            width: this.getDropWidth()
-        });
-        
-    }
-    handleMouseOver = () => {
-        this.setState({...this.state, visibility: ''});
-    }
-    handleMouseOut = () => {
-        this.setState({...this.state, visibility: 'hidden'});
-    }
-    render(){
-        const {handleClick, offset, depth, color, isJuice, savedJuice} = this.props;
-        
-        if(savedJuice) return <div></div>;
+const Drop = styled.div`
+        width: ${({size}) => size}px;
+        height: ${({size}) => size}px;
+        background-color: ${({color}) => color};
+        border-radius: 100%;
+        cursor: pointer;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    `;
 
-        const size = Math.floor(window.innerHeight/depth);
-        let DropAni;
-        if(isJuice){
-            DropAni = keyframes`
-            0% {
-                transform : translateY(0) translateX(0);
-            }
-            100% {
-                transform : translateY(${this.state.height}px) translateX(${this.state.width}px); 
-                background-color: white;
-            }
-        `;
+const animationOpts = {
+    dropEl: {
+        keyframes: [
+            {transform: 'translateY(0) translateX(0)'},
+            {transform: null, backgroundColor: 'white'}
+        ],
+        options: {
+            duration: null,
+            fill: 'forwards',
+            easing: 'ease',
+            delay: 1000
         }
-        const Drop = styled.div`
-            animation: ${DropAni} ${3*this.getRandRatio()}s ease 1 forwards;
-            width: ${size}px;
-            height: ${size}px;
-            background-color: ${color};
-            border-radius: 100%;
-            cursor: pointer;
-            margin: 2px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        `;
-       return (
-           <Drop onMouseEnter={this.handleMouseOver}
-                onMouseLeave={this.handleMouseOut}
-                ref={ref => this.reference=ref}>
-                <div style={{visibility: this.state.visibility}}>
-                    <img src={pencilImg} onClick={() => this.props.handleModalOpen(offset)}></img>
-                    <img src={checkedImg} onClick={() => handleClick(offset)}></img>
-                </div>
-           </Drop>
-       );
     }
+}
+
+const getRandRatio = () => {
+    let num = (Math.random() + 1) * 0.5;
+    return num;
+} 
+
+const Grape = (props) => {
+    // TODO: 부모와 공유하는 상태가 많으면 props로 받고, 아니면 useSelector 사용
+    const {idx, size, color, startJuiceAni, endJuiceAni, openModal, changeGrapeChecked} = props;
+
+    const [dropRef, dropElAni] = useAnimation(animationOpts['dropEl']);
+    const [height, setHeight] = useState('');
+    const [width, setWidth] = useState('');
+    const [isVisible, setVisible] = useState(false);
+    
+    const getDropHeight = useCallback(() => {
+        //offsetTop
+        const top = dropRef.current.getBoundingClientRect().top;
+        //document.body.clientHeight를 사용해도 상관없을 것 같다.
+        const heigtFromViewBottom = document.documentElement.clientHeight - top;
+        return heigtFromViewBottom;
+    }, [dropRef]);
+
+    const getDropWidth = useCallback(() => {
+        // ?const size = window.innerHeight/depth;
+        const left = dropRef.current.getBoundingClientRect().left;
+        const centerOfView = document.documentElement.clientWidth/2;
+        const widthFromViewCenter = centerOfView - left; //- size/2;
+        return widthFromViewCenter;
+    }, [dropRef]);
+
+    useEffect(()=>{
+        setHeight(getDropHeight());
+        setWidth(getDropWidth());
+    }, []);
+
+    const showEditIcon = useCallback((isVisible) => {
+        setVisible(isVisible);
+    }, []);
+
+    useEffect(() => {
+        if(!startJuiceAni) return false;
+
+        const {keyframes, options, ref} = dropElAni;
+        
+        const lastKeyframe = keyframes.size - 1;
+        keyframes[lastKeyframe].transform = `translateY(${height}px) translateX(${width}px)`;
+        options.duration = 3 * getRandRatio();
+        
+        ref.animate();
+
+    }, [startJuiceAni]);
+    
+    if(endJuiceAni) return <div />;
+    return (
+        <Drop 
+            color={color}
+            size={size}
+            onMouseEnter={() => showEditIcon(true)}
+            onMouseLeave={() => showEditIcon(false)}
+            ref={dropRef}>
+            <div style={{visibility: isVisible? '' : 'hidden'}}>
+                <img src={pencilImg} onClick={() => openModal(idx)}></img>
+                <img src={checkedImg} onClick={() => changeGrapeChecked(idx)}></img>
+            </div>
+        </Drop>
+    );
 }
 export default Grape;

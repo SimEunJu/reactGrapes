@@ -1,77 +1,67 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as grapeActions from '../store/modules/grape';
+import React, {Fragment, useCallback, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {changeColor, showModal, changeGrapeContent} 
+    from '../store/modules/grape';
 
-import GrapeWrapper from '../components/GrapeWrapper';
+import GrapeWrapper from '../components/Grapes';
 import Modal from '../components/Modal';
+import Sun from '../components/Sun';
 
-class GrapeWrapperContainer extends Component {
-    constructor(prop){
-        super(prop);
-        const gno = window.location.href.match(/.*\/grapes\/(\w+)$/)[1];
-        this.props.GrapeActions.getGrapesStatus(gno);
-    }
-    state = {
-        isSunRotate: false, 
-        offset: null,
-    };
+// TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
+// TODO: atomic 상태관리 도입해야...
+const GrapeWrapperContainer = () => {
 
-    handleClick = (offset) => {
-        const {GrapeActions, grape, gno} = this.props;
-        if(grape[offset].isChecked ===  false){
-            GrapeActions.changeColor({gno, 'idx': offset, 'isChecked': true});
-            this.setState({isSunRotate: true})
-        }
-        else{
-            GrapeActions.changeColor({gno, 'idx': offset, 'isChecked': false});
-            this.setState({isSunRotate: false})
-        } 
-       
-    }
-    handleModalOpen = (offset) => {
-        this.setState({...this.state, offset});
-        this.props.GrapeActions.showModal({'modal': true});
-    }
-    handleModalClose = () => {
-        this.props.GrapeActions.showModal({'modal': false});
-    }
-    handleGrapeContent = ({title, content}) => {
-        this.props.GrapeActions.changeGrapeContent({gno: this.props.gno, idx: this.state.offset, title, content});
-    }
-    render(){
-        const {depth, grape, isJuice, modal, savedJuice, loading, setContentSuc} = this.props;
-        const {offset} = this.state;
-        if(loading) return;
-        return(
-            <Fragment>
-                {modal && <Modal grapeContent={grape[offset]} setContentSuc={setContentSuc} handleGrapeContent={this.handleGrapeContent} handleModalClose={this.handleModalClose}/>}
-                <GrapeWrapper 
-                    handleModalOpen={this.handleModalOpen}
-                    depth={depth} 
-                    grape={grape} 
-                    handleClick={this.handleClick}
-                    isJuice={isJuice}
-                    savedJuice={savedJuice}
-                    isSunRotate={this.state.isSunRotate}
-                    />
-            </Fragment>
-        );
-    }
+    const {gno, setContentSuc, grape, isModalOpen} = useSelector(({grape, pender}) => ({
+        gno: grape.get('gno'),
+        setContentSuc: pender.success['grape/CHANGE_GRAPE_CONTET'],
+        grape: grape.get('grape'),
+        isModalOpen: grape.get('modal')
+    }));
+    const dispatch = useDispatch();
+
+    const [isSunRotate, setSunRotate] = useState(false);
+    const [editGrapeIdx, setEditGrapeIdx] = useState(null);
+
+    const changeGrapeChecked = useCallback((grapeIdx) => {
+        
+        let isChecked = false;
+        if(!grape[grapeIdx].isChecked) isChecked = true;
+        
+        dispatch(changeColor({gno, idx: grapeIdx, isChecked}));
+        dispatch(setSunRotate(isChecked));
+    }, [grape, dispatch]);
+
+    const openModal = useCallback((editGrapeIdx) => {
+        setEditGrapeIdx(editGrapeIdx);
+        dispatch(showModal({'modal': true}));
+    }, [dispatch]);
+
+    const closeModal = useCallback(() => {
+        dispatch(showModal({'modal': false}));
+    }, [dispatch]);
+
+    const editGrapeContent = useCallback(({title, content}) => {
+        dispatch(changeGrapeContent({gno, idx: editGrapeIdx, title, content}));
+    }, [dispatch]);
+
+    return(
+        <Fragment>
+            <Sun isSunRotate={isSunRotate}/>
+            {isModalOpen && 
+                <Modal 
+                    grapeContent={grape[editGrapeIdx]} 
+                    setContentSuc={setContentSuc} 
+                    handleGrapeContent={editGrapeContent} 
+                    handleModalClose={closeModal}/>
+            }
+            <GrapeWrapper 
+                openModal={openModal}
+                changeGrapeChecked={changeGrapeChecked}
+                />
+        </Fragment>
+    );
+    
 }
 
-export default connect(
-    (state) => ({
-        gno: state.grape.get('gno'),
-        loading: state.pender.pending['grape/GET_GRAPES_STATUS'],
-        setContentSuc: state.pender.success['grape/CHANGE_GRAPE_CONTET'],
-        depth: state.grape.get('depth'),
-        grape: state.grape.get('grape'),
-        isJuice: state.grape.get('isJuiceMaking'),
-        savedJuice: state.grape.get('isJuiceSaved'),
-        modal: state.grape.get('modal')
-    }),
-    (dispatch) => ({
-        GrapeActions : bindActionCreators(grapeActions, dispatch)
-    })
-)(GrapeWrapperContainer); 
+export default withRouter(GrapeWrapperContainer);

@@ -1,15 +1,19 @@
 import React from 'react';
-import Entry from '../components/Entry';
+
 import DepthInput from '../components/DepthInput';
 import Depth from '../components/Depth';
 import StartBtn from '../components/StartBtn';
+import EntryLayout from '../components/layout/EntryLayout';
 
-const EntryPage = () => (
-    <Entry>
-        <DepthInput />
-        <Depth />
-        <StartBtn />
-    </Entry>
-);
+const EntryPage = () => {
+
+    return ( 
+        <EntryLayout>
+            <DepthInput />
+            <Depth />
+            <StartBtn />
+        </EntryLayout>
+    );
+};
 
 export default EntryPage;

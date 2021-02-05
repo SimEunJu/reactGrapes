@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getGrapeNo } from '../../store/modules/grape';
 import useAnimation from '../../hooks/animation/useAnimation';
+import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
 const Btn = styled.button`
     margin-top: 0;
@@ -54,7 +55,7 @@ const animationOtps = {
 };
 
 const StartBtn = ({ history }) => {
-
+   
     const [btnBlockRef, btnBlockAni] = useAnimation(animationOtps['btnBlockEl']);
     const [btnRef, btnAni] = useAnimation(animationOtps['btnEl']);
 
@@ -73,18 +74,18 @@ const StartBtn = ({ history }) => {
             if(isDepthSet) ani.animation = ref.current.animate(keyframes, options);
             else if (animation) animation.cancel();
         });
-        
     }, [isDepthSet]);
 
     const handleClick = () => {
         if(!isDepthSet) return false;
-        
         dispatch(getGrapeNo(depth));
-  
-        if(gno) history.push(`/grapes/${gno}`);
-        else if(gno === null) alert('잠시 후 다시 시도해주세요.');
     }
         
+    useEffectOnlyUpdate(() => {
+        if(gno) history.push(`/grapes/${gno}`);
+        else if(gno === null) alert('잠시 후 다시 시도해주세요.');
+    }, [gno]);
+
     return (
         <BtnBlock ref={btnBlockRef}>
             <Btn 

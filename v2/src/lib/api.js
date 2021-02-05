@@ -4,7 +4,8 @@ const PREFIX = '/api/grapes';
 
 export const createNew = async (depth) => await axios.get(`${PREFIX}/local/new?depth=${depth}`);
 
-export const readGrapes = (gno) => axios.get(`${PREFIX}/${gno}`);
+export const readGrapes = async (gno) => await axios.get(`${PREFIX}/${gno}`);
+
 export const updateTitle = ({gno, title}) => axios.post(`${PREFIX}/${gno}/title`,{title});
 export const updateOneGrape = ({gno, idx, title, content}) => axios.post(`${PREFIX}/${gno}/${idx}`, {title,content});
 export const updateOneGrapeColor = ({gno, idx, isChecked}) => axios.post(`${PREFIX}/${gno}/${idx}/color`, {isChecked});

@@ -8,12 +8,13 @@ import reduxStore from './store/confgure';
 
 const store = reduxStore;
 
+// <React.StrictMode>
 ReactDOM.render(
-  <React.StrictMode>
+  
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>,
+  ,
   document.getElementById('root')
 );
 

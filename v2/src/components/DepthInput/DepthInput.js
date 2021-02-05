@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { changeDepth, setDepth } from '../../store/modules/grape';
 
@@ -37,17 +37,20 @@ const InputBlock = styled.div`
     }
 `;
 
+function grapeSelector({grape}) {
+    return {
+        isDepthSet: grape.get('isDepthSet'),
+        depth: grape.get('depth')
+    }
+};
+
 /* TODO: useCallback 활용
     1. 이벤트핸들러 함수에는 useCallback을 사용하지 않음 -> 컴포넌트에서 사용중인 1개의 state에만 의존하기 때문
-    2. 대신 handleInputVal 함수는 내부적으로 사용하는 state 변수를 외부에서 주입할 수 있기 때문에 파라미터로 받고 useCallback으로 wrap
 */
 const DepthInput = () => {
 
     const inputEl = useRef(null);
-    const {isDepthSet, depth} = useSelector(({grape}) => ({
-        isDepthSet: grape.get('isDepthSet'),
-        depth: grape.get('depth')
-    }));
+    const {isDepthSet, depth} = useSelector(grapeSelector, shallowEqual);
     const [depthInputVal, setDepthInputVal] = useState('');
     const dispatch = useDispatch();
 
@@ -60,10 +63,10 @@ const DepthInput = () => {
         setDepthInputVal(value);
     }
     
-    const shouldDispatch = (depthInputVal) => {
+    const shouldDispatch = useCallback(() => {
         if(depth !== depthInputVal) return true;
         return false;
-    }
+    }, [depth, depthInputVal]);
 
     const handleInputVal = useCallback((inputVal) => {
 
@@ -73,20 +76,20 @@ const DepthInput = () => {
             inputEl.current.focus();
             return;
         }
-        
-        if(!shouldDispatch(parsedDepth)) return;
+     
+        if(!shouldDispatch()) return;
         
         dispatch(changeDepth(parsedDepth));
         dispatch(setDepth(true));
 
-    }, [dispatch]);
+    }, [dispatch, shouldDispatch]);
 
-    const handlekeyPress = ({key}) => {
+    const handlekeyPress = useCallback(({key}) => {
         if(key === 'Enter'){
-            handleInputVal(depthInputVal);
+            handleInputVal();
         }
-    }
-
+    }, [handleInputVal]);
+    
     return(
         <InputBlock>
             <label>포도송이 높이</label>

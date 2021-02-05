@@ -8,8 +8,8 @@ import { EntryPage, MainPage, ShowcasePage } from './pages';
 interface AppProps {}
 
 const App: React.FC<AppProps> = props => {
+
   return (
-    
       <BrowserRouter>
         <Switch>
           <Route exact path='/' component={EntryPage} />

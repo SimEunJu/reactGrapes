@@ -85,6 +85,7 @@ const Header = ({changeTitle}) => {
         changeTitle(titleInput);
     }
 
+    // TODO: onBlur와 onClick 충돌 문제
     const handleWriteAni = useCallback((isWriteModeTrigger) => {
         if(isWriteMode === isWriteModeTrigger) return false;
 

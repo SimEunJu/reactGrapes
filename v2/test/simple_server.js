@@ -4,12 +4,23 @@ const url = require('url');
 const PREFIX = '/api/grapes';
 
 const server = http.createServer(function (req, res) { 
-    console.log(url.parse(req.url,true).pathname);  //create web server
+    
     const reqUrl = url.parse(req.url,true).pathname;
+    
     if (reqUrl === (PREFIX + '/local/new')){ //check the URL of the current request
         const queryObject = url.parse(req.url,true).query;
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.write(JSON.stringify({ gno: 1, depth: queryObject.depth}));  
+        res.end();  
+    }
+    else if(reqUrl === (PREFIX + '/1')){
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        const grape = [];
+        for (let index = 0; index < 10; index++) {
+            grape.push({isChecked: false, content: ''});
+            
+        }
+        res.write(JSON.stringify( { gno: 1, depth: 4, title:'test', grapeCnt: 10, grape} ));  
         res.end();  
     }
     else{
