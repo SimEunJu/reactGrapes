@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import './Header.scss';
 
-import JuiceBtn from '../JuiceBtn';
-import ShowcaseBtn from '../ShowcaseBtn';
 import useAnimation from '../../hooks/animation/useAnimation';
 
 const animationOtps = {
@@ -95,10 +93,6 @@ const Header = ({changeTitle}) => {
 
     return (
         <div className='header'>
-            {/* TODO: 분리
-            <JuiceBtn />
-            <ShowcaseBtn isJuiceSaved={isJuiceSaved}/>
-            */}
             <div className="inputArea">
                 <input 
                     value={titleInput} 

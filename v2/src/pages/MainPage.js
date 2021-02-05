@@ -1,10 +1,11 @@
 import React, {Fragment, useEffect} from 'react';
 import Loader from "react-loader-spinner";
-import GrapeWrapperContainer from '../containers/GrapeWrapperContainer';
+import GrapesContainer from '../containers/GrapesContainer';
 import JuiceContainer from '../containers/JuiceContainer';
 import HeaderContainer from '../containers/HeaderContainer';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getGrapesStatus} from '../store/modules/grape';
+import JuiceBtnContainer from '../containers/JuiceBtnContainer';
 
 // TODO: 나중에 saga로 변경하면서 refactoring
 const GET_GRAPES = 'grape/GET_GRAPES';
@@ -32,7 +33,8 @@ const MainPage = (props) => {
     return (
         <Fragment>
             <HeaderContainer />
-            <GrapeWrapperContainer />
+            <JuiceBtnContainer />
+            <GrapesContainer />
             <JuiceContainer />
         </Fragment>
     );
