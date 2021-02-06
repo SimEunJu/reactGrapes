@@ -21,12 +21,11 @@ const Grapes = (props) => {
         const grapeRows = [];
         const {clientHeight, clientWidth} = document.documentElement;
         const sizeOfGrape = Math.floor( (Math.min(clientHeight, clientWidth)-200) / depth );
-
+        let idx = 0;
         for (let row = 0; row < depth; row++) {
             const grapeRow = [];
             const cntPerRow = depth - row;
             for (let col = 0; col < cntPerRow; col++) {
-                const idx = row*depth + col;
                 grapeRow.push(<Grape
                     idx={idx}
                     key={idx}
@@ -37,11 +36,12 @@ const Grapes = (props) => {
                     openModal={openModal}
                     changeGrapeChecked={changeGrapeChecked}/>
                 );
+                idx++;
             }
             grapeRows[row] = <div className='grapeWrap'>{grapeRow}</div>;
         }
         return grapeRows;
-    }, [props]);
+    }, [props, grape]);
 
     return(
         <div className='grapeContainer'>  

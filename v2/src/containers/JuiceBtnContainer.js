@@ -1,18 +1,13 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import JuiceBtn from '../JuiceBtn';
-import ShowcaseBtn from '../ShowcaseBtn';
+import JuiceBtn from '../components/JuiceBtn';
+import ShowcaseBtn from '../components/ShowcaseBtn';
 
 const JuiceBtnContainer = () => {
-    
-    const {isJuiceSaved} = useSelector(({grape}) => ({
-        isJuiceSaved: grape.get('isJuiceSaved')
-    }));
 
     return (
         <Fragment>
             <JuiceBtn />
-            <ShowcaseBtn isJuiceSaved={isJuiceSaved}/>
+            <ShowcaseBtn />
         </Fragment>
     );
 }

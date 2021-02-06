@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {changeColor, showModal, changeGrapeContent} 
     from '../store/modules/grape';
 
-import GrapeWrapper from '../components/Grapes';
+import Grapes from '../components/Grapes';
 import Modal from '../components/Modal';
 import Sun from '../components/Sun';
 
@@ -12,10 +12,10 @@ import Sun from '../components/Sun';
 // TODO: atomic 상태관리 도입해야...
 const GrapeWrapperContainer = () => {
 
-    const {gno, setContentSuc, grape, isModalOpen} = useSelector(({grape, pender}) => ({
+    const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, pender}) => ({
         gno: grape.get('gno'),
-        setContentSuc: pender.success['grape/CHANGE_GRAPE_CONTET'],
-        grape: grape.get('grape'),
+        isContentChangeSuccess: pender.success['grape/CHANGE_GRAPE_CONTET'],
+        grapes: grape.get('grape'),
         isModalOpen: grape.get('modal')
     }));
     const dispatch = useDispatch();
@@ -26,11 +26,11 @@ const GrapeWrapperContainer = () => {
     const changeGrapeChecked = useCallback((grapeIdx) => {
         
         let isChecked = false;
-        if(!grape[grapeIdx].isChecked) isChecked = true;
+        if(!grapes[grapeIdx].isChecked) isChecked = true;
         
         dispatch(changeColor({gno, idx: grapeIdx, isChecked}));
-        dispatch(setSunRotate(isChecked));
-    }, [grape, dispatch]);
+        setSunRotate(isChecked);
+    }, [grapes, dispatch]);
 
     const openModal = useCallback((editGrapeIdx) => {
         setEditGrapeIdx(editGrapeIdx);
@@ -50,12 +50,12 @@ const GrapeWrapperContainer = () => {
             <Sun isSunRotate={isSunRotate}/>
             {isModalOpen && 
                 <Modal 
-                    grapeContent={grape[editGrapeIdx]} 
-                    setContentSuc={setContentSuc} 
-                    handleGrapeContent={editGrapeContent} 
-                    handleModalClose={closeModal}/>
+                    content={grapes[editGrapeIdx]} 
+                    isContentChangeSuccess={isContentChangeSuccess} 
+                    editGrapeContent={editGrapeContent} 
+                    closeModal={closeModal}/>
             }
-            <GrapeWrapper 
+            <Grapes 
                 openModal={openModal}
                 changeGrapeChecked={changeGrapeChecked}
                 />

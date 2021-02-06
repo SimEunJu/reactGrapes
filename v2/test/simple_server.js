@@ -17,7 +17,8 @@ const server = http.createServer(function (req, res) {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         const grape = [];
         for (let index = 0; index < 10; index++) {
-            grape.push({isChecked: false, content: ''});
+            const isTrue = index % 2 === 0;
+            grape.push({isChecked: isTrue, content: 'content', title: 'title'});
             
         }
         res.write(JSON.stringify( { gno: 1, depth: 4, title:'test', grapeCnt: 10, grape} ));  

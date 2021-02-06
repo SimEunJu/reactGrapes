@@ -1,100 +1,116 @@
-import React, {Component} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
+import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const ModalWrapper = styled.div`
+const ModalBackground = styled.div`
     position: absolute;
     background: rgba(0,0,0,0.2);
     width: 100vw;
-    height: calc(100vh + ${p=>p.top}px);
+    height: 100vh;
     top: 0;
     z-index: 2;
-`;
-const GrapeModal = styled.div`
     display: flex;
-    height: 100vh;
     justify-content: center;
     align-items: center;
 `;
+const GrapeModal = styled.div`
+    width: 300px;
+    padding: 10px;
+    background-color: beige;
+`;
 const XBtn = styled.div`
-    position: fixed;
-    left: calc(50vw + 120px);
-    top: 30vh;
+    text-align: right;
     font-size: 20px;
     cursor: pointer;
 `;
 const SubmitBtn = styled.div`
-    position: fixed;
     border: 1.5px solid seagreen;
     background-color: white;
     font-weight: bold;
     cursor: pointer;
-    top: calc(50vh + 120px);
     padding: 6px;
-    width: 10%;
+    width: 30%;
     text-align: center;
+    margin: auto;
+    margin-top: 10px;
+
+    &:hover{
+        background-color: seagreen;
+        color: white;
+    }
 `;
 
 const TextBox = styled.div`
-    width: 200px;
-    height: 200px;
-    position: fixed;
+    width: 100%;
+    height: 300px;
+
+    & > * {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 3px;
+        border: 1.5px solid seagreen;
+    }
+    input{
+        height: 10%;
+        margin-bottom: 2px;
+    }
+    textarea{  
+        height: 90%;
+    }
 `;
-const inputStyle = {
-    width: '100%',
-    height: '15%',
-    padding: '2px',
-    marginBottom: '2px',
-    border: '1.5px solid seagreen'
-}
-const textareaStyle = {
-    width: '100%', 
-    height: '85%',
-    border: '1.5px solid seagreen',
-    fontFamily: 'inherit'
-};
-class Modal extends Component{
-    constructor(props){
-        super(props);
-        this.reference = React.createRef();
-        this.state = {
-            top: 0,
-            title: this.props.grapeContent.title,
-            content: this.props.grapeContent.content
-        }
-    }
-    componentDidMount() {
-        this.setState({...this.state, top: this.getOffsetTop()});
-    }
-    getOffsetTop = () => {
-        return this.reference.current.offsetTop;
-    }
-    handleTitleChange = (e) => {
-        this.setState({...this.state, title:e.target.value});
-    }
-    handleContentChange = (e) => {
-        this.setState({...this.state, content:e.target.value});
-    }
-    render(){
-        const {offset, setContentSuc} = this.props;
-        const {title, content} = this.state;
-       
-        if(setContentSuc) this.props.handleModalClose(); 
-        
-        return(
-            <div ref={this.reference}>
-                <ModalWrapper top={this.state.top}>
-                    <GrapeModal>
-                        <TextBox>
-                            <input onChange={this.handleTitleChange} value={title} type="text" placeholder="제목을 입력해 주세요" style={inputStyle}></input>
-                            <textarea onChange={this.handleContentChange} value={content} cols="10" placeholder="내용을 입력해 주세요" style={textareaStyle}></textarea>
-                        </TextBox>
-                        <XBtn onClick={this.props.handleModalClose}>&#10006;</XBtn>
-                        <SubmitBtn onClick={() => this.props.handleGrapeContent({title, content, offset})}>입력</SubmitBtn>
-                    </GrapeModal>
-                </ModalWrapper>
-            </div>
-        );    
-    }
+
+const Modal = ({content : propContent, isContentChangeSuccess, editGrapeContent, closeModal}) => {
+    const modalRef = useRef();
+    const [top, setTop] = useState(0);
+    const [title, setTitle] = useState(propContent.title);
+    const [content, setContent] = useState(propContent.content);
+    
+    useEffect(() => {
+        const top = modalRef.current.getBoundingClientRect().top;
+        setTop(top);
+    }, []);
+    
+    useEffectOnlyUpdate(() => {
+        if(isContentChangeSuccess) closeModal(); 
+    }, [isContentChangeSuccess]);
+
+    const editTitle = useCallback(({target: {value}}) => {
+        setTitle(value);
+    }, [setTitle]);
+
+    // TODO: textarea는 controlled인가 아닌가
+    const editContent  = useCallback(({target: {value}}) => {
+        setContent(value);
+    }, [setContent]);
+
+    return(
+        <ModalBackground top={top} ref={modalRef}>
+            <GrapeModal>
+                <XBtn onClick={closeModal}>&#10006;</XBtn>
+                <TextBox>
+                    <input 
+                        onChange={editTitle} 
+                        name="title"
+                        value={title} 
+                        type="text" 
+                        placeholder="제목을 입력해 주세요" 
+                    ></input>
+                    <textarea 
+                        onChange={editContent} 
+                        name="content"
+                        value={content} 
+                        cols="10" 
+                        placeholder="내용을 입력해 주세요"
+                    ></textarea>
+                </TextBox>
+                <SubmitBtn 
+                    onClick={() => editGrapeContent({title, content})}>
+                    입력
+                </SubmitBtn>
+            </GrapeModal>
+        </ModalBackground>
+    );    
+    
 }
 
 export default Modal;
