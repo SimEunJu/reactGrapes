@@ -21,9 +21,10 @@ const GET_GRAPES = 'grape/GET_GRAPES';
 
 const MainPage = (props) => {
 
-    const {grapeStatusSuccess, grapeStatusFail} = useSelector(({pender}) => ({
+    const {grapeStatusSuccess, grapeStatusFail} 
+        = useSelector(({pender, grape}) => ({
         grapeStatusSuccess: pender.success[GET_GRAPES],
-        grapeStatusFail: pender.failure[GET_GRAPES]
+        grapeStatusFail: pender.failure[GET_GRAPES],
     }), shallowEqual);
     const dispatch = useDispatch(); 
     
@@ -39,8 +40,8 @@ const MainPage = (props) => {
     if(grapeStatusSuccess) return (
         <Fragment>
             <HeaderContainer />
-            <JuiceBtnContainer />
-            <GrapesContainer />
+            <JuiceBtnContainer /> 
+            <GrapesContainer /> 
             <JuiceContainer />
         </Fragment>
     );

@@ -1,6 +1,7 @@
 import { useMemo, useRef } from "react";
 
 function useAnimation({keyframes, options}) {
+    
     const ref = useRef(null);
     
     return useMemo(() => [ref,{
@@ -9,7 +10,6 @@ function useAnimation({keyframes, options}) {
         keyframes,
         options
     }], [ref]);
-    
 }
 
 export default useAnimation;

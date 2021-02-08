@@ -46,7 +46,8 @@ const initialState = Map({
     isDepthSet: true, // false
     juiceRatio: {green: 0, purple: 0},
     isJuiceMaking: false,
-    isJuiceSaved: false,
+    isJuiceSaving: false,
+    isJuicesaved: false,
     title: '',
     modal: false,
     showcase: []
@@ -129,7 +130,7 @@ export default handleActions({
             .set('isJuiceMaking', true);
     },
     [SAVE_JUICE]: (state, action) => {
-        return state.set('isJuiceSaved', true);
+        return state.set('isJuiceSaving', true);
     },
     ...pender({
         type: SET_TITLE,
@@ -147,7 +148,8 @@ export default handleActions({
             return state;
         },  
         onSuccess: (state, action) => {
-            return state.set('rgba', action.payload.data.rgba);
+            return state.set('rgba', action.payload.data.rgba)
+                        .set('isJuiceSaved', true);
         }
     }),
     ...pender({

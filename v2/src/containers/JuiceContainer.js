@@ -1,42 +1,37 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import Juice from '../components/Juice';
-import * as grapeActions from '../store/modules/grape';
+import {setRgba} from '../store/modules/grape';
 
-class JuiceContainer extends Component{
-    getJuiceColor = () =>{
-        const {green, purple} = this.props.juiceRatio;
-        const totalCnt = green + purple;
-        const pRatio = purple/totalCnt*0.6+0.4;
-        const rgba = `rgba(179,32,82,${1*pRatio})`;
+// TODO: animation web api를 사용하기 위한 boilerplate가 양이 많아서
+// 애니메이션 전담 컴포넌트를 따로 빼서  
+// container - animation component로 구성하거나, HOC를 고려해야 할 것 같음
+const JuiceContainer = () => {
+
+    const {gno, juiceColorCntSet} = useSelector(({grape}) => ({
+        gno: grape.get('gno'),
+        juiceColorCntSet: grape.get('juiceRatio')
+    }), shallowEqual);
+
+    const dispatch = useDispatch();
+    
+    const getJuiceColor = useMemo(() => {
+        const {green: greenCnt, purple: purpleCnt} = juiceColorCntSet;
+        const totalCnt = greenCnt + purpleCnt;
+        const aRatio = purpleCnt/totalCnt * 0.6 + 0.4;
+        const rgba = `rgba(179, 32, 82, ${1*aRatio})`;
         return rgba;
-    }
+    }, [juiceColorCntSet]);
     
-    saveJuice = (e) =>{
-        const {GrapeActions, gno} = this.props;
-        GrapeActions.saveJuice();
-        GrapeActions.setRgba({'rgba': this.getJuiceColor(), gno});
+    const saveJuice = () =>{
+        dispatch(setRgba({'rgba': getJuiceColor, gno}));
     }
-    
-    render(){
-        return(
-            <Juice
-                saveJuice={this.saveJuice} 
-                isJuice={this.props.isJuice} 
-                rgba={this.getJuiceColor()}/>
-        );
-    }
+
+    return(
+        <Juice
+            saveJuice={saveJuice}
+            rgba={getJuiceColor}/>
+    );
 }
 
-export default connect(
-    (state) => ({
-        gno: state.grape.get('gno'),
-        juiceRatio: state.grape.get('juiceRatio'),
-        isJuice: state.grape.get('isJuiceMaking'),
-        savedJuice: state.grape.get('isJuiceSaved'),
-    }),
-    (dispatch) => ({
-        GrapeActions: bindActionCreators(grapeActions, dispatch)
-    })
-)(JuiceContainer);
+export default JuiceContainer;

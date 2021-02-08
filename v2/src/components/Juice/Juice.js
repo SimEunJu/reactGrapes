@@ -1,25 +1,30 @@
-import React, {Component} from 'react';
-import styled, {keyframes} from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { AnimationService } from '../../hooks/animation/animation';
+import useAnimation from '../../hooks/animation/useAnimation';
+import useAnimations from '../../hooks/animation/useAnimations';
+import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const JuiceAni = keyframes`
-    0% { transform: translateY(-70vh) rotate(0); }
-    18.75% { transform: translateY(-75vh) rotate(30deg); }
-    37.5% { transform: translateY(-70vh) rotate(0); }
-    75% { transform: translateY(-75vh) rotate(-30deg); }
-    100% { transform: translateY(-70vh) rotate(0); }
+const BottleBlock = styled.div`
+    position: relative;
+    margin: auto;
+    width: 200px;
 `;
-const CapAni = keyframes`
-    0% { transform: translateY(0); }
-    100% { transform: translateY(15px); }
-`;
-const SaveAni = keyframes`
-    0% { transform: translateY(-70vh) scale(1); }
-    100% { transform: translateY(-70vh) scale(0); }
+const Cap = styled.div`
+    position: relative;
+    top: 3px;
+    //background-color: white;
+    margin: auto;
+    border-radius: 7px;
+    width: 30px;
+    height: 35px;
 `;
 const BottleEnter = styled.div`
     border-radius: 3px;
     margin: auto;
     position: relative;
+    top: 2px;
     border: 2px solid black;
     width: 48px;
     height: 17px;
@@ -28,75 +33,128 @@ const BottleEnter = styled.div`
 const BottleNeck = styled.div`
     border: 2px solid black;
     position: relative;
-    border-bottom: 0px solid white;
+    border-bottom: none;
     margin: auto;
     border-top: none;
     width: 31px;
     height: 19px;
     background-color: white;
-    z-index: 5;
+    z-index: 1;
 `;
 const BottleBody = styled.div`
     border: 2px solid black;
     width: 86px;
-    position: absolute;
     height: 110px;
-    left: 56px;
-    top: 35px;
-    border-top-left-radius: 45px;
-    border-top-right-radius: 45px;
+    position: relative;
+    top: -2px;
+    border-top-left-radius: 35%;
+    border-top-right-radius: 35%;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
+    background-color: white;
     margin: auto;
 `;
 const Liquid = styled.div`
-    background-color: ${props => props.rgba};
     width: 100%;
     height: 70%;
     position: relative;
     top: 30%;
 `;
-const BottleWrap = styled.div`
-    position: relative;
-    margin: auto;
-    width: 200px;
-    height: 150px;
-    animation: ${JuiceAni} 1.5s ease-in-out 1s 1 forwards, ${SaveAni} 1s ease-in-out 4s 1 forwards;
-`;
-const Cap = styled.div`
-    position: absolute;
-    left: 85px;
-    top: -25px;
-    background-color: brown;
-    z-index: -1;
-    border-radius: 7px;
-    width: 30px;
-    height: 30px;
-    animation: ${CapAni} 0.5s ease-in 3s 1 forwards;
-`;
-class Juice extends Component {
-    aniCnt = 0;
-    handleAniEnd = () => {
-        const {saveJuice} = this.props;
-        if(++this.aniCnt === 2){
-            saveJuice();
-            this.aniCnt = 0;
+
+// TODO: delay로 애니메이션 순서 조정 했던 거 web animation api로 전환
+const animationOpts = {
+    capEl: {
+        name: 'closeCap',
+        order: 2,
+        keyframes: [
+            { transform: 'translateY(0)', backgroundColor: 'brown'},
+            { transform: 'translateY(15px)', backgroundColor: 'brown' }
+        ],
+        options: {
+            duration: 500,
+            //delay: 3000,
+            fill: 'forwards',
+            easing: 'ease-in'
         }
-    }
-    render(){
-        const {rgba, isJuice} = this.props;
-        if(!isJuice) return <div />;
-        return(
-            <BottleWrap onAnimationEnd={this.handleAniEnd}>
-                <Cap onAnimationEnd={e => e.stopPropagation()}/>
-                <BottleEnter />
-                <BottleNeck />
-                <BottleBody>
-                    <Liquid rgba={rgba}/>
-                </BottleBody>
-            </BottleWrap>
-        );
-    }
+    },
+    bottleEl: [ 
+        {   
+            name: 'shakeBottle',
+            order: 1,
+            keyframes : [
+                { transform: 'rotate(0)' },
+                { transform: 'rotate(30deg)' },
+                { transform: 'rotate(0)' },
+                { transform: 'rotate(-30deg)' },
+                { transform: 'rotate(0)' }
+            ],
+            options: {
+                duration: 1500,
+                //delay: 1000,
+                //composite: 'accumulate',
+                fill: 'forwards',
+                easing: 'ease-in-out'
+            }
+        },
+        {
+            name: 'minimizeBottle',
+            order: 3,
+            keyframes: [
+                { transform: 'scale(1)' },
+                { transform: 'scale(0)' }
+            ],
+            options: {
+                duration: 1000,
+                //delay: 4000,
+                fill: 'forwards',
+                easing: 'ease-in-out'
+            }
+        }
+    ]
+};
+
+const Juice = ({rgba, saveJuice}) => {
+    
+    const [bottleBlockRef, bottleBlockAnis] = useAnimations(animationOpts['bottleEl']);
+    const [capRef, capAni] = useAnimation(animationOpts['capEl']);
+
+    const isJuiceSaving = useSelector(({grape}) => grape.get('isJuiceSaving'));
+
+    // TODO: promise 패턴 개선 여지
+    useEffectOnlyUpdate(() => {
+        // animationSeq = [bottleBlockAnis[0], capAni, bottleBlockAnis[1]];
+        if(!isJuiceSaving) return false;
+
+        const shakeBottleAni = bottleBlockAnis[0];
+        shakeBottleAni.keyframes.splice(3, 0, {backgroundColor: `${rgba}`});
+        AnimationService.animate(shakeBottleAni).finished
+            .then(() => { return AnimationService.animate(capAni).finished; })
+            .then(() => { return AnimationService.animate(bottleBlockAnis[1]).finished; })
+            .then(saveJuice)
+            .catch((e) => {
+                console.error(e);
+            })
+            .finally();
+
+    }, [isJuiceSaving]);
+
+    useEffect(() => {
+        const top = bottleBlockRef.current.getBoundingClientRect().top;
+        bottleBlockRef.current.top = top;
+    }, []);
+
+    //if(!isJuiceSaving) return <div />;
+    return(
+        <BottleBlock ref={bottleBlockRef}>
+            <Cap ref={capRef} />
+            <BottleEnter />
+            <BottleNeck />
+            <BottleBody>
+                <Liquid />
+            </BottleBody>
+        </BottleBlock>
+    );
+
 }
 
 export default Juice;
