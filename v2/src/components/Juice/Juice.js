@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AnimationService } from '../../hooks/animation/animation';
@@ -14,7 +14,6 @@ const BottleBlock = styled.div`
 const Cap = styled.div`
     position: relative;
     top: 3px;
-    //background-color: white;
     margin: auto;
     border-radius: 7px;
     width: 30px;
@@ -61,13 +60,12 @@ const Liquid = styled.div`
     top: 30%;
 `;
 
-// TODO: delay로 애니메이션 순서 조정 했던 거 web animation api로 전환
 const animationOpts = {
     capEl: {
         name: 'closeCap',
         order: 2,
         keyframes: [
-            { transform: 'translateY(0)', backgroundColor: 'brown'},
+            { transform: 'translateY(0)', backgroundColor: 'brown' },
             { transform: 'translateY(15px)', backgroundColor: 'brown' }
         ],
         options: {
@@ -110,26 +108,42 @@ const animationOpts = {
                 easing: 'ease-in-out'
             }
         }
-    ]
+    ],
+    liquidEl: {
+        name: "setLiquidColor",
+        order: 4,
+        keyframes: [
+            {backgroundColor: null}
+        ],
+        options: {
+            duration: 1000,
+            fill: 'forwards',
+            easing: 'ease-in'
+        }
+    }
 };
 
 const Juice = ({rgba, saveJuice}) => {
     
     const [bottleBlockRef, bottleBlockAnis] = useAnimations(animationOpts['bottleEl']);
     const [capRef, capAni] = useAnimation(animationOpts['capEl']);
+    const [liquidRef, liquidAni] = useAnimation(animationOpts['liquidEl']);
 
     const isJuiceSaving = useSelector(({grape}) => grape.get('isJuiceSaving'));
 
     // TODO: promise 패턴 개선 여지
     useEffectOnlyUpdate(() => {
-        // animationSeq = [bottleBlockAnis[0], capAni, bottleBlockAnis[1]];
+        // animationSeq = [bottleBlockAnis[0], liquidAni, capAni, bottleBlockAnis[1]];
         if(!isJuiceSaving) return false;
 
-        const shakeBottleAni = bottleBlockAnis[0];
-        shakeBottleAni.keyframes.splice(3, 0, {backgroundColor: `${rgba}`});
-        AnimationService.animate(shakeBottleAni).finished
-            .then(() => { return AnimationService.animate(capAni).finished; })
-            .then(() => { return AnimationService.animate(bottleBlockAnis[1]).finished; })
+        liquidAni.keyframes[0].backgroundColor = rgba;
+        
+        Promise.all([
+                AnimationService.animate(bottleBlockAnis[0]).finished,
+                AnimationService.animate(liquidAni).finished,
+            ])
+            .then(() => AnimationService.animate(capAni).finished)
+            .then(() => AnimationService.animate(bottleBlockAnis[1]).finished)
             .then(saveJuice)
             .catch((e) => {
                 console.error(e);
@@ -138,11 +152,6 @@ const Juice = ({rgba, saveJuice}) => {
 
     }, [isJuiceSaving]);
 
-    useEffect(() => {
-        const top = bottleBlockRef.current.getBoundingClientRect().top;
-        bottleBlockRef.current.top = top;
-    }, []);
-
     //if(!isJuiceSaving) return <div />;
     return(
         <BottleBlock ref={bottleBlockRef}>
@@ -150,7 +159,7 @@ const Juice = ({rgba, saveJuice}) => {
             <BottleEnter />
             <BottleNeck />
             <BottleBody>
-                <Liquid />
+                <Liquid ref={liquidRef}/>
             </BottleBody>
         </BottleBlock>
     );

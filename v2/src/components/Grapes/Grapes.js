@@ -60,7 +60,7 @@ const Grapes = (props) => {
     // 부모에서 child animation이 모두 끝났는지 확인해야 함
     // TODO: update 1번만 실행되는지 확인해야 하는지..
     useEffectOnlyUpdate(() => {
-        Promise.all(
+        Promise.any(
             grapesRef.current.getAnimations({ subtree: true })
               .map(animation => animation.finished)
           ).then(() => dispatch(saveJuice()));
