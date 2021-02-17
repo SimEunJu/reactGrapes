@@ -68,9 +68,8 @@ const DepthInput = () => {
         return false;
     }, [depth, depthInputVal]);
 
-    const handleInputVal = useCallback((inputVal) => {
-
-        const parsedDepth = Number.parseInt(inputVal, 10);
+    const handleInputVal = useCallback(() => {
+        const parsedDepth = Number.parseInt(depthInputVal, 10);
         if(Number.isNaN(parsedDepth)){
             alert('올바른 정수를 입력해주세요.');
             inputEl.current.focus();
@@ -103,7 +102,7 @@ const DepthInput = () => {
                 autoFocus={true}
                 ref={inputEl}>
             </input>
-            <button type="button" onClick={() => handleInputVal(depthInputVal)} >
+            <button type="button" onClick={handleInputVal} >
                 입력
             </button>
         </InputBlock> 

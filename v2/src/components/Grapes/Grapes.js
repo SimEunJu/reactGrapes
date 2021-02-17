@@ -31,8 +31,9 @@ const Grapes = (props) => {
             const cntPerRow = depth - row;
             for (let col = 0; col < cntPerRow; col++) {
                 grapeRow.push(<Grape
-                    idx={idx}
-                    key={idx}
+                    id={grape[idx].id}
+                    seq={grape[idx].seq}
+                    key={grape[idx].id}
                     size={sizeOfGrape}
                     color={grape[idx].isChecked ? PURPLE : GREEN}
                     openModal={openModal}

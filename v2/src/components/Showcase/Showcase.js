@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, {useEffect, useMemo} from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ShowcaseRow from './ShowcaseRow';
+import {getShowcase} from '../../store/modules/grape';
 
 const ShowcaseFrame = styled.div`
     margin: 10%;
@@ -8,16 +10,31 @@ const ShowcaseFrame = styled.div`
     background-color: white;
 `;
 
-class Showcase extends Component{
-    render(){
-        const {showcase} = this.props;
-        const bunchOfGrapes = showcase.map(s => <ShowcaseRow grapes={s}/>);
-        return(
-            <ShowcaseFrame>
-               {bunchOfGrapes}
-            </ShowcaseFrame>
-        );
-    }
+const Showcase = () => {
+    
+    const {showcase, loading} = useSelector(({grape, pender}) => ({
+        showcase: grape.get('showcase'),
+        loading: pender.pending['grape/GET_SHOWCASE']
+
+    }), shallowEqual);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getShowcase());
+    }, []);
+
+    const bunchOfGrapes = useMemo(() => 
+        showcase.map(s => <ShowcaseRow grapes={s}/>), 
+        [showcase]) ;
+
+    // TODO: loader로 교체
+    if(loading) return <div />;
+    //this.props.GrapeActions.setJuice({isJuice: false});
+    return(
+        <ShowcaseFrame>
+            {bunchOfGrapes}
+        </ShowcaseFrame>
+    );
 }
 
 export default Showcase;

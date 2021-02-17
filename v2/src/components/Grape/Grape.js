@@ -44,7 +44,7 @@ const getRandRatio = () => {
 
 const Grape = (props) => {
     // TODO: 부모와 공유하는 상태가 많으면 props로 받고, 아니면 useSelector 사용
-    const {idx, size, color, openModal, changeGrapeChecked} = props;
+    const {id, seq, size, color, openModal, changeGrapeChecked} = props;
 
     const {startJuiceAni, endJuiceAni} = useSelector( ({grape}) => ({
         startJuiceAni: grape.get('isJuiceMaking'),
@@ -127,8 +127,8 @@ const Grape = (props) => {
             onMouseLeave={() => showEditIcon(false)}
             ref={dropRef}>
             <div style={{visibility: isVisible? '' : 'hidden'}}>
-                <img src={pencilImg} onClick={() => openModal(idx)}></img>
-                <img src={checkedImg} onClick={() => changeGrapeChecked(idx)}></img>
+                <img src={pencilImg} onClick={() => openModal(id, seq)}></img>
+                <img src={checkedImg} onClick={() => changeGrapeChecked(id, seq)}></img>
             </div>
         </Drop>
     );

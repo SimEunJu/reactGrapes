@@ -152,7 +152,7 @@ const Juice = ({rgba, saveJuice}) => {
 
     }, [isJuiceSaving]);
 
-    //if(!isJuiceSaving) return <div />;
+    if(!isJuiceSaving) return <div />;
     return(
         <BottleBlock ref={bottleBlockRef}>
             <Cap ref={capRef} />

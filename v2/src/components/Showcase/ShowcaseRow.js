@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import styled from 'styled-components';
+import {withRouter} from 'react-router';
 import MiniJuice from './MiniJuice';
 
 const RowWrap = styled.div`
@@ -40,26 +41,23 @@ const Padding = styled.div`
     height: inherit;
 `;
 
-class ShowcaseRow extends Component{
-    handleClick = (id) => {
-        window.location.href = "/grapes/"+id;
+const ShowcaseRow = ({history, rgba, title, id}) => {
+    
+    const handleClick = () => {
+        history.push(`/grapes/${id}`);
     }
-  
-    render(){
-        const {rgba, title, _id:id, regdate} = this.props.grapes;
-        return(
-            <Fragment>
-                <RowContainer>
-                    <RowWrap>
-                        <Padding />
-                        <MiniJuice rgba={rgba} handleClick={() => this.handleClick(id)}/> 
-                        <Comment>{title}</Comment>
-                    </RowWrap>
-                    <Bar />
-                </RowContainer>
-            </Fragment>
-        );
-    }
+
+    //const {rgba, title, _id:id, regdate} = this.props.grapes;
+    return(
+        <RowContainer>
+            <RowWrap>
+                <Padding />
+                <MiniJuice rgba={rgba} handleClick={handleClick}/> 
+                <Comment>{title}</Comment>
+            </RowWrap>
+            <Bar />
+        </RowContainer>
+    );
 }
 
-export default ShowcaseRow;
+export default withRouter(ShowcaseRow);

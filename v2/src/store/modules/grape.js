@@ -42,8 +42,8 @@ const initialState = Map({
     grape: [],
     rgba: GREEN,
     gno: null,
-    depth: 4, //null
-    isDepthSet: true, // false
+    depth: null, //null
+    isDepthSet: false, // false
     juiceRatio: {green: 0, purple: 0},
     isJuiceMaking: false,
     isJuiceSaving: false,
@@ -73,7 +73,7 @@ export default handleActions({
             return state; 
         },
         onSuccess: (state, action) => {
-            const {gno, depth} = action.payload.data;
+            const gno = action.payload.data;
             return state.set('gno', gno);
         },
         onFailure: (state, action) => {
@@ -87,13 +87,11 @@ export default handleActions({
         },
         onSuccess: (state, action) => {
             const grapes = action.payload.data;
-            //const grape = grapes.grape.map(g => grape[g.idx] = g);
-       
-            return state.set('grapeCnt', grapes.grapeCnt)
+
+            return state.set('gno', grapes.id)
                 .set('depth', grapes.depth)
                 .set('title', grapes.title)
-                .set('grape', grapes.grape)
-                .set('gno', grapes._id);   
+                .set('grape', grapes.grapes);
         }
     }),
     ...pender({
@@ -102,10 +100,16 @@ export default handleActions({
             return state;
         },
         onSuccess: (state, action) => {
-            const grapes = action.payload.data;
-            const grape = [];
-            grapes.grape.map(g => grape[g.idx] = g);
-            return state.set('grape', grape);
+            const grapeId = action.payload.data;
+            const updatedGrapes = state.get('grape')
+                .map(grape => {
+                    if(grape.id === grapeId){
+                        grape.isChecked = true
+                        return grape;
+                    }
+                    return grape;
+                });
+            return state.set('grape', updatedGrapes);
         }
     }),
     ...pender({

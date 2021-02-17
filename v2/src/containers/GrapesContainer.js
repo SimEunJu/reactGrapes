@@ -23,27 +23,28 @@ const GrapeWrapperContainer = () => {
     const [isSunRotate, setSunRotate] = useState(false);
     const [editGrapeIdx, setEditGrapeIdx] = useState(null);
 
-    const changeGrapeChecked = useCallback((grapeIdx) => {
+    // TODO: useCallback에 파라미터 있는 함수 넘겨줄 수 없는데 해결방안 생각해보기
+    const changeGrapeChecked = (grapeIdx, grapeSeq) => {
         
         let isChecked = false;
-        if(!grapes[grapeIdx].isChecked) isChecked = true;
+        if(!grapes[grapeSeq].isChecked) isChecked = true;
         
         dispatch(changeColor({gno, idx: grapeIdx, isChecked}));
         setSunRotate(isChecked);
-    }, [grapes, dispatch]);
+    };
 
-    const openModal = useCallback((editGrapeIdx) => {
+    const openModal = (editGrapeIdx) => {
         setEditGrapeIdx(editGrapeIdx);
         dispatch(showModal({'modal': true}));
-    }, [dispatch]);
+    };
 
     const closeModal = useCallback(() => {
         dispatch(showModal({'modal': false}));
     }, [dispatch]);
 
-    const editGrapeContent = useCallback(({title, content}) => {
+    const editGrapeContent = ({title, content}) => {
         dispatch(changeGrapeContent({gno, idx: editGrapeIdx, title, content}));
-    }, [dispatch]);
+    };
 
     return(
         <Fragment>

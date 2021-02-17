@@ -1,8 +1,8 @@
 import React from 'react';
-import ShowcaseContainer from '../containers/ShowcaseContainer';
+import Showcase from '../components/Showcase';
 
 const ShowcasePage = () => (
-    <ShowcaseContainer />
+    <Showcase />
 );
 
 export default ShowcasePage;
