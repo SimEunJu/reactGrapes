@@ -34,7 +34,7 @@ export const makingJuice = createAction(MAKING_JUICE);
 export const saveJuice = createAction(SAVE_JUICE);
 export const setTitle = createAction(SET_TITLE, api.updateTitle);
 export const setRgba = createAction(SET_RGBA, api.updateRgba);
-export const showModal = createAction(SHOW_MODAL);
+export const showModal = createAction(SHOW_MODAL, api.readOneGrape);
 export const hideModal = createAction(HIDE_MODAL);
 export const getShowcase = createAction(GET_SHOWCASE, api.readShowcase);
 
@@ -50,6 +50,8 @@ const initialState = Map({
     isJuicesaved: false,
     title: '',
     modal: false,
+    modalTitle: '',
+    modalContent: '',
     showcase: []
 });
 
@@ -118,10 +120,13 @@ export default handleActions({
             return state;
         },
         onSuccess: (state, action) => {
-            const grapes = action.payload.data;
-            const grape = [];
-            grapes.grape.map(g => grape[g.idx] = g);
-            return state.set('grape', grape);
+            const grapeRes = action.payload.data;
+            const updatedGrapes = state.get('grape')
+                .map(grape => {
+                    if(grape.id === grapeRes.id) return grapeRes;
+                    return grape;
+                });
+            return state.set('grape', updatedGrapes);
         }
     }),
     [SET_JUICE]: (state, action) => {
@@ -142,7 +147,7 @@ export default handleActions({
             return state;
         },
         onSuccess: (state, action) => {
-            const {title} = action.payload.data;
+            const title = action.payload.data;
             return state.set('title', title);
         }
     }),
@@ -166,11 +171,20 @@ export default handleActions({
             return state.set('showcase', showcase);
         }
     }),
-    [SHOW_MODAL]: (state, action) => {
-        return state.set('modal', action.payload.modal);
-    },
+    ...pender({
+        type: SHOW_MODAL,
+        onPending: (state, action) => {
+            return state;
+        },  
+        onSuccess: (state, action) => {
+            const {title, content} = action.payload.data;
+            return state.set('modal', true)
+                .set('modalTitle', title)
+                .set('modalContent', content);
+        }
+    }),
     [HIDE_MODAL]: (state, action) => {
-        return state.set('modal', action.payload.modal);
+        return state.set('modal', false);
     },
     [IS_DEPTH_SET]: (state, action) => {
         return state.set('isDepthSet', action.payload);

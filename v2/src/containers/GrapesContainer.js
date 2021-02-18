@@ -1,7 +1,7 @@
 import React, {Fragment, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {changeColor, showModal, changeGrapeContent} 
+import {changeColor, showModal, changeGrapeContent, hideModal} 
     from '../store/modules/grape';
 
 import Grapes from '../components/Grapes';
@@ -35,11 +35,11 @@ const GrapeWrapperContainer = () => {
 
     const openModal = (editGrapeIdx) => {
         setEditGrapeIdx(editGrapeIdx);
-        dispatch(showModal({'modal': true}));
+        dispatch(showModal({gno, idx: editGrapeIdx}));
     };
 
     const closeModal = useCallback(() => {
-        dispatch(showModal({'modal': false}));
+        dispatch(hideModal());
     }, [dispatch]);
 
     const editGrapeContent = ({title, content}) => {
@@ -51,7 +51,6 @@ const GrapeWrapperContainer = () => {
             <Sun isSunRotate={isSunRotate}/>
             {isModalOpen && 
                 <Modal 
-                    content={grapes[editGrapeIdx]} 
                     isContentChangeSuccess={isContentChangeSuccess} 
                     editGrapeContent={editGrapeContent} 
                     closeModal={closeModal}/>

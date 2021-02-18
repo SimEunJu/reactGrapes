@@ -28,12 +28,12 @@ const animationOtps = {
     }
 }
 
-const Header = ({changeTitle}) => {
+const Header = ({changeTitle, title}) => {
     
     const [branchRef, branchAni] = useAnimation(animationOtps['branchEl']); 
     const [leafRef, leafAni] = useAnimation(animationOtps['leafEl']);
 
-    const [titleInput, setTitleInput] = useState('');
+    const [titleInput, setTitleInput] = useState(title);
     const [titleBtnTxt, setTitleBtnTxt] = useState('입력');
     const [isWriteMode, setWriteMode] = useState(false); 
     
@@ -78,9 +78,11 @@ const Header = ({changeTitle}) => {
     }
 
     const handleClick = (e) => {
-        if(isWriteMode) animateLeafToClose();
+        if(isWriteMode){
+            animateLeafToClose();
+            changeTitle(titleInput);
+        } 
         else animateLeafToWrite();
-        changeTitle(titleInput);
     }
 
     // TODO: onBlur와 onClick 충돌 문제

@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
@@ -59,12 +60,18 @@ const TextBox = styled.div`
     }
 `;
 
-const Modal = ({content : propContent, isContentChangeSuccess, editGrapeContent, closeModal}) => {
+const Modal = ({isContentChangeSuccess, editGrapeContent, closeModal}) => {
     const modalRef = useRef();
+
+    const {modalTitle, modalContent} = useSelector(({grape}) => ({
+        modalTitle: grape.get('modalTitle'),
+        modalContent: grape.get('modalContent')
+    }))
+
     const [top, setTop] = useState(0);
-    const [title, setTitle] = useState(propContent.title);
-    const [content, setContent] = useState(propContent.content);
-    
+    const [title, setTitle] = useState(modalTitle);
+    const [content, setContent] = useState(modalContent);
+
     useEffect(() => {
         const top = modalRef.current.getBoundingClientRect().top;
         setTop(top);
