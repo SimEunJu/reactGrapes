@@ -9,8 +9,9 @@ export const updateTitle = async ({gno, title}) => await axios.patch(`/${gno}/ti
 export const updateOneGrapeColor = async ({gno, idx, isChecked}) => await axios.patch(`/${gno}/${idx}/check`, {isChecked});
 export const updateOneGrape = async ({gno, idx, title, content}) => await axios.patch(`/${gno}/${idx}`, {title,content});
 export const readOneGrape = async ({gno, idx}) => await axios.get(`/${gno}/${idx}`);
+export const finishOneGrape = async ({gno, rgba}) => await axios.patch(`/${gno}/finish`, {rgba});
 
-export const updateRgba = ({gno, rgba}) => axios.post(`/${gno}/rgba`,{rgba});
-export const updateJuiceFinishState = ({gno, isFinish}) => axios.post(`/${gno}/finish`,{isFinish});
+//export const updateJuiceFinishState = async ({gno, isFinish}) => await axios.post(`/${gno}/finish`,{isFinish});
+
 export const readShowcase = () => axios.get(`/local/showcase`);
 export const deleteGrapes = (gno) => axios.delete(`/${gno}`)
