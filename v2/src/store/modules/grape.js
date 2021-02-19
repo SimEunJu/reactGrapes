@@ -36,7 +36,7 @@ export const setTitle = createAction(SET_TITLE, api.updateTitle);
 export const setRgba = createAction(SET_RGBA, api.finishOneGrape);
 export const showModal = createAction(SHOW_MODAL, api.readOneGrape);
 export const hideModal = createAction(HIDE_MODAL);
-export const getShowcase = createAction(GET_SHOWCASE, api.readShowcase);
+export const getShowcase = createAction(GET_SHOWCASE); //, api.readShowcase
 
 const initialState = Map({
     grape: [],
@@ -52,7 +52,7 @@ const initialState = Map({
     modal: false,
     modalTitle: '',
     modalContent: '',
-    showcase: []
+    showcase: [{id: 3, depth: 4, title: "test", rgba: "rgba(179, 32, 82, 0.52)", grapes: null}]
 });
 
 const checkGrapeColor = (grapes) =>{
@@ -167,8 +167,8 @@ export default handleActions({
             return state;
         },  
         onSuccess: (state, action) => {
-            const showcase = action.payload.data;
-            return state.set('showcase', showcase);
+            const {dtoList} = action.payload.data;
+            return state.set('showcase', dtoList);
         }
     }),
     ...pender({

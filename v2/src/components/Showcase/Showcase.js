@@ -24,7 +24,7 @@ const Showcase = () => {
     }, []);
 
     const bunchOfGrapes = useMemo(() => 
-        showcase.map(s => <ShowcaseRow grapes={s}/>), 
+        showcase.map(grape => <ShowcaseRow grapes={grape}/>), 
         [showcase]) ;
 
     // TODO: loader로 교체

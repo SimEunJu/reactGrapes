@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React from 'react'; 
 import styled from 'styled-components';
 import {withRouter} from 'react-router';
 import MiniJuice from './MiniJuice';
@@ -13,11 +13,11 @@ const RowWrap = styled.div`
         background-color: rgba(0,0,0,0.1);
         width: 100%;
         height: 100%;
-        z-index: 5;
+        z-index: 2;
     }
 
     &:hover:before{
-        width: 50px;
+        width: 0%;
     }
 `;
 const Bar = styled.div`
@@ -27,31 +27,21 @@ const Bar = styled.div`
 `;
 
 const Comment = styled.div`
-    padding-left: 5%;
-    height: inherit;
-    display: flex;
-    width: 100%;
-    align-items: center;
+    padding: 20px 30px;
 `;
 const RowContainer = styled.div`
     position: relative;
 `;
-const Padding = styled.div`
-    width: 50px;
-    height: inherit;
-`;
 
-const ShowcaseRow = ({history, rgba, title, id}) => {
-    
+const ShowcaseRow = ({history, grapes : {rgba, title, id} }) => {
+   
     const handleClick = () => {
         history.push(`/grapes/${id}`);
     }
 
-    //const {rgba, title, _id:id, regdate} = this.props.grapes;
     return(
         <RowContainer>
             <RowWrap>
-                <Padding />
                 <MiniJuice rgba={rgba} handleClick={handleClick}/> 
                 <Comment>{title}</Comment>
             </RowWrap>

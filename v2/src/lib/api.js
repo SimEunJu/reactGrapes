@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 axios.defaults.baseURL = '/api/grapes';
-axios.defaults.headers.common['Authorization'] = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTM3NDg0OTd9.FTddaKrnInfO8BJ8hxBtfBsRISUC7hNMVK35NiRjXuO_QnvSR-wZ_AZpXfRxUPbbSfGRr1k5fuj6LNTQ-TaCyQ";
+axios.defaults.headers.common['Authorization'] = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTM4MzUwNjF9.ysahVPXzR_yehkHM9Z3LUnHoSDCV7qCWLRPibrkdbk9c15kkaX2mESfbVfyIDTm6udXWKGbNpny6tv4uSXFbOw";
 
 export const createNew = async (depth) => await axios.post(`/new`, {depth});
 export const readGrapes = async (gno) => await axios.get(`/${gno}`);
@@ -10,8 +10,7 @@ export const updateOneGrapeColor = async ({gno, idx, isChecked}) => await axios.
 export const updateOneGrape = async ({gno, idx, title, content}) => await axios.patch(`/${gno}/${idx}`, {title,content});
 export const readOneGrape = async ({gno, idx}) => await axios.get(`/${gno}/${idx}`);
 export const finishOneGrape = async ({gno, rgba}) => await axios.patch(`/${gno}/finish`, {rgba});
+export const readShowcase = async () => await axios.get(`/list`);
 
 //export const updateJuiceFinishState = async ({gno, isFinish}) => await axios.post(`/${gno}/finish`,{isFinish});
-
-export const readShowcase = () => axios.get(`/local/showcase`);
 export const deleteGrapes = (gno) => axios.delete(`/${gno}`)
