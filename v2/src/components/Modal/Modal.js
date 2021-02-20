@@ -64,8 +64,8 @@ const Modal = ({isContentChangeSuccess, editGrapeContent, closeModal}) => {
     const modalRef = useRef();
 
     const {modalTitle, modalContent} = useSelector(({grape}) => ({
-        modalTitle: grape.get('modalTitle'),
-        modalContent: grape.get('modalContent')
+        modalTitle: grape.modalTitle,
+        modalContent: grape.modalContent
     }))
 
     const [top, setTop] = useState(0);

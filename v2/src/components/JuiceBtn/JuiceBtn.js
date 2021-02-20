@@ -5,7 +5,7 @@ import './JuiceBtn.scss';
 
 const JuiceBtn = () => {
     
-    const isJuiceSaving = useSelector(({grape}) => grape.get('isJuiceSaving'));
+    const isJuiceSaving = useSelector(({grape}) => grape.isJuiceSaving);
     const dispatch = useDispatch();
 
     const handleClick = () =>{

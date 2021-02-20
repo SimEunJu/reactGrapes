@@ -12,11 +12,11 @@ import Sun from '../components/Sun';
 // TODO: atomic 상태관리 도입해야...
 const GrapeWrapperContainer = () => {
 
-    const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, pender}) => ({
-        gno: grape.get('gno'),
-        isContentChangeSuccess: pender.success['grape/CHANGE_GRAPE_CONTET'],
-        grapes: grape.get('grape'),
-        isModalOpen: grape.get('modal')
+    const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, loading}) => ({
+        gno: grape.gno,
+        isContentChangeSuccess: loading.changeGrapeContent,
+        grapes: grape.grape,
+        isModalOpen: grape.modal
     }));
     const dispatch = useDispatch();
 

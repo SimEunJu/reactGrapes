@@ -129,7 +129,7 @@ const Juice = ({rgba, saveJuice}) => {
     const [capRef, capAni] = useAnimation(animationOpts['capEl']);
     const [liquidRef, liquidAni] = useAnimation(animationOpts['liquidEl']);
 
-    const isJuiceSaving = useSelector(({grape}) => grape.get('isJuiceSaving'));
+    const isJuiceSaving = useSelector(({grape}) => grape.isJuiceSaving);
 
     // TODO: promise 패턴 개선 여지
     useEffectOnlyUpdate(() => {

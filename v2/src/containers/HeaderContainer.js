@@ -6,9 +6,9 @@ import Header from '../components/Header';
 const HeaderContainer = () => {
 
     const {gno, title, isJuiceSaving} = useSelector(({grape}) => ({
-        gno: grape.get('gno'),
-        title: grape.get('title'),
-        isJuiceSaving: grape.get('isJuiceSaving')
+        gno: grape.gno,
+        title: grape.title,
+        isJuiceSaving: grape.isJuiceSaving
     }));
     const dispatch = useDispatch();
 

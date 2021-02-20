@@ -52,7 +52,7 @@ const animationOtps = {
 const ShowcaseBtn = ({history}) => {
 
     const [doorRef, doorAni] = useAnimation(animationOtps.doorEl);
-    const isJuiceSaved = useSelector(({grape}) => grape.get('isJuiceSaved'));
+    const isJuiceSaved = useSelector(({grape}) => grape.isJuiceSaved);
     const [isDoorOpen, setDoorOpen] = useState(false);
 
     const handleMouseEnter = useCallback(() => {

@@ -9,8 +9,8 @@ import {setRgba} from '../store/modules/grape';
 const JuiceContainer = () => {
 
     const {gno, juiceColorCntSet} = useSelector(({grape}) => ({
-        gno: grape.get('gno'),
-        juiceColorCntSet: grape.get('juiceRatio')
+        gno: grape.gno,
+        juiceColorCntSet: grape.juiceRatio
     }), shallowEqual);
 
     const dispatch = useDispatch();

@@ -10,9 +10,9 @@ const Grapes = (props) => {
 
     const grapesRef = useRef();
     const {depth, grape, startJuiceAni} = useSelector( ({grape}) => ({
-        depth: grape.get('depth'),
-        grape: grape.get('grape'),
-        startJuiceAni: grape.get('isJuiceMaking')
+        depth: grape.depth,
+        grape: grape.grape,
+        startJuiceAni: grape.isJuiceMaking
     }), shallowEqual);
     const dispatch = useDispatch();
 

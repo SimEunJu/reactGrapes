@@ -12,9 +12,9 @@ const ShowcaseFrame = styled.div`
 
 const Showcase = () => {
     
-    const {showcase, loading} = useSelector(({grape, pender}) => ({
-        showcase: grape.get('showcase'),
-        loading: pender.pending['grape/GET_SHOWCASE']
+    const {showcase, loading} = useSelector(({grape, loading}) => ({
+        showcase: grape.showcase,
+        loading: loading.getShowcase
 
     }), shallowEqual);
     const dispatch = useDispatch();

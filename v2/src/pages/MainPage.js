@@ -16,15 +16,13 @@ const LoaderBlock = styled.div`
     align-items: center;
 `;
 
-// TODO: 나중에 saga로 변경하면서 refactoring
-const GET_GRAPES = 'grape/GET_GRAPES';
-
 const MainPage = (props) => {
 
+    // TODO: 성공, 실패 여부 어떻게 할지 고민쓰
     const {grapeStatusSuccess, grapeStatusFail} 
-        = useSelector(({pender, grape}) => ({
-        grapeStatusSuccess: pender.success[GET_GRAPES],
-        grapeStatusFail: pender.failure[GET_GRAPES],
+        = useSelector(({loading}) => ({
+        grapeStatusSuccess: loading.getGrapesStatus,
+        grapeStatusFail: loading.getGrapesStatus,
     }), shallowEqual);
     const dispatch = useDispatch(); 
     

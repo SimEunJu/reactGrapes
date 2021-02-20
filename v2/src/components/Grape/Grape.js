@@ -47,8 +47,8 @@ const Grape = (props) => {
     const {id, seq, size, color, openModal, changeGrapeChecked} = props;
 
     const {startJuiceAni, endJuiceAni} = useSelector( ({grape}) => ({
-        startJuiceAni: grape.get('isJuiceMaking'),
-        endJuiceAni: grape.get('isJuiceSaving')
+        startJuiceAni: grape.isJuiceMaking,
+        endJuiceAni: grape.isJuiceSaving
     }), shallowEqual);
 
     const [dropRef, dropElAni] = useAnimation(animationOpts['dropEl']);

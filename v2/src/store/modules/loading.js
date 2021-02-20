@@ -5,11 +5,11 @@ export const loadingSlice = createSlice({
     initialState: {},
     reducers: {
         startLoading: (state, action) => {
-            [action.payload] = true
+            [action.payload] = true;
         },
         finishLoading: (state, action) => {
-            [action.payload] = false
-        }
+            [action.payload] = false;
+        },
     }
 });
 
