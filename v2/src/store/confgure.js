@@ -1,14 +1,23 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit'
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-import rootReducer, {rootSaga} from './modules';
 
-const reducers = combineReducers(rootReducer);
+import grape, {grapeSaga} from "./modules/grape";
+import loading from "./modules/loading";
+
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [logger, sagaMiddleware];
-const store = createStore(reducers, composeWithDevTools(applyMiddleware(...middlewares)));
 
+const store = configureStore({
+    reducer: {
+        grape,
+        loading
+    },
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat([logger, sagaMiddleware]),
+});
+
+export function* rootSaga(){
+    //yield all[grapsSaga()];
+}
 sagaMiddleware.run(rootSaga);
 
 export default store;

@@ -37,10 +37,12 @@ const InputBlock = styled.div`
     }
 `;
 
-function grapeSelector({grape}) {
+function grapeSelector(state) {
+    const grape = state.grape;
+    debugger;
     return {
-        isDepthSet: grape.get('isDepthSet'),
-        depth: grape.get('depth')
+        isDepthSet: grape.isDepthSet,
+        depth: grape.depth
     }
 };
 

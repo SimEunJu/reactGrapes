@@ -60,9 +60,9 @@ const StartBtn = ({ history }) => {
     const [btnRef, btnAni] = useAnimation(animationOtps['btnEl']);
 
     const {isDepthSet, gno, depth} = useSelector(({grape}) => ({
-        isDepthSet: grape.get('isDepthSet'),
-        depth: grape.get('depth'),
-        gno: grape.get('gno')
+        isDepthSet: grape.isDepthSet,
+        depth: grape.depth,
+        gno: grape.gno
     }));
     const dispatch = useDispatch();
 

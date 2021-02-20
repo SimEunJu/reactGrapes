@@ -31,8 +31,8 @@ const Msg = styled.div`
 const Depth = () => {
    
     const {depth, isDepthSet} = useSelector(({grape}) => ({
-        depth: grape.get('depth'),
-        isDepthSet: grape.get('isDepthSet')
+        depth: grape.depth,
+        isDepthSet: grape.isDepthSet
     }));
 
     // TODO: 공통 컴포넌트로 추출하기, key값으로 어떤 값을 줄지 더 고민

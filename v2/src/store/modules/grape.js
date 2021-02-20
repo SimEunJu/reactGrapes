@@ -1,6 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {createAction, handleActions} from 'redux-actions';
-import { pender } from 'redux-pender';
 import {GREEN, PURPLE} from '../../common/Color';
 import * as api from '../../lib/api';
 
