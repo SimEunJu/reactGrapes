@@ -1,9 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import styled from 'styled-components';
 import {withRouter} from 'react-router-dom';
-import useAnimation from '../hooks/animation/useAnimation';
+import useAnimation from '../../hooks/animation/useAnimation';
 import { useSelector } from 'react-redux';
-import useEffectOnlyUpdate from '../hooks/useEffectOnlyUpdate';
+import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
 const DoorBtn = styled.div`
     

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import JuiceBtn from '../components/JuiceBtn';
-import ShowcaseBtn from '../components/ShowcaseBtn';
+import ShowcaseBtn from '../components/atoms/ShowcaseBtn';
 
 const JuiceBtnContainer = () => {
 

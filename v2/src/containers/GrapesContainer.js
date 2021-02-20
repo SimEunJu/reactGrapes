@@ -5,8 +5,8 @@ import {changeColor, showModal, changeGrapeContent, hideModal}
     from '../store/modules/grape';
 
 import Grapes from '../components/Grapes';
-import Modal from '../components/Modal';
-import Sun from '../components/Sun';
+import Modal from '../components/atoms/Modal';
+import Sun from '../components/atoms/Sun';
 
 // TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
 // TODO: atomic 상태관리 도입해야...

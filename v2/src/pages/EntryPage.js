@@ -1,9 +1,9 @@
 import React from 'react';
 
-import DepthInput from '../components/DepthInput';
-import Depth from '../components/Depth';
-import StartBtn from '../components/StartBtn';
-import EntryLayout from '../components/EntryLayout';
+import DepthInput from '../components/atoms/DepthInput';
+import Depth from '../components/atoms/Depth';
+import StartBtn from '../components/atoms/StartBtn';
+import EntryLayout from '../components/atoms/EntryLayout';
 
 const EntryPage = () => {
 

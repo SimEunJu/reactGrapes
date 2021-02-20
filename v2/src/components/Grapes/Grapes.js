@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef} from 'react';
 import './Grapes.scss';
-import Grape from '../Grape';
+import Grape from '../atoms/Grape';
 import { GREEN, PURPLE } from '../../common/Color';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { saveJuice } from '../../store/modules/grape';

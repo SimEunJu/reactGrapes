@@ -3,9 +3,9 @@ import styled  from "styled-components";
 import './Grape.scss';
 import checkedImg from '../../assets/img/checked.png';
 import pencilImg from '../../assets/img/pencil.png';
-import useAnimation from '../hooks/animation/useAnimation';
+import useAnimation from '../../hooks/animation/useAnimation';
 import { shallowEqual, useSelector } from 'react-redux';
-import useEffectOnlyUpdate from '../hooks/useEffectOnlyUpdate';
+import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
 const Drop = styled.div`
         width: ${({size}) => size}px;
