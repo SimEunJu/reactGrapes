@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getGrapeNo } from '../../store/modules/grape';
-import useAnimation from '../../hooks/animation/useAnimation';
-import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
+import { getGrapeNo } from '../store/modules/grape';
+import useAnimation from '../hooks/animation/useAnimation';
+import useEffectOnlyUpdate from '../hooks/useEffectOnlyUpdate';
 
 const Btn = styled.button`
     margin-top: 0;

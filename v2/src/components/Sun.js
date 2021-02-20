@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import useAnimation from '../../hooks/animation/useAnimation';
+import useAnimation from '../hooks/animation/useAnimation';
 import './Sun.scss';
 
 const animationOpts = {

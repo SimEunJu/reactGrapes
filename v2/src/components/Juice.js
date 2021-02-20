@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { AnimationService } from '../../hooks/animation/animation';
-import useAnimation from '../../hooks/animation/useAnimation';
-import useAnimations from '../../hooks/animation/useAnimations';
-import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
+import { AnimationService } from '../hooks/animation/animation';
+import useAnimation from '../hooks/animation/useAnimation';
+import useAnimations from '../hooks/animation/useAnimations';
+import useEffectOnlyUpdate from '../hooks/useEffectOnlyUpdate';
 
 const BottleBlock = styled.div`
     position: relative;
