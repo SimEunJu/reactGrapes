@@ -3,65 +3,24 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { changeDepth, setDepth } from '../../store/modules/grape';
 
-const InputBlock = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    label{
-        color: green;
-        font-weight: bold;
-    }
-    
-    input{
-        margin: 20px;
-        width: 200px;
-        height: 20px;
-        text-align: center;
-        outline: none;
-        border: 2px solid green;
-    }
-    
-    button{
-        border: 2px solid green;
-        color: green;
-        background-color: white;
-        height: 25px;
-        outline: none;
-        
-        &:hover{
-            background-color: green;
-            color: white;
-        }
-    }
-`;
 
-function grapeSelector(state) {
-    const grape = state.grape;
-    debugger;
-    return {
-        isDepthSet: grape.isDepthSet,
-        depth: grape.depth
-    }
-};
-
-/* TODO: useCallback 활용
-    1. 이벤트핸들러 함수에는 useCallback을 사용하지 않음 -> 컴포넌트에서 사용중인 1개의 state에만 의존하기 때문
+/*  
+    THINK: useCallback 활용
+    1. 이벤트핸들러 함수에는 useCallback을 사용하지 않음 -> 자주 업데이트되기 때문
 */
 const DepthInput = () => {
 
     const inputEl = useRef(null);
-    const {isDepthSet, depth} = useSelector(grapeSelector, shallowEqual);
-    const [depthInputVal, setDepthInputVal] = useState('');
+    const {isDepthSet, depth} = useSelector(({grape}) => ({
+        isDepthSet: grape.isDepthSet,
+        depth: grape.depth
+    }), shallowEqual);
+    const [depthInputVal, setDepthInputVal] = useState(depth);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if(isDepthSet) setDepthInputVal(depth);
-    }, []);
-
     const handleChange = ({target: {value}}) => {
-        if(isDepthSet) dispatch(setDepth(false));
+        // TODO: change될 때마다 dispatch
+        //if(isDepthSet) dispatch(setDepth(false));
         setDepthInputVal(value);
     }
     
@@ -72,6 +31,7 @@ const DepthInput = () => {
 
     const handleInputVal = useCallback(() => {
         const parsedDepth = Number.parseInt(depthInputVal, 10);
+        
         if(Number.isNaN(parsedDepth)){
             alert('올바른 정수를 입력해주세요.');
             inputEl.current.focus();
@@ -108,8 +68,41 @@ const DepthInput = () => {
                 입력
             </button>
         </InputBlock> 
-    );
-    
+    );    
 }
+
+const InputBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    label{
+        color: green;
+        font-weight: bold;
+    }
+    
+    input{
+        margin: 20px;
+        width: 200px;
+        height: 20px;
+        text-align: center;
+        outline: none;
+        border: 2px solid green;
+    }
+    
+    button{
+        border: 2px solid green;
+        color: green;
+        background-color: white;
+        height: 25px;
+        outline: none;
+        
+        &:hover{
+            background-color: green;
+            color: white;
+        }
+    }
+`;
 
 export default DepthInput;

@@ -5,10 +5,10 @@ export const loadingSlice = createSlice({
     initialState: {},
     reducers: {
         startLoading: (state, action) => {
-            [action.payload] = true;
+            state[action.payload] = true;
         },
         finishLoading: (state, action) => {
-            [action.payload] = false;
+            state[action.payload] = false;
         },
     }
 });

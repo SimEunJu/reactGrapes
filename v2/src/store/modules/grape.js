@@ -1,42 +1,39 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {GREEN, PURPLE} from '../../common/Color';
+import createRequestSaga from '../../lib/createRequestSaga';
 import * as api from '../../lib/api';
+import { takeLatest } from '@redux-saga/core/effects';
 
-/*
-const CHANGE_DEPTH = 'grape/DEPTH';
-const IS_DEPTH_SET = 'grape/IS_DEPTH_SET';
-const GET_GRAPE_NO = 'grape/GET_GRAPE_NO';
+const CREATE_NEW_B_GRAPES = 'grape/getGrapeNo';
+const GET_B_GRAPES = 'grape/getGrapesStatus';
+const UPDATE_GRAPE_CHECK = 'grape/changeColor';
+const UPDATE_GRAPE_CONTENT = 'grape/changeGrapeContent';
+const UPDATE_B_GRAPES_TITLE = 'grape/setTitle';
+const UPDATE_GRAPE_FINISH = 'grape/setRgba';
+const GET_GRAPE = 'grape/showModal';
+const GET_B_GRAPES_LIST = 'grape/getShowcase'
 
-const CHANGE_COLOR = 'grape/COLOR';
-const INITIALLIZE = 'grape/INITIALIZE';
-const SET_JUICE = 'grape/SET_JUICE';
-const MAKING_JUICE = 'grape/MAKING_JUICE';
-const SAVE_JUICE = 'grape/SAVE_JUICE';
-const SET_TITLE = 'grape/SET_TITLE';
-const SET_RGBA = 'grape/SET_RGBA';
-const SHOW_MODAL = 'grape/SHOW_MODAL';
-const HIDE_MODAL = 'grape/HIDE_MODAL';
-const CHANGE_GRAPE_CONTENT = 'grape/CHANGE_GRAPE_CONTET';
-const GET_GRAPES = 'grape/GET_GRAPES';
-const GET_SHOWCASE = 'grape/GET_SHOWCASE';
+const [getGrapeNo, createNewBunchGrapesSaga] = createRequestSaga(CREATE_NEW_B_GRAPES, api.createNewBunchGrapes);
+const [getGrapesStatus, getBunchGrapesSaga] = createRequestSaga(GET_B_GRAPES, api.getBunchGrapes);
+const [changeColor, updateGrapeCheckSaga] = createRequestSaga(UPDATE_GRAPE_CHECK, api.updateGrapeCheck);
+const [changeGrapeContent, updateGrapeContentSaga] = createRequestSaga(UPDATE_GRAPE_CONTENT, api.updateGrapeContent);
+const [setTitle, updateBunchGrapesTitleSaga] = createRequestSaga(UPDATE_B_GRAPES_TITLE, api.updateBunchGrapesTitle);
+const [setRgba, updateGrapeFinishSaga] = createRequestSaga(UPDATE_GRAPE_FINISH, api.updateGrapeFinish);
+const [showModal, getGrapeSaga] = createRequestSaga(GET_GRAPE, api.getGrape);
 
-export const changeDepth = createAction(CHANGE_DEPTH);
-export const setDepth = createAction(IS_DEPTH_SET);
-export const getGrapeNo = createAction(GET_GRAPE_NO, api.createNew);
+export {getGrapeNo, getGrapesStatus, changeColor,
+    changeGrapeContent, setTitle, setRgba, showModal};
 
-export const getGrapesStatus = createAction(GET_GRAPES,api.readGrapes);
-export const changeColor = createAction(CHANGE_COLOR, api.updateOneGrapeColor);
-export const changeGrapeContent = createAction(CHANGE_GRAPE_CONTENT, api.updateOneGrape);
-export const initialize = createAction(INITIALLIZE);
-export const setJuice = createAction(SET_JUICE);
-export const makingJuice = createAction(MAKING_JUICE);
-export const saveJuice = createAction(SAVE_JUICE);
-export const setTitle = createAction(SET_TITLE, api.updateTitle);
-export const setRgba = createAction(SET_RGBA, api.finishOneGrape);
-export const showModal = createAction(SHOW_MODAL, api.readOneGrape);
-export const hideModal = createAction(HIDE_MODAL);
-export const getShowcase = createAction(GET_SHOWCASE); //, api.readShowcase
-*/
+// TODO: 이렇게 하는게 맞는겨?...
+export function* grapeSaga() {
+    yield takeLatest(CREATE_NEW_B_GRAPES, createNewBunchGrapesSaga);
+    yield takeLatest(GET_B_GRAPES, getBunchGrapesSaga);
+    yield takeLatest(UPDATE_GRAPE_CHECK, updateGrapeCheckSaga);
+    yield takeLatest(UPDATE_GRAPE_CONTENT, updateGrapeContentSaga);
+    yield takeLatest(UPDATE_B_GRAPES_TITLE, updateBunchGrapesTitleSaga);
+    yield takeLatest(UPDATE_GRAPE_FINISH, updateGrapeFinishSaga);
+    yield takeLatest(GET_GRAPE, getGrapeSaga);
+}
 
 const checkGrapeColor = (grapes) =>{
     let green = 0;
@@ -51,8 +48,8 @@ const checkGrapeColor = (grapes) =>{
 const grapeSlice = createSlice({
     name: 'grape',
     initialState: {
-        grape: [],
-        rgba: GREEN,
+        grapes: [],
+        bunchGrapes: GREEN,
         gno: null,
         depth: null, //null
         isDepthSet: false, // false
@@ -67,21 +64,24 @@ const grapeSlice = createSlice({
         showcase: [{id: 3, depth: 4, title: "test", rgba: "rgba(179, 32, 82, 0.52)", grapes: null}]
     },
     reducers: {
-        initialize: () => {
-            return grapeSlice.initialState;
+        initialize: (state) => {
+            state = grapeSlice.initialState;
         },
-        getGrapeNo: (state, action) => {
+        getGrapeNoSuccess: (state, action) => {
             const gno = action.payload.data;
             state.gno = gno;
         },
-        getGrapesStatus: (state, action) => {
+        getGrapesStatusSuccess: (state, action) => {
             const {id, depth, title, grapes} = action.payload.data;
             state.gno = id;
             state.depth = depth;
             state.title = title;
             state.grape = grapes;
         },
-        changeColor: (state, action) => {
+        getGrapesStatusFailure: (state, action) => {
+            
+        },
+        changeColorSuccess: (state, action) => {
             const grapeId = action.payload.data;
             state.grape.forEach(grape => {
                     if(grape.id === grapeId){
@@ -90,7 +90,7 @@ const grapeSlice = createSlice({
                     }
                 });
         },
-        changeGrapeContent: (state, action) => {
+        changeGrapeContentSuccess: (state, action) => {
             const grapeRes = action.payload.data;
             state.grape.forEach(grape => {
                     if(grape.id === grapeRes.id){
@@ -115,15 +115,15 @@ const grapeSlice = createSlice({
             const title = action.payload.data;
             state.title = title;
         },
-        setRgba: (state, action) => {
+        setRgbaSuccess: (state, action) => {
             state.rgba = action.payload.data.rgba;
             state.isJuiceSaved = true;
         },
-        getShowcase: (state, action) => {
+        getShowcaseSuccess: (state, action) => {
             const {dtoList} = action.payload.data;
             state.showcase = dtoList;
         },
-        showModal: (state, action) => {
+        showModalSuccess: (state, action) => {
             const {title, content} = action.payload.data;
             state.modal = true;
             state.modalTitle = title;
@@ -141,10 +141,10 @@ const grapeSlice = createSlice({
     }
 });
 
-export const {initialize, getGrapeNo, getGrapesStatus, 
-    changeColor, changeGrapeContent, setJuice, 
-    makingJuice, saveJuice, setTitle, 
-    setRgba, getShowcase, showModal, 
+export const {initialize, 
+    setJuice, 
+    makingJuice, saveJuice, 
+    getShowcase,
     hideModal, setDepth, changeDepth} = grapeSlice.actions;
 
 export default grapeSlice.reducer;

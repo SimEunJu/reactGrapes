@@ -78,6 +78,7 @@ const StartBtn = ({ history }) => {
 
     const handleClick = () => {
         if(!isDepthSet) return false;
+        debugger;
         dispatch(getGrapeNo(depth));
     }
         

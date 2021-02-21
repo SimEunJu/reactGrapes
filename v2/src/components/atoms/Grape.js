@@ -6,20 +6,7 @@ import useAnimation from '../../hooks/animation/useAnimation';
 import { shallowEqual, useSelector } from 'react-redux';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const Drop = styled.div`
-        width: ${({size}) => size}px;
-        height: ${({size}) => size}px;
-        background-color: ${({color}) => color};
-        border-radius: 100%;
-        cursor: pointer;
-        margin: 2px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    `;
-
-const animationOpts = {
+const animationConfig = {
     dropEl: {
         keyframes: [
             {transform: 'translateY(0) translateX(0)'},
@@ -50,7 +37,7 @@ const Grape = (props) => {
         endJuiceAni: grape.isJuiceSaving
     }), shallowEqual);
 
-    const [dropRef, dropElAni] = useAnimation(animationOpts['dropEl']);
+    const [dropRef, dropElAni] = useAnimation(animationConfig['dropEl']);
     const [height, setHeight] = useState('');
     const [width, setWidth] = useState('');
     const [isVisible, setVisible] = useState(false);
@@ -132,4 +119,18 @@ const Grape = (props) => {
         </Drop>
     );
 }
+
+const Drop = styled.div`
+        width: ${({size}) => size}px;
+        height: ${({size}) => size}px;
+        background-color: ${({color}) => color};
+        border-radius: 100%;
+        cursor: pointer;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    `;
+
 export default Grape;

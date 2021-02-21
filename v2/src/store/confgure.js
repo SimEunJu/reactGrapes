@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
-
+import {all} from 'redux-saga/effects';
 import grape, {grapeSaga} from "./modules/grape";
 import loading from "./modules/loading";
 
@@ -16,7 +16,7 @@ const store = configureStore({
 });
 
 export function* rootSaga(){
-    //yield all[grapsSaga()];
+    yield all([grapeSaga()]);
 }
 sagaMiddleware.run(rootSaga);
 
