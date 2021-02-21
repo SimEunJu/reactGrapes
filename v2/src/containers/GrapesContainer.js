@@ -9,7 +9,7 @@ import Modal from '../components/atoms/Modal';
 import Sun from '../components/atoms/Sun';
 
 // TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
-// TODO: atomic 상태관리 도입해야...
+
 const GrapeWrapperContainer = () => {
 
     const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, loading}) => ({

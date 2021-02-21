@@ -60,9 +60,9 @@ const Liquid = styled.div`
     top: 30%;
 `;
 
-const animationOpts = {
-    capEl: {
-        name: 'closeCap',
+const animationConfig = {
+    closeCap: {
+        //name: 'closeCap',
         order: 2,
         keyframes: [
             { transform: 'translateY(0)', backgroundColor: 'brown' },
@@ -75,9 +75,9 @@ const animationOpts = {
             easing: 'ease-in'
         }
     },
-    bottleEl: [ 
-        {   
-            name: 'shakeBottle',
+    bottle: {
+        shakeBottle: {   
+            //name: 'shakeBottle',
             order: 1,
             keyframes : [
                 { transform: 'rotate(0)' },
@@ -94,8 +94,8 @@ const animationOpts = {
                 easing: 'ease-in-out'
             }
         },
-        {
-            name: 'minimizeBottle',
+        minimizeBottle : {
+            //name: 'minimizeBottle',
             order: 3,
             keyframes: [
                 { transform: 'scale(1)' },
@@ -108,9 +108,9 @@ const animationOpts = {
                 easing: 'ease-in-out'
             }
         }
-    ],
-    liquidEl: {
-        name: "setLiquidColor",
+    },
+    setLiquidColor: {
+        //name: "setLiquidColor",
         order: 4,
         keyframes: [
             {backgroundColor: null}
@@ -125,30 +125,28 @@ const animationOpts = {
 
 const Juice = ({rgba, saveJuice}) => {
     
-    const [bottleBlockRef, bottleBlockAnis] = useAnimations(animationOpts['bottleEl']);
-    const [capRef, capAni] = useAnimation(animationOpts['capEl']);
-    const [liquidRef, liquidAni] = useAnimation(animationOpts['liquidEl']);
+    const [bottleBlockRef, bottleAnis] = useAnimations(animationConfig.bottle);
+    const [capRef, closeCapAni] = useAnimation(animationConfig.closeCap);
+    const [liquidRef, setLiquidColorAni] = useAnimation(animationConfig.setLiquidColor);
 
     const isJuiceSaving = useSelector(({grape}) => grape.isJuiceSaving);
 
-    // TODO: promise 패턴 개선 여지
     useEffectOnlyUpdate(() => {
-        // animationSeq = [bottleBlockAnis[0], liquidAni, capAni, bottleBlockAnis[1]];
+       
         if(!isJuiceSaving) return false;
 
-        liquidAni.keyframes[0].backgroundColor = rgba;
+        setLiquidColorAni.keyframes[0].backgroundColor = rgba;
         
         Promise.all([
-                AnimationService.animate(bottleBlockAnis[0]).finished,
-                AnimationService.animate(liquidAni).finished,
+                AnimationService.animate(bottleAnis.shakeBottle).finished,
+                AnimationService.animate(setLiquidColorAni).finished,
             ])
-            .then(() => AnimationService.animate(capAni).finished)
-            .then(() => AnimationService.animate(bottleBlockAnis[1]).finished)
+            .then(() => AnimationService.animate(closeCapAni).finished)
+            .then(() => AnimationService.animate(bottleAnis.minimizeBottle).finished)
             .then(saveJuice)
             .catch((e) => {
                 console.error(e);
-            })
-            .finally();
+            });
 
     }, [isJuiceSaving]);
 
