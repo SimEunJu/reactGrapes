@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
-import Juice from '../components/atoms/Juice';
-import {setRgba} from '../store/modules/grape';
+import Juice from '../atoms/Juice';
+import {setRgba} from '../../store/modules/grape';
 
 // TODO: animation web api를 사용하기 위한 boilerplate가 양이 많아서
 // 애니메이션 전담 컴포넌트를 따로 빼서  

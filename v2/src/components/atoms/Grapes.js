@@ -1,10 +1,22 @@
 import React, { useEffect, useMemo, useRef} from 'react';
-import './Grapes.scss';
-import Grape from '../atoms/Grape';
+import styled from 'styled-components';
+import Grape from './Grape';
 import { GREEN, PURPLE } from '../../common/Color';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { saveJuice } from '../../store/modules/grape';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
+
+const GrapesBlock = styled.div`
+    
+    width: 80%;
+    margin: auto;
+    
+    .grapeWrap{
+        display: flex;
+        justify-content: center;
+    }
+`;
+
 
 const Grapes = (props) => {
 
@@ -73,9 +85,9 @@ const Grapes = (props) => {
     }, []);
 
     return(
-        <div className='grapeContainer' ref={grapesRef} style={{height: `${grapesRef.current?.height}px`}}>  
+        <GrapesBlock ref={grapesRef} style={{height: `${grapesRef.current?.height}px`}}>  
             {makeGrapeComponent}
-        </div>
+        </GrapesBlock>
     );
 
 }

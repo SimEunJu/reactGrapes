@@ -2,7 +2,7 @@ import React, {useEffect, useMemo} from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ShowcaseRow from './ShowcaseRow';
-import {getShowcase} from '../../store/modules/grape';
+import {getShowcase} from '../../../store/modules/grape';
 
 const ShowcaseFrame = styled.div`
     margin: 10%;

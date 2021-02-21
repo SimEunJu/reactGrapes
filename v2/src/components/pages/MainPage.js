@@ -1,11 +1,11 @@
 import React, {Fragment, useEffect} from 'react';
 import Loader from "react-loader-spinner";
-import GrapesContainer from '../containers/GrapesContainer';
-import JuiceContainer from '../containers/JuiceContainer';
-import HeaderContainer from '../containers/HeaderContainer';
+import GrapesContainer from '../molecules/GrapesContainer';
+import JuiceContainer from '../molecules/JuiceContainer';
+import HeaderContainer from '../molecules/HeaderContainer';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { getGrapesStatus} from '../store/modules/grape';
-import JuiceBtnContainer from '../containers/JuiceBtnContainer';
+import { getGrapesStatus} from '../../store/modules/grape';
+import JuiceBtnContainer from '../molecules/JuiceBtnContainer';
 import styled from 'styled-components';
 
 const LoaderBlock = styled.div`

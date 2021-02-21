@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.css';
-import { EntryPage, MainPage, ShowcasePage } from './pages';
-
+import EntryPage from "./components/pages/EntryPage";
+import MainPage from "./components/pages/MainPage";
+import ShowcasePage from "./components/pages/ShowcasePage";
 
 interface AppProps {}
 

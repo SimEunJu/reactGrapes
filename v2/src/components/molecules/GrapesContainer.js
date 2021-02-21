@@ -2,14 +2,13 @@ import React, {Fragment, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {changeColor, showModal, changeGrapeContent, hideModal} 
-    from '../store/modules/grape';
+    from '../../store/modules/grape';
 
 import Grapes from '../components/Grapes';
-import Modal from '../components/atoms/Modal';
-import Sun from '../components/atoms/Sun';
+import Modal from '../atoms/Modal';
+import Sun from '../atoms/Sun';
 
 // TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
-
 const GrapeWrapperContainer = () => {
 
     const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, loading}) => ({
