@@ -1,7 +1,7 @@
 import React from 'react'; 
 import styled from 'styled-components';
 import {withRouter} from 'react-router';
-import MiniJuice from '../MiniJuice';
+import MiniJuice from './MiniJuice';
 
 const RowWrap = styled.div`
     display: flex;

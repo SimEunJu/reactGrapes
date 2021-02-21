@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled  from "styled-components";
-import './Grape.scss';
 import checkedImg from '../../assets/img/checked.png';
 import pencilImg from '../../assets/img/pencil.png';
 import useAnimation from '../../hooks/animation/useAnimation';

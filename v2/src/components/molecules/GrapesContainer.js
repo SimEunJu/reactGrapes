@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {changeColor, showModal, changeGrapeContent, hideModal} 
     from '../../store/modules/grape';
 
-import Grapes from '../components/Grapes';
+import Grapes from '../atoms/Grapes';
 import Modal from '../atoms/Modal';
 import Sun from '../atoms/Sun';
 

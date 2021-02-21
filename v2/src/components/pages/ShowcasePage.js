@@ -1,5 +1,5 @@
 import React from 'react';
-import Showcase from '../components/atoms/showcase';
+import Showcase from '../atoms/showcase/Showcase';
 
 const ShowcasePage = () => (
     <Showcase />

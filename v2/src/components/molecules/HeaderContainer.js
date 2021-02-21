@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setTitle} from '../../store/modules/grape';
-import Header from '../components/Header';
+import Header from '../atoms/Header';
 
 const HeaderContainer = () => {
 
