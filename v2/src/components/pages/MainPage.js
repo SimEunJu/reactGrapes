@@ -4,7 +4,7 @@ import JuiceContainer from '../molecules/JuiceContainer';
 import HeaderContainer from '../molecules/HeaderContainer';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { getGrapesStatus } from '../../store/modules/grape';
-import JuiceBtnContainer from '../molecules/JuiceBtnContainer';
+import JuiceFinishBlock from '../molecules/JuiceFinishBlock';
 import NetworkErr from "./error/NetworkErr";
 import Loader from "../atoms/Loader";
 
@@ -30,7 +30,7 @@ const MainPage = (props) => {
     if(getBunchGrapesSuccess) return (
         <>
             <HeaderContainer />
-            <JuiceBtnContainer /> 
+            <JuiceFinishBlock /> 
             <GrapesContainer /> 
             <JuiceContainer />
         </>

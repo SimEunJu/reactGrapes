@@ -6,18 +6,6 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { saveJuice } from '../../store/modules/grape';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const GrapesBlock = styled.div`
-    
-    width: 80%;
-    margin: auto;
-    
-    .grapeWrap{
-        display: flex;
-        justify-content: center;
-    }
-`;
-
-
 const Grapes = (props) => {
 
     const grapesRef = useRef();
@@ -59,19 +47,7 @@ const Grapes = (props) => {
         return grapeRows;
     }, [props, grape]);
 
-    /*
-    const aniHandler = (childAni) => {
-        // childAni에는 자식 ref, animtion 정보 객체 들어있음
-        // return animation.finshed
-    }
-
-    const promiseHandle = () => {
-        // Rromise.all([animationPromises]);
-    }
-    */
-
-    // 부모에서 child animation이 모두 끝났는지 확인해야 함
-    // TODO: update 1번만 실행되는지 확인해야 하는지..
+    // 부모에서 child animation이 모두 끝났는지 확인해야 다음 단계로 실행 가능
     useEffectOnlyUpdate(() => {
         Promise.any(
             grapesRef.current.getAnimations({ subtree: true })
@@ -79,7 +55,9 @@ const Grapes = (props) => {
           ).then(() => dispatch(saveJuice()));
     }, [startJuiceAni]);
 
-    useEffect(() => {
+    // 포도알(<Grape>) 애니메이션 끝나도 영역 유지하기 위해
+    // 맨처음 render링 될 때 실행되는 ref에는 current가 없기 때문에 useEffectOnlyUpdate 사용
+    useEffectOnlyUpdate(() => {
         const height = grapesRef.current.getBoundingClientRect().height;
         grapesRef.current.height = height;
     }, []);
@@ -91,5 +69,16 @@ const Grapes = (props) => {
     );
 
 }
+
+const GrapesBlock = styled.div`
+    
+    width: 80%;
+    margin: auto;
+    
+    .grapeWrap{
+        display: flex;
+        justify-content: center;
+    }
+`;
 
 export default Grapes;

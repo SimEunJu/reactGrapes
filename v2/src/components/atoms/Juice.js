@@ -6,59 +6,45 @@ import useAnimation from '../../hooks/animation/useAnimation';
 import useAnimations from '../../hooks/animation/useAnimations';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const BottleBlock = styled.div`
-    position: relative;
-    margin: auto;
-    width: 200px;
-`;
-const Cap = styled.div`
-    position: relative;
-    top: 3px;
-    margin: auto;
-    border-radius: 7px;
-    width: 30px;
-    height: 35px;
-`;
-const BottleEnter = styled.div`
-    border-radius: 3px;
-    margin: auto;
-    position: relative;
-    top: 2px;
-    border: 2px solid black;
-    width: 48px;
-    height: 17px;
-    background-color: white;
-`;
-const BottleNeck = styled.div`
-    border: 2px solid black;
-    position: relative;
-    border-bottom: none;
-    margin: auto;
-    border-top: none;
-    width: 31px;
-    height: 19px;
-    background-color: white;
-    z-index: 1;
-`;
-const BottleBody = styled.div`
-    border: 2px solid black;
-    width: 86px;
-    height: 110px;
-    position: relative;
-    top: -2px;
-    border-top-left-radius: 35%;
-    border-top-right-radius: 35%;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    background-color: white;
-    margin: auto;
-`;
-const Liquid = styled.div`
-    width: 100%;
-    height: 70%;
-    position: relative;
-    top: 30%;
-`;
+const Juice = ({rgba, saveJuice}) => {
+    
+    const [bottleBlockRef, bottleAnis] = useAnimations(animationConfig.bottle);
+    const [capRef, closeCapAni] = useAnimation(animationConfig.closeCap);
+    const [liquidRef, setLiquidColorAni] = useAnimation(animationConfig.setLiquidColor);
+
+    const isJuiceSaving = useSelector(({grape}) => grape.isJuiceSaving);
+
+    useEffectOnlyUpdate(() => {
+       
+        if(!isJuiceSaving) return false;
+
+        setLiquidColorAni.keyframes[0].backgroundColor = rgba;
+        
+        Promise.all([
+                AnimationService.animate(bottleAnis.shakeBottle).finished,
+                AnimationService.animate(setLiquidColorAni).finished,
+            ])
+            .then(() => AnimationService.animate(closeCapAni).finished)
+            .then(() => AnimationService.animate(bottleAnis.minimizeBottle).finished)
+            .then(saveJuice)
+            .catch((e) => {
+                console.error(e);
+            });
+
+    }, [isJuiceSaving]);
+
+    if(!isJuiceSaving) return <div />;
+    return(
+        <BottleBlock ref={bottleBlockRef}>
+            <Cap ref={capRef} />
+            <BottleEnter />
+            <BottleNeck />
+            <BottleBody>
+                <Liquid ref={liquidRef}/>
+            </BottleBody>
+        </BottleBlock>
+    );
+}
 
 const animationConfig = {
     closeCap: {
@@ -123,45 +109,58 @@ const animationConfig = {
     }
 };
 
-const Juice = ({rgba, saveJuice}) => {
-    
-    const [bottleBlockRef, bottleAnis] = useAnimations(animationConfig.bottle);
-    const [capRef, closeCapAni] = useAnimation(animationConfig.closeCap);
-    const [liquidRef, setLiquidColorAni] = useAnimation(animationConfig.setLiquidColor);
-
-    const isJuiceSaving = useSelector(({grape}) => grape.isJuiceSaving);
-
-    useEffectOnlyUpdate(() => {
-       
-        if(!isJuiceSaving) return false;
-
-        setLiquidColorAni.keyframes[0].backgroundColor = rgba;
-        
-        Promise.all([
-                AnimationService.animate(bottleAnis.shakeBottle).finished,
-                AnimationService.animate(setLiquidColorAni).finished,
-            ])
-            .then(() => AnimationService.animate(closeCapAni).finished)
-            .then(() => AnimationService.animate(bottleAnis.minimizeBottle).finished)
-            .then(saveJuice)
-            .catch((e) => {
-                console.error(e);
-            });
-
-    }, [isJuiceSaving]);
-
-    if(!isJuiceSaving) return <div />;
-    return(
-        <BottleBlock ref={bottleBlockRef}>
-            <Cap ref={capRef} />
-            <BottleEnter />
-            <BottleNeck />
-            <BottleBody>
-                <Liquid ref={liquidRef}/>
-            </BottleBody>
-        </BottleBlock>
-    );
-
-}
+const BottleBlock = styled.div`
+    position: relative;
+    margin: auto;
+    width: 200px;
+`;
+const Cap = styled.div`
+    position: relative;
+    top: 3px;
+    margin: auto;
+    border-radius: 7px;
+    width: 30px;
+    height: 35px;
+`;
+const BottleEnter = styled.div`
+    border-radius: 3px;
+    margin: auto;
+    position: relative;
+    top: 2px;
+    border: 2px solid black;
+    width: 48px;
+    height: 17px;
+    background-color: white;
+`;
+const BottleNeck = styled.div`
+    border: 2px solid black;
+    position: relative;
+    border-bottom: none;
+    margin: auto;
+    border-top: none;
+    width: 31px;
+    height: 19px;
+    background-color: white;
+    z-index: 1;
+`;
+const BottleBody = styled.div`
+    border: 2px solid black;
+    width: 86px;
+    height: 110px;
+    position: relative;
+    top: -2px;
+    border-top-left-radius: 35%;
+    border-top-right-radius: 35%;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background-color: white;
+    margin: auto;
+`;
+const Liquid = styled.div`
+    width: 100%;
+    height: 70%;
+    position: relative;
+    top: 30%;
+`;
 
 export default Juice;

@@ -2,41 +2,14 @@ import React, {useEffect} from 'react';
 import useAnimation from '../../hooks/animation/useAnimation';
 import styled from 'styled-components';
 
-const SunSvg = styled.svg`
-    position: fixed;
-    top: 10px;
-    left: 10px;
-`;
-
-const animationOpts = {
-    svgEl: {
-        keyframes: [
-            {transform: 'rotate(0deg)'},
-            {transform: 'rotate(360deg)'}
-        ],
-        options: {
-            duration: 2000
-        }
-    },
-    circleEl: {
-        keyframes: [
-            {fill: 'orange'},
-            {fill: 'orangered'}
-        ],
-        options: {
-            duration: 2000
-        }
-    }
-}
-
 const Sun = ({isSunRotate}) => {
 
-    const [svgRef, svgAni] = useAnimation(animationOpts['svgEl']);
-    const [circleRef, circleAni] = useAnimation(animationOpts['circleEl']);
+    const [svgRef, rotateSunAni] = useAnimation(animationConfig.rotateSun);
+    const [circleRef, darkerSunColorAni] = useAnimation(animationConfig.darkerSunColor);
 
     useEffect(() => {
         if(isSunRotate){
-            const animations = [svgAni, circleAni];
+            const animations = [rotateSunAni, darkerSunColorAni];
             animations.forEach(ani => {
                 const {ref, keyframes, options} = ani;
                 ref.current.animate(keyframes, options);
@@ -54,4 +27,32 @@ const Sun = ({isSunRotate}) => {
         </SunSvg>
     );
 }
+
+const animationConfig = {
+    rotateSun: {
+        keyframes: [
+            {transform: 'rotate(0deg)'},
+            {transform: 'rotate(360deg)'}
+        ],
+        options: {
+            duration: 2000
+        }
+    },
+    darkerSunColor: {
+        keyframes: [
+            {fill: 'orange'},
+            {fill: 'orangered'}
+        ],
+        options: {
+            duration: 2000
+        }
+    }
+}
+
+const SunSvg = styled.svg`
+    position: fixed;
+    top: 10px;
+    left: 10px;
+`;
+
 export default Sun;

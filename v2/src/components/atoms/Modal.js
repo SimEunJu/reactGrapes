@@ -1,7 +1,71 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
+import {changeGrapeContent, hideModal} from '../../store/modules/grape';
+
+const Modal = ({gno, editGrapeIdx}) => {
+
+    const {modalTitle, modalContent, isContentChangeSuccess} = useSelector(({grape, loading}) => ({
+        modalTitle: grape.modalTitle,
+        modalContent: grape.modalContent,
+        isContentChangeSuccess: loading.changeGrapeContent,
+    }));
+    const dispatch = useDispatch();
+
+    const [title, setTitle] = useState(modalTitle);
+    const [content, setContent] = useState(modalContent);
+    
+    useEffectOnlyUpdate(() => {
+        if(isContentChangeSuccess) closeModal(); 
+    }, [isContentChangeSuccess]);
+
+    const closeModal = useCallback(() => {
+        dispatch(hideModal());
+    }, [dispatch]);
+
+    const editGrapeContent = () => {
+        dispatch(changeGrapeContent({gno, idx: editGrapeIdx, title, content}));
+    };
+
+    const editTitle = useCallback(({target: {value}}) => {
+        setTitle(value);
+    }, [setTitle]);
+
+    // TODO: textarea는 controlled인가 아닌가
+    const editContent  = useCallback(({target: {value}}) => {
+        setContent(value);
+    }, [setContent]);
+
+    return(
+        <ModalBackground>
+            <GrapeModal>
+                <XBtn onClick={closeModal}>&#10006;</XBtn>
+                <TextBox>
+                    <input 
+                        onChange={editTitle} 
+                        name="title"
+                        value={title} 
+                        type="text" 
+                        placeholder="제목을 입력해 주세요" 
+                    ></input>
+                    <textarea 
+                        onChange={editContent} 
+                        name="content"
+                        value={content} 
+                        cols="10" 
+                        placeholder="내용을 입력해 주세요"
+                    ></textarea>
+                </TextBox>
+                <SubmitBtn 
+                    onClick={editGrapeContent}>
+                    입력
+                </SubmitBtn>
+            </GrapeModal>
+        </ModalBackground>
+    );    
+    
+}
 
 const ModalBackground = styled.div`
     position: absolute;
@@ -59,65 +123,5 @@ const TextBox = styled.div`
         height: 90%;
     }
 `;
-
-const Modal = ({isContentChangeSuccess, editGrapeContent, closeModal}) => {
-    const modalRef = useRef();
-
-    const {modalTitle, modalContent} = useSelector(({grape}) => ({
-        modalTitle: grape.modalTitle,
-        modalContent: grape.modalContent
-    }))
-
-    const [top, setTop] = useState(0);
-    const [title, setTitle] = useState(modalTitle);
-    const [content, setContent] = useState(modalContent);
-
-    useEffect(() => {
-        const top = modalRef.current.getBoundingClientRect().top;
-        setTop(top);
-    }, []);
-    
-    useEffectOnlyUpdate(() => {
-        if(isContentChangeSuccess) closeModal(); 
-    }, [isContentChangeSuccess]);
-
-    const editTitle = useCallback(({target: {value}}) => {
-        setTitle(value);
-    }, [setTitle]);
-
-    // TODO: textarea는 controlled인가 아닌가
-    const editContent  = useCallback(({target: {value}}) => {
-        setContent(value);
-    }, [setContent]);
-
-    return(
-        <ModalBackground top={top} ref={modalRef}>
-            <GrapeModal>
-                <XBtn onClick={closeModal}>&#10006;</XBtn>
-                <TextBox>
-                    <input 
-                        onChange={editTitle} 
-                        name="title"
-                        value={title} 
-                        type="text" 
-                        placeholder="제목을 입력해 주세요" 
-                    ></input>
-                    <textarea 
-                        onChange={editContent} 
-                        name="content"
-                        value={content} 
-                        cols="10" 
-                        placeholder="내용을 입력해 주세요"
-                    ></textarea>
-                </TextBox>
-                <SubmitBtn 
-                    onClick={() => editGrapeContent({title, content})}>
-                    입력
-                </SubmitBtn>
-            </GrapeModal>
-        </ModalBackground>
-    );    
-    
-}
 
 export default Modal;

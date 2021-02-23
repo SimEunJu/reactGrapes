@@ -1,5 +1,20 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+
+const MiniJuice = ({rgba, handleClick}) => {
+
+    return(
+        <BottleBlock>
+            <Cap/>
+            <BottleEnter />
+            <BottleNeck />
+            <BottleBody>
+                <Liquid rgba={rgba} onClick={handleClick}/>
+            </BottleBody>
+        </BottleBlock>
+    );
+
+}
 
 const BottleBlock = styled.div`
     position: relative;
@@ -58,19 +73,5 @@ const Liquid = styled.div`
     top: 30%;
     background-color: ${p => p.rgba};
 `;
-const MiniJuice = ({rgba, handleClick}) => {
-
-    return(
-        <BottleBlock>
-            <Cap/>
-            <BottleEnter />
-            <BottleNeck />
-            <BottleBody>
-                <Liquid rgba={rgba} onClick={handleClick}/>
-            </BottleBody>
-        </BottleBlock>
-    );
-
-}
 
 export default MiniJuice;

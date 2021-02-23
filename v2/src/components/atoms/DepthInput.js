@@ -3,7 +3,6 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { changeDepth, setDepth } from '../../store/modules/grape';
 
-
 /*  
     THINK: useCallback 활용
     1. 이벤트핸들러 함수에는 useCallback을 사용하지 않음 -> 자주 업데이트되기 때문

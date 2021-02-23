@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {changeColor, showModal, changeGrapeContent, hideModal} 
@@ -11,9 +11,8 @@ import Sun from '../atoms/Sun';
 // TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
 const GrapeWrapperContainer = () => {
 
-    const {gno, isContentChangeSuccess, grapes, isModalOpen} = useSelector(({grape, loading}) => ({
+    const {gno, grapes, isModalOpen} = useSelector(({grape, loading}) => ({
         gno: grape.gno,
-        isContentChangeSuccess: loading.changeGrapeContent,
         grapes: grape.grape,
         isModalOpen: grape.modal
     }));
@@ -22,7 +21,6 @@ const GrapeWrapperContainer = () => {
     const [isSunRotate, setSunRotate] = useState(false);
     const [editGrapeIdx, setEditGrapeIdx] = useState(null);
 
-    // TODO: useCallback에 파라미터 있는 함수 넘겨줄 수 없는데 해결방안 생각해보기
     const changeGrapeChecked = (grapeIdx, grapeSeq) => {
         
         let isChecked = false;
@@ -37,28 +35,17 @@ const GrapeWrapperContainer = () => {
         dispatch(showModal({gno, idx: editGrapeIdx}));
     };
 
-    const closeModal = useCallback(() => {
-        dispatch(hideModal());
-    }, [dispatch]);
-
-    const editGrapeContent = ({title, content}) => {
-        dispatch(changeGrapeContent({gno, idx: editGrapeIdx, title, content}));
-    };
-
     return(
-        <Fragment>
+        <>
             <Sun isSunRotate={isSunRotate}/>
             {isModalOpen && 
-                <Modal 
-                    isContentChangeSuccess={isContentChangeSuccess} 
-                    editGrapeContent={editGrapeContent} 
-                    closeModal={closeModal}/>
+                <Modal gno={gno} editGrapeIdx={editGrapeIdx}/>
             }
             <Grapes 
                 openModal={openModal}
                 changeGrapeChecked={changeGrapeChecked}
                 />
-        </Fragment>
+        </>
     );
     
 }

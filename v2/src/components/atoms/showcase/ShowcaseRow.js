@@ -1,7 +1,24 @@
-import React from 'react'; 
+import React, { useCallback } from 'react'; 
 import styled from 'styled-components';
 import {withRouter} from 'react-router';
 import MiniJuice from './MiniJuice';
+
+const ShowcaseRow = ({history, grapes : {rgba, title, id} }) => {
+   
+    const handleClick = useCallback(() => {
+        history.push(`/grapes/${id}`);
+    }, []);
+
+    return(
+        <RowContainer>
+            <RowWrap>
+                <MiniJuice rgba={rgba} handleClick={handleClick}/> 
+                <Comment>{title}</Comment>
+            </RowWrap>
+            <Bar />
+        </RowContainer>
+    );
+}
 
 const RowWrap = styled.div`
     display: flex;
@@ -33,21 +50,5 @@ const RowContainer = styled.div`
     position: relative;
 `;
 
-const ShowcaseRow = ({history, grapes : {rgba, title, id} }) => {
-   
-    const handleClick = () => {
-        history.push(`/grapes/${id}`);
-    }
-
-    return(
-        <RowContainer>
-            <RowWrap>
-                <MiniJuice rgba={rgba} handleClick={handleClick}/> 
-                <Comment>{title}</Comment>
-            </RowWrap>
-            <Bar />
-        </RowContainer>
-    );
-}
 
 export default withRouter(ShowcaseRow);

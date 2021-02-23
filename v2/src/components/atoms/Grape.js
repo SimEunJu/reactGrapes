@@ -6,21 +6,6 @@ import useAnimation from '../../hooks/animation/useAnimation';
 import { shallowEqual, useSelector } from 'react-redux';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
-const animationConfig = {
-    dropEl: {
-        keyframes: [
-            {transform: 'translateY(0) translateX(0)'},
-            {transform: null, backgroundColor: 'white'}
-        ],
-        options: {
-            duration: null,
-            fill: 'forwards',
-            easing: 'ease',
-            delay: 1000
-        }
-    }
-}
-
 const getRandRatio = () => {
     // 700 <= num <= 1200
     let num = Math.random() * 1200;
@@ -28,19 +13,17 @@ const getRandRatio = () => {
     return num;
 } 
 
-const Grape = (props) => {
-    // TODO: 부모와 공유하는 상태가 많으면 props로 받고, 아니면 useSelector 사용
-    const {id, seq, size, color, openModal, changeGrapeChecked} = props;
+const Grape = ({id, seq, size, color, openModal, changeGrapeChecked}) => {
 
     const {startJuiceAni, endJuiceAni} = useSelector( ({grape}) => ({
         startJuiceAni: grape.isJuiceMaking,
         endJuiceAni: grape.isJuiceSaving
     }), shallowEqual);
 
-    const [dropRef, dropElAni] = useAnimation(animationConfig['dropEl']);
-    const [height, setHeight] = useState('');
-    const [width, setWidth] = useState('');
-    const [isVisible, setVisible] = useState(false);
+    const [dropRef, dropElAni] = useAnimation(animationConfig.drop);
+    const [height, setHeight] = useState(null);
+    const [width, setWidth] = useState(null);
+    const [isEditIconVisible, setEditIconVisible] = useState(false);
     
     const getDropHeight = useCallback(() => {
         //offsetTop
@@ -64,26 +47,25 @@ const Grape = (props) => {
     방법1: child animation.finished를 부모에게 넘겨줘야 하는데 자식 -> 부모 데이터 흐름 X
     방법2: child에 handler 함수를 prop로 넘겨줌 -> 함수 내에서 자식 ref를 참조해야 하고,
     부모에서 child animation 정보를 가져야 함 -> 너무 복잡
-    방법3: 결국 필요한 것은 animation.finshed! -> 부모에서 getAnimations() 호출해 자식에서 
-        자식에서 실행되고 있는 모든 animation 객체를 가져올 수 있음 ->
-        기존 형태를 유지하되 animation 초기화 위치만 변경
+    방법3: 결국 필요한 것은 animation.finshed! -> 부모에서 getAnimations() 호출해
+        자식에서 실행되고 있는 모든 animation 객체를 가져올 수 있음
     */
     // TODO: 되돌아가기하면 오류쓰...!
     useEffect(()=>{
 
-        const height = getDropHeight();
-        setHeight(height);
-        const width = getDropWidth();
-        setWidth(width);
+        setHeight(getDropHeight());
+        setWidth(getDropWidth());
 
         const {keyframes, options} = dropElAni;
         
         const lastKeyframe = keyframes.length - 1;
+        // 해당 위치에서 하단 정중앙으로 떨어져야 하기 때문
         keyframes[lastKeyframe].transform = `translateY(${height}px) translateX(${width}px)`;
+        // 떨어지는 속도 랜덤하게
         options.duration = 3 * getRandRatio();
 
         const keyframeEffect = new KeyframeEffect(dropRef.current, keyframes, options);
-        
+        // 애니메이션 추후에 실행할 수 있도록 준비한다.
         const dropAni = new Animation(keyframeEffect);
         dropElAni.animation = dropAni;
         dropAni.play();
@@ -91,12 +73,11 @@ const Grape = (props) => {
         
     }, []);
 
-    const showEditIcon = useCallback((isVisible) => {
-        setVisible(isVisible);
-    }, []);
-
-    // TODO: 연속된 애니메이션이 다른 컴포넌트에 나뉘어져 있을 때 전역 상태를 통해서
-    // 애니메이션을 트리거시켜야 하는데, 이게 최선일까
+    /*
+    TODO: 동시에 실행시켜야 하는 애니메이션이 여러 컴포넌트에 나뉘어져 있을 때,
+    전역 상태를 사용 vs. 부모 상태
+    부모의 직계 자식들에게만 애니메이션을 트리거시키면 되기 때문에 부모 상태에서 관리
+    */ 
     useEffectOnlyUpdate(() => {
         if(!startJuiceAni) return false;
 
@@ -109,15 +90,30 @@ const Grape = (props) => {
         <Drop 
             color={color}
             size={size}
-            onMouseEnter={() => showEditIcon(true)}
-            onMouseLeave={() => showEditIcon(false)}
+            onMouseEnter={() => setEditIconVisible(true)}
+            onMouseLeave={() => setEditIconVisible(false)}
             ref={dropRef}>
-            <div style={{visibility: isVisible? '' : 'hidden'}}>
+            <div style={{visibility: isEditIconVisible? '' : 'hidden'}}>
                 <img src={pencilImg} onClick={() => openModal(id, seq)}></img>
                 <img src={checkedImg} onClick={() => changeGrapeChecked(id, seq)}></img>
             </div>
         </Drop>
     );
+}
+
+const animationConfig = {
+    drop: {
+        keyframes: [
+            {transform: 'translateY(0) translateX(0)'},
+            {transform: null, backgroundColor: 'white'}
+        ],
+        options: {
+            duration: null,
+            fill: 'forwards',
+            easing: 'ease',
+            delay: 1000
+        }
+    }
 }
 
 const Drop = styled.div`

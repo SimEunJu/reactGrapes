@@ -5,6 +5,55 @@ import useAnimation from '../../hooks/animation/useAnimation';
 import { useSelector } from 'react-redux';
 import useEffectOnlyUpdate from '../../hooks/useEffectOnlyUpdate';
 
+const ShowcaseBtn = ({history}) => {
+
+    const [doorRef, openDoorAni] = useAnimation(animationConfig.openDoor);
+    const isJuiceSaved = useSelector(({grape}) => grape.isJuiceSaved);
+    const [isDoorOpen, setDoorOpen] = useState(false);
+    
+    const handleClick = useCallback(() => {
+        history.push('/setting');
+    }, []);
+
+    useEffectOnlyUpdate(() => {
+        if(isDoorOpen || (isJuiceSaved && !isDoorOpen)){
+            const {ref, keyframes, options} = openDoorAni;
+            openDoorAni.animation = ref.current.animate(keyframes, options);
+        } 
+        else if(!isDoorOpen){
+            const {animation} = openDoorAni;
+            animation.reverse();
+        }
+    }, [isJuiceSaved, isDoorOpen]);
+   
+    return(
+        <DoorBtn
+            onMouseEnter={() => setDoorOpen(true)} 
+            onMouseLeave={() => setDoorOpen(false)} >
+            <div
+                ref={doorRef} />
+            <div 
+                onClick={handleClick}>
+                진열장
+            </div>
+        </DoorBtn>
+    );
+}
+
+const animationConfig = {
+    openDoor: {
+        keyframes: [
+            { transform: 'skewY(8deg)'},
+            { transform: 'rotateY(150deg) skewY(8deg)'}
+        ],
+        options: {
+            duration: 1000,
+            fill: 'forwards',
+            easing: 'ease-in-out' 
+        }
+    }
+}
+
 const DoorBtn = styled.div`
     
     position: fixed;
@@ -35,61 +84,4 @@ const DoorBtn = styled.div`
     }
 `;
 
-const animationOtps = {
-    doorEl: {
-        keyframes: [
-            { transform: 'skewY(8deg)'},
-            { transform: 'rotateY(150deg) skewY(8deg)'}
-        ],
-        options: {
-            duration: 1000,
-            fill: 'forwards',
-            easing: 'ease-in-out' 
-        }
-    }
-}
-
-const ShowcaseBtn = ({history}) => {
-
-    const [doorRef, doorAni] = useAnimation(animationOtps.doorEl);
-    const isJuiceSaved = useSelector(({grape}) => grape.isJuiceSaved);
-    const [isDoorOpen, setDoorOpen] = useState(false);
-
-    const handleMouseEnter = useCallback(() => {
-        setDoorOpen(true);   
-    }, []);
-
-    const handleMouseLeave = useCallback(() => {
-        setDoorOpen(false);    
-    }, []);
-
-    const handleClick = useCallback(() => {
-        history.push('/setting');
-    }, []);
-
-    useEffectOnlyUpdate(() => {
-        if(isDoorOpen || (isJuiceSaved && !isDoorOpen)){
-            const {ref, keyframes, options} = doorAni;
-            doorAni.animation = ref.current.animate(keyframes, options);
-        } 
-        else if(!isDoorOpen){
-            const {animation} = doorAni;
-            animation.reverse();
-        }
-    }, [isJuiceSaved, isDoorOpen]);
-   
-    return(
-        <DoorBtn
-            onMouseEnter={handleMouseEnter} 
-            onMouseLeave={handleMouseLeave} >
-            <div
-                ref={doorRef} />
-            <div 
-                onClick={handleClick}>
-                진열장
-            </div>
-        </DoorBtn>
-    );
-}
-  
 export default withRouter(ShowcaseBtn);
