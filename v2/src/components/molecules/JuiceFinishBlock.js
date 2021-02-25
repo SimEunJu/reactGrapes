@@ -2,7 +2,7 @@ import React from 'react';
 import JuiceBtn from '../atoms/JuiceBtn';
 import ShowcaseBtn from '../atoms/ShowcaseBtn';
 
-const JuiceBtnContainer = () => {
+const JuiceFinishBlock = () => {
 
     return (
         <>
@@ -12,4 +12,4 @@ const JuiceBtnContainer = () => {
     );
 }
 
-export default JuiceBtnContainer;
+export default JuiceFinishBlock;

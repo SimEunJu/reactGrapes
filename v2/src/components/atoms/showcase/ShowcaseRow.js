@@ -3,7 +3,16 @@ import styled from 'styled-components';
 import {withRouter} from 'react-router';
 import MiniJuice from './MiniJuice';
 
-const ShowcaseRow = ({history, grapes : {rgba, title, id} }) => {
+function extractYMD(date){
+    if(date == null || date.trim() === "") return "";
+    return date.substring(0,10);
+}
+
+function getDefaultIfEmpty(str, defaultVal){
+    if(str) return str;
+    return defaultVal;
+}
+const ShowcaseRow = ({history, grapes : {rgba, title, id, createDate, finishDate} }) => {
    
     const handleClick = useCallback(() => {
         history.push(`/grapes/${id}`);
@@ -13,7 +22,10 @@ const ShowcaseRow = ({history, grapes : {rgba, title, id} }) => {
         <RowContainer>
             <RowWrap>
                 <MiniJuice rgba={rgba} handleClick={handleClick}/> 
-                <Comment>{title}</Comment>
+                <Comment>
+                    <p><b>{getDefaultIfEmpty(title, "제목없음")}</b></p>
+                    <p>{extractYMD(createDate)} ~ {getDefaultIfEmpty(extractYMD(finishDate), "진행중")}</p>
+                </Comment>
             </RowWrap>
             <Bar />
         </RowContainer>

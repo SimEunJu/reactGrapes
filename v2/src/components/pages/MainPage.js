@@ -10,10 +10,10 @@ import Loader from "../atoms/Loader";
 
 const MainPage = (props) => {
 
-    const {getBunchGrapesSuccess, getBunchGrapesFailure} 
-        = useSelector(({grape}) => ({
+    const {getBunchGrapesSuccess, getBunchGrapesLoading} 
+        = useSelector(({grape, loading}) => ({
         getBunchGrapesSuccess: grape.getGrapesStatusSuccess,
-        getBunchGrapesFailure: grape.getGrapesStatusFailure,
+        getBunchGrapesLoading: loading['grape/getGrapesStatus']
     }), shallowEqual);
     const dispatch = useDispatch(); 
     
@@ -21,11 +21,11 @@ const MainPage = (props) => {
         const {match, history} = props;
         let {gno} = match.params;
         if(isNaN(gno)) history.push('/');
-
+        debugger;
         dispatch(getGrapesStatus(parseInt(gno, 10)));
     }, []);
 
-    if(getBunchGrapesFailure) return <NetworkErr />;
+    if(getBunchGrapesLoading) return <Loader />;
 
     if(getBunchGrapesSuccess) return (
         <>
@@ -34,11 +34,9 @@ const MainPage = (props) => {
             <GrapesContainer /> 
             <JuiceContainer />
         </>
-    );
-        
-    return <Loader />;
+    );    
+    
+    return <NetworkErr />;
 };
-
-
 
 export default MainPage;

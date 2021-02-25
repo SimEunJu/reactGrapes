@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NetworkErr = () => {
+const NotFound = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const NetworkErr = () => {
     );
 };
 
-export default NetworkErr;
+export default NotFound;
