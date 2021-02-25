@@ -5,7 +5,7 @@ export const loadingSlice = createSlice({
     initialState: {},
     reducers: {
         startLoading: (state, action) => {
-            debugger;
+            
             state[action.payload] = true;
         },
         finishLoading: (state, action) => {

@@ -20,7 +20,7 @@ const Showcase = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        debugger;
+        
         dispatch(getShowcase({size: showcasePaging.size, page: showcasePaging.page+1}));
     }, []);
 

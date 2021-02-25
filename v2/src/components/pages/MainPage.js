@@ -21,7 +21,7 @@ const MainPage = (props) => {
         const {match, history} = props;
         let {gno} = match.params;
         if(isNaN(gno)) history.push('/');
-        debugger;
+        
         dispatch(getGrapesStatus(parseInt(gno, 10)));
     }, []);
 

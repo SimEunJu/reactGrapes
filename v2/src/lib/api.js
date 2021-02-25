@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = '/api/grapes';
+axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+console.log(axios.defaults.baseURL);
 axios.defaults.headers.common['Authorization'] = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTQzMzk4NDV9.KybzutjYDR7-A0Fp5uJ1WR23DmDkU3dZMKfHasKbz0K9sEG5oZblWI76WaFj0xZkVZ-wTWfysM7hF8ILMIrgaQ";
 
 export const createNewBunchGrapes = async (depth) => await axios.post(`/new`, {depth});

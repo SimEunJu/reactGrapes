@@ -7,12 +7,20 @@ import loading from "./modules/loading";
 
 const sagaMiddleware = createSagaMiddleware();
 
+let middelwares = [];
+if(process.env.NODE_ENV === 'production'){
+    middelwares = [sagaMiddleware];
+}
+else{
+    middelwares = [logger, sagaMiddleware];
+}
+
 const store = configureStore({
     reducer: {
         grape,
         loading
     },
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat([logger, sagaMiddleware]),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(middelwares),
 });
 
 export function* rootSaga(){
