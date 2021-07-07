@@ -1,12 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
-import {
-	changeColor,
-	showModal,
-	changeGrapeContent,
-	hideModal,
-} from "../../store/modules/grape";
+import { changeColor, showModal } from "../../store/modules/grape";
 
 import Grapes from "../atoms/Grapes";
 import Modal from "../atoms/Modal";
@@ -32,7 +26,7 @@ const GrapeWrapperContainer = () => {
 		setSunRotate(isChecked);
 	};
 
-	const openModal = editGrapeIdx => {
+	const openModal = (editGrapeIdx) => {
 		setEditGrapeIdx(editGrapeIdx);
 		dispatch(showModal({ gno, idx: editGrapeIdx }));
 	};
@@ -49,4 +43,4 @@ const GrapeWrapperContainer = () => {
 	);
 };
 
-export default withRouter(GrapeWrapperContainer);
+export default GrapeWrapperContainer;

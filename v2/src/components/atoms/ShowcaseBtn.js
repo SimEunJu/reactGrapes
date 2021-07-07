@@ -66,6 +66,7 @@ const DoorBtn = styled.div`
 	}
 
 	div:nth-child(1) {
+		background-color: white;
 		border-left: none;
 		z-index: 1;
 		transform-origin: left;

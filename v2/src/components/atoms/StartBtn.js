@@ -6,54 +6,9 @@ import { getGrapeNo } from "../../store/modules/grape";
 import useAnimation from "../../hooks/animation/useAnimation";
 import useEffectOnlyUpdate from "../../hooks/useEffectOnlyUpdate";
 
-const Btn = styled.button`
-	margin-top: 0;
-	border-radius: 50%;
-	border: none;
-	height: 100px;
-	width: 100px;
-	text-align: center;
-	font-size: 20px;
-	color: purple;
-	font-weight: bold;
-	outline: none;
-	background-color: purple;
-	color: white;
-`;
-
-const BtnBlock = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	visibility: hidden;
-	transform: translateX(-10vw);
-`;
-const animationOtps = {
-	btnEl: {
-		keyframes: [{ transform: "scale(1)" }, { transform: "scale(1.1)" }],
-		options: {
-			duration: 1000,
-			iterations: Infinity,
-			direction: "alternate",
-			easing: "ease-out",
-		},
-	},
-	btnBlockEl: {
-		keyframes: [{ transform: "translateX(0)", visibility: "inherit" }],
-		options: {
-			duration: 1000,
-			delay: 300,
-			fill: "forwards",
-			easing: "ease-out",
-		},
-	},
-};
-
 const StartBtn = ({ history }) => {
-	const [btnBlockRef, btnBlockAni] = useAnimation(
-		animationOtps["btnBlockEl"]
-	);
-	const [btnRef, btnAni] = useAnimation(animationOtps["btnEl"]);
+	const [btnBlockRef, slideBtnAni] = useAnimation(animationOtps.slideBtn);
+	const [btnRef, expandBtnAni] = useAnimation(animationOtps.expandBtn);
 
 	const { isDepthSet, gno, depth } = useSelector(({ grape }) => ({
 		isDepthSet: grape.isDepthSet,
@@ -63,8 +18,8 @@ const StartBtn = ({ history }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const animations = [btnBlockAni, btnAni];
-		animations.forEach(ani => {
+		const animations = [slideBtnAni, expandBtnAni];
+		animations.forEach((ani) => {
 			const { ref, animation, keyframes, options } = ani;
 
 			if (isDepthSet)
@@ -91,6 +46,50 @@ const StartBtn = ({ history }) => {
 			</Btn>
 		</BtnBlock>
 	);
+};
+
+const Btn = styled.button`
+	margin-top: 0;
+	border-radius: 50%;
+	border: none;
+	height: 100px;
+	width: 100px;
+	text-align: center;
+	font-size: 20px;
+	color: purple;
+	font-weight: bold;
+	outline: none;
+	background-color: purple;
+	color: white;
+`;
+
+const BtnBlock = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+	transform: translateX(-10vw);
+`;
+
+const animationOtps = {
+	expandBtn: {
+		keyframes: [{ transform: "scale(1)" }, { transform: "scale(1.1)" }],
+		options: {
+			duration: 1000,
+			iterations: Infinity,
+			direction: "alternate",
+			easing: "ease-out",
+		},
+	},
+	slideBtn: {
+		keyframes: [{ transform: "translateX(0)", visibility: "inherit" }],
+		options: {
+			duration: 1000,
+			delay: 300,
+			fill: "forwards",
+			easing: "ease-out",
+		},
+	},
 };
 
 export default withRouter(StartBtn);
