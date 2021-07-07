@@ -2,7 +2,6 @@
   "name": "v2",
   "version": "0.1.0",
   "private": true,
-  
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -18,7 +17,9 @@
     "@types/sass": "^1.16.0",
     "@types/styled-components": "^5.1.7",
     "axios": "^0.21.1",
+    "global": "^4.4.0",
     "immer": "^8.0.1",
+    "prettier": "^2.3.2",
     "qs": "^6.9.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
