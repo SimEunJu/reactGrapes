@@ -11,7 +11,7 @@ const HeaderContainer = () => {
 	}));
 	const dispatch = useDispatch();
 
-	const changeTitle = titleNext => {
+	const changeTitle = (titleNext) => {
 		titleNext = titleNext.trim();
 		if (title !== titleNext) dispatch(setTitle({ gno, title: titleNext }));
 	};

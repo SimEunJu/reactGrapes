@@ -6,10 +6,11 @@ export default function createRequestSaga(type, request) {
 	const SUCCESS = `${type}Success`;
 	const FAILURE = `${type}Failure`;
 
-	const generatorFunc = function*(action) {
+	const generatorFunc = function* (action) {
 		yield put(startLoading(type));
 		try {
 			const response = yield call(request, action.payload);
+
 			yield put({
 				type: SUCCESS,
 				payload: response.data,

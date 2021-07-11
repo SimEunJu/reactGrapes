@@ -30,7 +30,7 @@ const Juice = ({ rgba, saveJuice }) => {
 					AnimationService.animate(bottleAnis.minimizeBottle).finished
 			)
 			.then(saveJuice)
-			.catch(e => {
+			.catch((e) => {
 				console.error(e);
 			});
 	}, [isJuiceSaving]);
@@ -107,6 +107,7 @@ const animationConfig = {
 };
 
 const BottleBlock = styled.div`
+	top: -100px;
 	position: relative;
 	margin: auto;
 	width: 200px;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import Grape from "./Grape";
 import { GREEN, PURPLE } from "../../common/Color";
@@ -6,7 +6,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { saveJuice } from "../../store/modules/grape";
 import useEffectOnlyUpdate from "../../hooks/useEffectOnlyUpdate";
 
-const Grapes = props => {
+const Grapes = (props) => {
 	const grapesRef = useRef();
 	const { depth, grape, startJuiceAni } = useSelector(
 		({ grape }) => ({
@@ -57,15 +57,16 @@ const Grapes = props => {
 		Promise.any(
 			grapesRef.current
 				.getAnimations({ subtree: true })
-				.map(animation => animation.finished)
+				.map((animation) => animation.finished)
 		).then(() => dispatch(saveJuice()));
 	}, [startJuiceAni]);
 
 	// 포도알(<Grape>) 애니메이션 끝나도 영역 유지하기 위해
 	// 맨처음 render링 될 때 실행되는 ref에는 current가 없기 때문에 useEffectOnlyUpdate 사용
-	useEffectOnlyUpdate(() => {
+	useLayoutEffect(() => {
 		const height = grapesRef.current.getBoundingClientRect().height;
-		grapesRef.current.height = height;
+		debugger;
+		grapesRef.current.style.height = `${height}px`;
 	}, []);
 
 	return (

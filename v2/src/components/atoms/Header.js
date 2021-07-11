@@ -6,13 +6,13 @@ const Header = ({ changeTitle, title }) => {
 	const [branchRef, branchAni] = useAnimation(animationConfig.extendBranch);
 	const [leafRef, leafAni] = useAnimation(animationConfig.rotateLeaf);
 
-	const [titleInput, setTitleInput] = useState(title);
+	const [titleInput, setTitleInput] = useState(title ?? "");
 	const [titleBtnTxt, setTitleBtnTxt] = useState("입력");
 	const [isWriteMode, setWriteMode] = useState(false);
 
 	const writeStartAni = useCallback(() => {
 		const animations = [branchAni, leafAni];
-		animations.forEach(ani => {
+		animations.forEach((ani) => {
 			const { ref, keyframes, options } = ani;
 			ani.animation = ref.current.animate(keyframes, options);
 		});
@@ -20,7 +20,7 @@ const Header = ({ changeTitle, title }) => {
 
 	const writeEndAni = useCallback(() => {
 		const animations = [branchAni, leafAni];
-		animations.forEach(ani => {
+		animations.forEach((ani) => {
 			const { animation } = ani;
 			animation.reverse();
 		});
@@ -43,6 +43,7 @@ const Header = ({ changeTitle, title }) => {
 		({ key }) => {
 			if (key === "Enter") {
 				animateLeafToClose();
+
 				changeTitle(titleInput);
 			}
 		},
@@ -53,7 +54,7 @@ const Header = ({ changeTitle, title }) => {
 		setTitleInput(value);
 	};
 
-	const handleClick = e => {
+	const handleClick = (e) => {
 		if (isWriteMode) {
 			animateLeafToClose();
 			changeTitle(titleInput);
@@ -62,7 +63,7 @@ const Header = ({ changeTitle, title }) => {
 
 	// TODO: onBlur와 onClick 충돌 문제
 	const handleWriteAni = useCallback(
-		isWriteModeTrigger => {
+		(isWriteModeTrigger) => {
 			if (isWriteMode === isWriteModeTrigger) return false;
 
 			if (isWriteModeTrigger) animateLeafToWrite();

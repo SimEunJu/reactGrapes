@@ -54,7 +54,6 @@ export {
 	getShowcase,
 };
 
-// TODO: 이렇게 하는게 맞는겨?...
 export function* grapeSaga() {
 	yield takeLatest(CREATE_NEW_B_GRAPES, createNewBunchGrapesSaga);
 	yield takeLatest(GET_B_GRAPES, getBunchGrapesSaga);
@@ -66,10 +65,10 @@ export function* grapeSaga() {
 	yield takeLatest(GET_B_GRAPES_LIST, getBunchGrapesListSaga);
 }
 
-const checkGrapeColor = grapes => {
+const checkGrapeColor = (grapes) => {
 	let green = 0;
 	let purple = 0;
-	grapes.forEach(g => {
+	grapes.forEach((g) => {
 		if (!g.isChecked) green++;
 		else purple++;
 	});
@@ -82,8 +81,8 @@ const grapeSlice = createSlice({
 		grapes: [],
 		bunchGrapes: GREEN,
 		gno: null,
-		depth: null, //null
-		isDepthSet: false, // false
+		depth: null,
+		isDepthSet: false,
 		juiceRatio: { green: 0, purple: 0 },
 		isJuiceMaking: false,
 		isJuiceSaving: false,
@@ -92,21 +91,20 @@ const grapeSlice = createSlice({
 		modal: false,
 		modalTitle: "",
 		modalContent: "",
-		showcase: [], //[{id: 3, depth: 4, title: "test", rgba: "rgba(179, 32, 82, 0.52)", createDate: '2020-12-25', finishDate: '2021-01-20', grapes: null}],
+		showcase: [],
 		showcasePaging: {
-			hasNext: false,
+			hasNext: true,
 			page: 0,
 			size: 10,
 		},
 	},
 	reducers: {
-		initialize: state => {
+		initialize: (state) => {
 			state = grapeSlice.initialState;
 		},
 		getGrapeNoSuccess: (state, action) => {
-			const gno = action.payload;
+			const gno = action.payload.bunchGrapesId;
 			state.gno = gno;
-			state.getGrapeNoSuccess = true;
 		},
 		getGrapesStatusSuccess: (state, action) => {
 			const { id, depth, title, grapes } = action.payload;
@@ -119,7 +117,7 @@ const grapeSlice = createSlice({
 		getGrapesStatusFailure: (state, action) => {},
 		changeColorSuccess: (state, action) => {
 			const grapeId = action.payload;
-			state.grape.forEach(grape => {
+			state.grape.forEach((grape) => {
 				if (grape.id === grapeId) {
 					grape.isChecked = true;
 					return;
@@ -129,7 +127,7 @@ const grapeSlice = createSlice({
 		},
 		changeGrapeContentSuccess: (state, action) => {
 			const grapeRes = action.payload;
-			state.grape.forEach(grape => {
+			state.grape.forEach((grape) => {
 				if (grape.id === grapeRes.id) {
 					grape = grapeRes;
 					return;
@@ -154,7 +152,7 @@ const grapeSlice = createSlice({
 			state.title = title;
 		},
 		setRgbaSuccess: (state, action) => {
-			state.rgba = action.payload.data.rgba;
+			state.rgba = action.payload.rgba;
 			state.isJuiceSaved = true;
 		},
 		getShowcaseSuccess: (state, action) => {
@@ -162,7 +160,7 @@ const grapeSlice = createSlice({
 			state.showcasePaging.hasNext = hasNext;
 			state.showcasePaging.page = page;
 			state.showcasePaging.size = size;
-			state.showcase = dtoList;
+			state.showcase = state.showcase.concat(dtoList);
 			state.getShowcaseSuccess = true;
 		},
 		showModalSuccess: (state, action) => {

@@ -1,28 +1,33 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 
-const ScrollSentinel = ({ apiCall, rootMargin = 100, page, size, hasNext }) => {
+const ScrollSentinel = ({ apiCall, isStop }) => {
 	const sentinelRef = useRef(null);
-	const dispatch = useDispatch();
+	const ioRef = useRef(
+		new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) {
+						return;
+					}
+					apiCall();
+				});
+			},
+			{ rootMargin: "100px" }
+		)
+	);
 
 	useEffect(() => {
-		const options = {
-			rootMargin: `${rootMargin}px`,
+		if (sentinelRef.current) ioRef.current.observe(sentinelRef.current);
+
+		return () => {
+			if (sentinelRef.current)
+				ioRef.current.unobserve(sentinelRef.current);
 		};
-		const io = new IntersectionObserver((entries, observer) => {
-			entries.forEach(entry => {
-				if (!entry.isIntersecting) {
-					return;
-				}
-				if (hasNext === false) {
-					observer.unobserve(entry.target);
-					return;
-				}
-				dispatch(apiCall(page, size));
-			});
-		}, options);
-		io.observe(sentinelRef.current);
 	}, []);
+
+	useEffect(() => {
+		if (isStop) ioRef.current.unobserve(sentinelRef.current);
+	}, [isStop]);
 
 	return <div ref={sentinelRef} />;
 };

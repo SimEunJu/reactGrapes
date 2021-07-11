@@ -17,16 +17,14 @@ C의 경우에는 store에 의존할 수 밖에 없음
 
 */
 export class Animation {
-	constructor(ref, keyframes, options, order = 0, name = null) {
+	constructor(ref, keyframes, options, name = null) {
 		this.ref = ref;
 		this.animation = null;
 		this.keyframes = keyframes;
 		this.options = options;
-		this.order = order;
 		this.name = name;
 	}
 }
-
 export class AnimationService {
 	static animate(animation) {
 		const { ref, keyframes, options } = animation;
@@ -36,7 +34,7 @@ export class AnimationService {
 
 	static animateConcurrent(animations) {
 		const animatedAnimations = [];
-		animations.forEach(ani => {
+		animations.forEach((ani) => {
 			const animation = AnimationService.animate(ani);
 			animatedAnimations.push(animation);
 		});
