@@ -35,9 +35,11 @@ const Juice = ({ rgba, saveJuice }) => {
 			});
 	}, [isJuiceSaving]);
 
-	if (!isJuiceSaving) return <div />;
 	return (
-		<BottleBlock ref={bottleBlockRef}>
+		<BottleBlock
+			isDisplay={isJuiceSaving ? true : false}
+			ref={bottleBlockRef}
+		>
 			<Cap ref={capRef} />
 			<BottleEnter />
 			<BottleNeck />
@@ -107,7 +109,8 @@ const animationConfig = {
 };
 
 const BottleBlock = styled.div`
-	top: -100px;
+	display: ${({ isDisplay }) => (isDisplay ? "block" : "none")};
+	//top: -200px;
 	position: relative;
 	margin: auto;
 	width: 200px;

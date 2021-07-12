@@ -65,8 +65,8 @@ const Grapes = (props) => {
 	// 맨처음 render링 될 때 실행되는 ref에는 current가 없기 때문에 useEffectOnlyUpdate 사용
 	useLayoutEffect(() => {
 		const height = grapesRef.current.getBoundingClientRect().height;
-
-		grapesRef.current.style.height = `${height}px`;
+		// 주스병의 높이가 200px라서 220을 빼야 스크롤이 생기지 않고 화면에 표현됨
+		grapesRef.current.style.height = `${height - 220}px`;
 	}, []);
 
 	return (

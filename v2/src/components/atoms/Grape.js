@@ -4,7 +4,6 @@ import checkedImg from "../../assets/img/checked.png";
 import pencilImg from "../../assets/img/pencil.png";
 import useAnimation from "../../hooks/animation/useAnimation";
 import { shallowEqual, useSelector } from "react-redux";
-import useEffectOnlyUpdate from "../../hooks/useEffectOnlyUpdate";
 
 const getRandRatio = () => {
 	// 700 <= num <= 1200
@@ -29,8 +28,9 @@ const Grape = ({ id, seq, size, color, openModal, changeGrapeChecked }) => {
 		//offsetTop
 		const top = dropRef.current.getBoundingClientRect().top;
 		//document.body.clientHeight를 사용해도 상관없을 것 같다.
+		//5는 스크롤 나타나는 것 방지하기 위한 패딩
 		const heigtFromViewBottom =
-			document.documentElement.clientHeight - top - size;
+			document.documentElement.clientHeight - top - size - 5;
 		return heigtFromViewBottom;
 	}, [dropRef]);
 
