@@ -97,11 +97,16 @@ const Grape = ({ id, seq, size, color, openModal, changeGrapeChecked }) => {
 			ref={dropRef}
 		>
 			<div style={{ visibility: isEditIconVisible ? "" : "hidden" }}>
-				<img src={pencilImg} onClick={() => openModal(id, seq)}></img>
+				<img
+					src={pencilImg}
+					onClick={() => openModal(id, seq)}
+					alt="연필 이미지"
+				/>
 				<img
 					src={checkedImg}
 					onClick={() => changeGrapeChecked(id, seq)}
-				></img>
+					alt="체크 표시 이미지"
+				/>
 			</div>
 		</Drop>
 	);

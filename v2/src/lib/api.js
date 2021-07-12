@@ -19,13 +19,13 @@ export const updateBunchGrapesTitle = async ({ gno, title }) =>
 	await axios.patch(`/${gno}/title`, { title });
 
 export const updateGrapeCheck = async ({ gno, idx, isChecked }) =>
-	await axios.patch(`/${gno}/${idx}/check`, { isChecked });
+	await axios.patch(`/${gno}/grape/${idx}/check`, { isChecked });
 
 export const updateGrapeContent = async ({ gno, idx, title, content }) =>
-	await axios.patch(`/${gno}/${idx}`, { title, content });
+	await axios.patch(`/${gno}/grape/${idx}`, { title, content });
 
 export const getGrape = async ({ gno, idx }) =>
-	await axios.get(`/${gno}/${idx}`);
+	await axios.get(`/${gno}/grape/${idx}`);
 
 export const updateGrapeFinish = async ({ gno, rgba }) =>
 	await axios.patch(`/${gno}/finish`, { rgba });

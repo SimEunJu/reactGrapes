@@ -65,7 +65,7 @@ const Grapes = (props) => {
 	// 맨처음 render링 될 때 실행되는 ref에는 current가 없기 때문에 useEffectOnlyUpdate 사용
 	useLayoutEffect(() => {
 		const height = grapesRef.current.getBoundingClientRect().height;
-		debugger;
+
 		grapesRef.current.style.height = `${height}px`;
 	}, []);
 

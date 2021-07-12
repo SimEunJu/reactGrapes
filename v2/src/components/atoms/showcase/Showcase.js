@@ -23,7 +23,7 @@ const Showcase = () => {
 
 	const loadMoreData = () => {
 		if (!showcasePaging.hasNext) return;
-		debugger;
+
 		dispatch(
 			getShowcase({
 				size: showcasePaging.size,

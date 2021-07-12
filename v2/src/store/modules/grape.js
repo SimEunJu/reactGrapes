@@ -97,6 +97,10 @@ const grapeSlice = createSlice({
 			page: 0,
 			size: 10,
 		},
+		changeGrapeContent: {
+			isSuccess: false,
+			id: null,
+		},
 	},
 	reducers: {
 		initialize: (state) => {
@@ -116,14 +120,17 @@ const grapeSlice = createSlice({
 		},
 		getGrapesStatusFailure: (state, action) => {},
 		changeColorSuccess: (state, action) => {
-			const grapeId = action.payload;
+			const { id, isChecked } = action.payload;
 			state.grape.forEach((grape) => {
-				if (grape.id === grapeId) {
-					grape.isChecked = true;
+				if (grape.id === id) {
+					grape.isChecked = isChecked;
 					return;
 				}
 			});
-			state.changeColorSuccess = true;
+			state.changeGrapeColor = {
+				isSuccess: true,
+				id,
+			};
 		},
 		changeGrapeContentSuccess: (state, action) => {
 			const grapeRes = action.payload;
@@ -133,7 +140,11 @@ const grapeSlice = createSlice({
 					return;
 				}
 			});
-			state.changeGrapeContentSuccess = true;
+			state.modal = false;
+			state.changeGrapeContent = {
+				isSuccess: true,
+				is: grapeRes.id,
+			};
 		},
 		setJuice: (state, action) => {
 			const { isJuice } = action.payload;

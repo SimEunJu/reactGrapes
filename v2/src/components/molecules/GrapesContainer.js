@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeColor, showModal } from "../../store/modules/grape";
 
@@ -8,28 +8,34 @@ import Sun from "../atoms/Sun";
 
 // TODO: 전역이냐, 부모 상태냐 그것이 문제로다..
 const GrapeWrapperContainer = () => {
-	const { gno, grapes, isModalOpen } = useSelector(({ grape, loading }) => ({
-		gno: grape.gno,
-		grapes: grape.grape,
-		isModalOpen: grape.modal,
-	}));
+	const { gno, grapes, changeGrapeContent, isModalOpen } = useSelector(
+		({ grape, loading }) => ({
+			gno: grape.gno,
+			grapes: grape.grape,
+			changeGrapeContent: grape.changeGrapeContent,
+			isModalOpen: grape.modal,
+		})
+	);
 	const dispatch = useDispatch();
 
-	const [isSunRotate, setSunRotate] = useState(false);
+	const [isSunRotate, setSunRotate] = useState(null);
 	const [editGrapeIdx, setEditGrapeIdx] = useState(null);
 
 	const changeGrapeChecked = (grapeIdx, grapeSeq) => {
-		let isChecked = false;
-		if (!grapes[grapeSeq].isChecked) isChecked = true;
+		const nextChkStat = !grapes[grapeSeq].isChecked;
 
-		dispatch(changeColor({ gno, idx: grapeIdx, isChecked }));
-		setSunRotate(isChecked);
+		dispatch(changeColor({ gno, idx: grapeIdx, isChecked: nextChkStat }));
+		setSunRotate(grapeIdx);
 	};
 
 	const openModal = (editGrapeIdx) => {
 		setEditGrapeIdx(editGrapeIdx);
 		dispatch(showModal({ gno, idx: editGrapeIdx }));
 	};
+
+	useEffect(() => {
+		if (changeGrapeContent.isSuccess) window.confirm("완료되었습니다.");
+	}, [changeGrapeContent.isSuccess]);
 
 	return (
 		<>

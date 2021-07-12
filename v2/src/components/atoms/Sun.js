@@ -9,13 +9,12 @@ const Sun = ({ isSunRotate }) => {
 	);
 
 	useEffect(() => {
-		if (isSunRotate) {
-			const animations = [rotateSunAni, darkerSunColorAni];
-			animations.forEach(ani => {
-				const { ref, keyframes, options } = ani;
-				ref.current.animate(keyframes, options);
-			});
-		}
+		if (isSunRotate == null) return;
+		const animations = [rotateSunAni, darkerSunColorAni];
+		animations.forEach((ani) => {
+			const { ref, keyframes, options } = ani;
+			ref.current.animate(keyframes, options);
+		});
 	}, [isSunRotate]);
 
 	return (

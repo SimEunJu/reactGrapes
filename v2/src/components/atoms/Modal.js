@@ -90,7 +90,8 @@ const GrapeModal = styled.div`
 `;
 const XBtn = styled.div`
 	text-align: right;
-	font-size: 20px;
+	font-size: 17px;
+	margin-bottom: 7px;
 	cursor: pointer;
 `;
 const SubmitBtn = styled.div`
@@ -125,6 +126,7 @@ const TextBox = styled.div`
 		margin-bottom: 2px;
 	}
 	textarea {
+		font-family: sans-serif;
 		height: 90%;
 	}
 `;
