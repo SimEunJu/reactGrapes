@@ -159,7 +159,7 @@ const grapeSlice = createSlice({
 			state.isJuiceSaving = true;
 		},
 		setTitle: (state, action) => {
-			const title = action.payload.data;
+			const title = action.payload.title;
 			state.title = title;
 		},
 		setRgbaSuccess: (state, action) => {
