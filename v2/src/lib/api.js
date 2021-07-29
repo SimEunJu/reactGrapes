@@ -4,7 +4,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 export const createNewBunchGrapes = async (depth) => {
-	const res = await axios.post(`/new`, { depth });
+	const res = await axios.post(``, { depth });
 	const token = res.data.token;
 
 	if (token) {
@@ -31,7 +31,7 @@ export const updateGrapeFinish = async ({ gno, rgba }) =>
 	await axios.patch(`/${gno}/finish`, { rgba });
 
 export const getBunchGrapesList = async ({ size, page }) =>
-	await axios.get(`/list?size=${size}&page=${page}`);
+	await axios.get(`?size=${size}&page=${page}`);
 
 export const updateBunchGrapesClosed = async ({ gno, isFinish }) =>
 	await axios.post(`/${gno}/finish`, { isFinish });
